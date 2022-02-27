@@ -7,6 +7,10 @@ typedef struct stack{
     int capacity;
     pthread_mutex_t *stack_lock;
 }stack_t;
+struct thread_param{
+    stack_t *stack;
+    void *value;
+};
 void create_stack(stack_t **,int);
-void insert_stack(void*);
+void insert_stack(struct thread_param*);
 void remove_stack(stack_t *);

@@ -1,0 +1,432 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+ 
+# GNU Make 4.2.1
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2016 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Sun Feb 27 21:16:31 2022
+
+# Variables
+
+# 'override' directive
+GNUMAKEFLAGS := 
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# environment
+PAPERSIZE = a4
+# environment
+DESKTOP_SESSION = ubuntu
+# default
+.SHELLFLAGS := -c
+# environment
+XDG_SESSION_CLASS = user
+# environment
+SNAP_COMMON = /var/snap/code/common
+# environment
+XDG_SESSION_TYPE = x11
+# environment
+VSCODE_LOG_NATIVE = false
+# environment
+ws = /home/peterkung/桌面/work/FreeRTOS/FreeRTOS/Demo
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# environment
+IM_CONFIG_PHASE = 1
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+XAUTHORITY = /run/user/1000/gdm/Xauthority
+# environment
+GDMSESSION = ubuntu
+# environment
+XMODIFIERS = @im=ibus
+# makefile
+CURDIR := /home/peterkung/桌面/MultithreadHodgepodge
+# makefile
+SHELL = /bin/sh
+# environment
+SNAP_DATA = /var/snap/code/88
+# environment
+VSCODE_NLS_CONFIG = {"locale":"zh-tw","availableLanguages":{},"_languagePackSupport":true}
+# environment
+JOURNAL_STREAM = 8:80008
+# makefile (from 'Makefile', line 6)
+CFLAGS = -pthread -g -o
+# environment
+XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
+# environment
+SNAP_INSTANCE_NAME = code
+# environment
+SNAP_ARCH = amd64
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# automatic
+@F = $(notdir $@)
+# environment
+GIO_LAUNCHED_DESKTOP_FILE = /var/lib/snapd/desktop/applications/code_code.desktop
+# environment
+USERNAME = peterkung
+# makefile (from 'Makefile', line 13)
+OBJ_DIR = build/
+# environment
+MAKELEVEL := 0
+# environment
+MANDATORY_PATH = /usr/share/gconf/ubuntu.mandatory.path
+# environment
+XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+_ = /snap/code/88/usr/share/code/code
+# environment
+MANAGERPID = 4620
+# makefile (from 'Makefile', line 10)
+LIST_SOURCE := list/test_list.c list/list.c
+# environment
+LESSOPEN = | /usr/bin/lesspipe %s
+# environment
+LC_NAME = zh_HK.UTF-8
+# environment
+VSCODE_CWD = /home/peterkung
+# environment
+GSETTINGS_SCHEMA_DIR = /snap/code/88/usr/share/glib-2.0/schemas
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# environment
+PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+# environment
+GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
+# environment
+SESSION_MANAGER = local/peterkung-System-Product-Name:@/tmp/.ICE-unix/4832,unix/peterkung-System-Product-Name:/tmp/.ICE-unix/4832
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# environment
+GDK_PIXBUF_MODULE_FILE = /home/peterkung/snap/code/common/.cache/gdk-pixbuf-loaders.cache
+# environment
+SNAP = /snap/code/88
+# makefile (from 'Makefile', line 11)
+STACK_SOURCE := lock_stack/stack.c lock_stack/test_stack.c
+# environment
+SNAP_VERSION = f80445ac
+# environment
+XDG_MENU_PREFIX = gnome-
+# environment
+VSCODE_LOG_STACK = false
+# environment
+DISABLE_WAYLAND = 1
+# environment
+VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=2e0b89c3-418c-4e26-b2a8-58e29bbdcd14&iid=2e0b89c3-418c-4e26-b2a8-58e29bbdcd14&sid=2e0b89c3-418c-4e26-b2a8-58e29bbdcd14","uploadToServer":true}
+# makefile (from 'Makefile', line 12)
+COMMON_SOURCE := list/list.c
+# environment
+INVOCATION_ID = 26f75ad8e25a41cbb773fcbed2e4f581
+# environment
+GDK_PIXBUF_MODULEDIR = /snap/code/88/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
+# environment
+LS_COLORS = 
+# environment
+XDG_SESSION_DESKTOP = ubuntu
+# environment
+SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
+# environment
+GIO_LAUNCHED_DESKTOP_FILE_PID = 160944
+# automatic
+%F = $(notdir $%)
+# environment
+DISPLAY = :0
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+SNAP_INSTANCE_KEY = 
+# environment
+PWD = /home/peterkung/桌面/MultithreadHodgepodge
+# default
+.LOADED := 
+# environment
+SSH_AGENT_PID = 4795
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
+# environment
+GTK_MODULES = gail:atk-bridge
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/services/extensions/node/extensionHostProcess
+# environment
+HOME = /home/peterkung
+# environment
+LESSCLOSE = /usr/bin/lesspipe %s %s
+# environment
+VSCODE_CLI = 1
+# environment
+VSCODE_CODE_CACHE_PATH = /home/peterkung/.config/Code/CachedData/f80445acd5a3dadef24aa209168452a3d97cc326
+# environment
+LOGNAME = peterkung
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
+# environment
+SNAP_CONTEXT = pAANXFYv6Rp_t7UloMZ5WccSxeTcRRs5c9vdmm0tezS2UgfQL5kT
+# automatic
++F = $(notdir $+)
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# environment
+SNAP_USER_COMMON = /home/peterkung/snap/code/common
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# environment
+GNOME_DESKTOP_SESSION_ID = this-is-deprecated
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+LC_TIME = zh_HK.UTF-8
+# environment
+SNAP_REAL_HOME = /home/peterkung
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+QT_IM_MODULE = ibus
+# environment
+SNAP_USER_DATA = /home/peterkung/snap/code/88
+# environment
+SHLVL = 0
+# makefile (from 'Makefile', line 4)
+CC = gcc
+# environment
+GNOME_SHELL_SESSION_MODE = ubuntu
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-e4852a82-7c55-4a6e-808a-ac707bea6192.sock
+# default
+MAKE_VERSION := 4.2.1
+# environment
+USER = peterkung
+# environment
+SNAP_REVISION = 88
+# environment
+LC_MONETARY = zh_HK.UTF-8
+# makefile
+.DEFAULT_GOAL := list
+# environment
+XDG_CURRENT_DESKTOP = Unity
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# makefile (from 'Makefile', line 3)
+OBJECTS_STACK = test_stack.o
+# environment
+LC_TELEPHONE = zh_HK.UTF-8
+# makefile (from 'Makefile', line 8)
+STACK_DIR = lock_stack/
+# default
+MAKE_COMMAND := make
+# default
+.VARIABLES := 
+# automatic
+*F = $(notdir $*)
+# environment
+LANGUAGE = zh_HK:en_US:en
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-2acea482-1.64.2-main.sock
+# environment
+BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
+# makefile (from 'Makefile', line 9)
+TEST_LIST_FILE = $(LIST_DIR)test_list.c
+# makefile
+MAKEFLAGS = pqrR
+# makefile (from 'Makefile', line 7)
+LIST_DIR = list/
+# environment
+MFLAGS = -pqrR
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+BREAKPAD_DUMP_LOCATION = /home/peterkung/.config/Code/exthost Crash Reports
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+GDK_BACKEND = x11
+# environment
+LC_PAPER = zh_HK.UTF-8
+# environment
+LC_IDENTIFICATION = zh_HK.UTF-8
+# environment
+QT_ACCESSIBILITY = 1
+# environment
+DEFAULTS_PATH = /usr/share/gconf/ubuntu.default.path
+# 'override' directive
+.SHELLSTATUS := 0
+# default
+MAKEFILES := 
+# environment
+SNAP_COOKIE = pAANXFYv6Rp_t7UloMZ5WccSxeTcRRs5c9vdmm0tezS2UgfQL5kT
+# makefile (from 'Makefile', line 2)
+OBJECTS_LIST = test_list.o
+# environment
+LC_NUMERIC = zh_HK.UTF-8
+# automatic
+<F = $(notdir $<)
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+LC_MEASUREMENT = zh_HK.UTF-8
+# environment
+SNAP_NAME = code
+# environment
+LC_ALL = C
+# environment
+GJS_DEBUG_TOPICS = JS ERROR;JS LOG
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# environment
+SNAP_REEXEC = 
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+WINDOWPATH = 2
+# default
+.INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
+# environment
+GJS_DEBUG_OUTPUT = stderr
+# default
+.RECIPEPREFIX := 
+# makefile (from 'Makefile', line 1)
+OBJECTS = all_test
+# environment
+LC_ADDRESS = zh_HK.UTF-8
+# environment
+LANG = C
+# environment
+VSCODE_PID = 160982
+# variable set hash-table stats:
+# Load=149/1024=15%, Rehash=0, Collisions=26/198=13%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 2069, inode 13109665): 10 files, no impossibilities.
+
+# 10 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+# Not a target:
+all:
+#  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+
+.PHONY: clean
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+ 
+#  Last modified 2022-02-27 16:31:46.022850084
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+lock_stack/test_stack.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+list/test_list.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 27):
+	rm -rf *.o
+
+# Not a target:
+list/list.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+list: build/test_list.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+build/test_stack.o: list/list.c lock_stack/stack.c lock_stack/test_stack.c
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 24):
+	mkdir -p $(@D)
+	$(CC) $(CFLAGS) $@ $^
+
+stack: build/test_stack.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+build/test_list.o: list/test_list.c list/list.c
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	mkdir -p $(@D)
+	$(CC) $(CFLAGS) $@ $^
+
+# Not a target:
+lock_stack/stack.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# files hash-table stats:
+# Load=14/1024=1%, Rehash=0, Collisions=0/35=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 24 / storage = 245 B / avg = 10 B
+# current buf: size = 8162 B / used = 245 B / count = 24 / avg = 10 B
+
+# strcache performance: lookups = 39 / hit rate = 38%
+# hash-table stats:
+# Load=24/8192=0%, Rehash=0, Collisions=1/39=3%
+# Finished Make data base on Sun Feb 27 21:16:31 2022
+
+ 

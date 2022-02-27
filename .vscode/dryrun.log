@@ -1,0 +1,5 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/peterkung/桌面/MultithreadHodgepodge'
+make: Nothing to be done for 'list'.
+make: Leaving directory '/home/peterkung/桌面/MultithreadHodgepodge'
+ 

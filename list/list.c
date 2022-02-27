@@ -12,6 +12,10 @@ void Create_list(list_t **head, void *node_value) {
         printf("List Creation\n");
         printf("Add node %p\n",node_value);
         *head=(list_t *)malloc(sizeof(list_t));
+        if (!head) {
+            puts("Memory allocate fail\n");
+            return;
+        }   
         (*head)->value=node_value;
         (*head)->prev=*head;
         (*head)->next=*head;
@@ -87,23 +91,38 @@ void list_remove_head(list_t **list){
 * @list: A pointer to list 
 */
 void list_remove_tail(list_t **list){
+
+    /* Check no node */
     if(!(*list)){
         printf("Empty List nothing to remove\n");
         return;
     }
-    list_t *temp=(*list)->prev;
-    printf("Remove node %p \n",temp->value);
+   
+    /* Check if only one node*/
     if(*list==(*list)->next){
         free(*list);
         *list=NULL;
         return;
     }
-    temp->prev->next=temp->next;
-    temp->next->prev=temp->prev;
-    temp->prev=NULL;
-    temp->next=NULL;
-    free(temp);
-    temp=NULL;
+
+    /* list head */
+    list_t *temp = *list;
+    /* A  B <->  C
+     * |         |
+     * - - - - - -
+     */
+    temp->prev=temp->prev->prev; 
+    printf("Remove node %p \n",temp->prev->next->value);
+    /* A  non <- C
+     * |         |
+     * - - - - - -
+     */
+    free(temp->prev->next);
+    /* A <-> C
+     * 
+     */
+    temp->prev->next = temp;
+
 
 }
 /*
@@ -144,3 +163,79 @@ void free_list(list_t **list){
     *list = NULL;
     puts("All clear");
 }
+
+
+void sort(list_t **head, int( *compare)(const void *, const void *)) 
+{   
+    void mergesort(list_t **, int(*)(const void *, const void *));
+
+    /* quntity below 2 skip sort */
+    if (!*head || !(*head)->next) 
+        return ;
+
+    /* make list be not circular */
+    (*head)->prev->next = NULL;
+    
+
+    mergesort(head, compare);
+    
+    /* find tail */
+    list_t *tail = *head;
+    while(tail->next) {
+        tail = tail->next;
+    }
+    
+    /* make list be circular */
+    (*head)->prev= tail;
+    tail->next = (*head);
+}
+
+void mergesort(list_t **head, int (*compare)(const void *, const void *)) 
+{
+
+    /* use fast slow pointer method */
+
+    if (!*head || !((*head)->next)) { 
+        return ;
+    }
+
+    list_t *slow = *head;
+    list_t *fast = (*head)->next;
+
+    /* find middle node */
+    while(fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    /* break into two list */
+    fast = slow->next;
+    slow->next = NULL;
+    slow = *head;
+
+    mergesort(&slow, compare);
+    mergesort(&fast, compare);
+
+
+    /* phase merge */
+    list_t **list = head;
+    list_t **stub = NULL;
+    for (list_t **node = NULL;slow && fast;list = &(*list)->next) {
+        /* take the bigger one */
+        node = (compare(&slow->value, &fast->value) < 0)?&slow:&fast;
+        /* list is current next pointer address ,and node is the bigger node address
+        *  dereference these two pointer will be like
+        *  currentNode->next = biggerNode
+        */
+        *list = *node;
+        /* make biggerNode->prev = currentNode */
+        (*node)->prev = *list;
+        /* renew biggerNode to the next node */
+        *node = (*node)->next;
+    }
+    /* Let last of node connet currentNextPointer*/
+    (*list) = (list_t *)((uintptr_t )slow | (uintptr_t )fast);
+}
+
+
+
