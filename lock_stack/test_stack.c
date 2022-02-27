@@ -14,11 +14,7 @@ int main(){
     param3.stack=stack;
     param3.value=3;
     pthread_create(&thread1,NULL,&insert_stack,&param1);
-<<<<<<< HEAD
-    pthread_create(&thread2,NULL,&insert_stack,&param2); 
-=======
     pthread_create(&thread2,NULL,&insert_stack,&param2);
->>>>>>> c17cbf07e9570cbfe755cc0cefed2e8c3dfa00d5
     pthread_create(&thread3,NULL,&insert_stack,&param3);
     pthread_join(thread1,NULL);
     pthread_join(thread2,NULL);

@@ -15,9 +15,5 @@ struct thread_param{
 };
 void create_stack(stack_t **,int);
 void insert_stack(struct thread_param*);
-<<<<<<< HEAD
-void remove_stack(stack_t *);
-=======
 void remove_stack(stack_t *);
 void print_stack(stack_t *);
->>>>>>> c17cbf07e9570cbfe755cc0cefed2e8c3dfa00d5

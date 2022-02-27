@@ -1,14 +1,10 @@
 #include<stdio.h>
 #include "stack.h"
-<<<<<<< HEAD
-
-=======
 /*
 * Create and initialize stack
 * @stack: A pointer to pointer which point to stack 
 * @capacity: Capacity of stack
 */
->>>>>>> c17cbf07e9570cbfe755cc0cefed2e8c3dfa00d5
 void create_stack(stack_t **stack,int capacity){
     if((*stack)){
         printf("------Stack Already Exists------\n");
@@ -27,10 +23,6 @@ void create_stack(stack_t **stack,int capacity){
     (*stack)->stack_lock=(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
     pthread_mutex_init((*stack)->stack_lock,NULL);
 }
-<<<<<<< HEAD
-void insert_stack(struct thread_param *stack_param){
-    stack_t *stack=stack_param->stack;
-=======
 
 /*
 * Add node to stack
@@ -38,7 +30,6 @@ void insert_stack(struct thread_param *stack_param){
 */
 void insert_stack(struct thread_param *stack_param){
     stack_t *stack= stack_param->stack;
->>>>>>> c17cbf07e9570cbfe755cc0cefed2e8c3dfa00d5
     void *value=stack_param->value;
     if(!stack){
         printf("------Stack not exists------\n");
