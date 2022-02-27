@@ -11,6 +11,11 @@ int main(){
     print_list(&new_list);
     list_remove_tail(&new_list);
     print_list(&new_list);
-    free_list(new_list);
+    free_list(&new_list);
+    
+    list_add_tail(&new_list,(void *)3);
+    list_add_tail(&new_list,(void *)4);
 
+    free_list(&new_list);
+    free_list(&new_list);
 }

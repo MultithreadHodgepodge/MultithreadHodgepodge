@@ -125,18 +125,22 @@ void print_list(list_t** cur){
 * Free the list
 * @list: A pointer to list 
 */
-void free_list(list_t *list){
-    if(!list){
+void free_list(list_t **list){
+    if(!*list){
         printf("Nothing to free\n");
         return;
     }
-    list_t* temp=list;
+
+    list_t *tail= (*list)->prev;
+    list_t *prev = *list;
+    list_t *cur = *list;
     do{
-        printf("Free value= %p \n",temp->value);
-        
-        list_t *for_free=temp;
-        temp=temp->next;
-        free(for_free);
-        for_free=NULL;
-    }while(temp!=list);
+        prev = cur;
+        cur = cur->next;
+        free(prev);
+    }while(cur != tail);
+
+    free(tail);
+    *list = NULL;
+    puts("All clear");
 }
