@@ -4,16 +4,26 @@
 * @list: A pointer to pointer which point to list 
 * @node_value: Value of node added
 */
+
+void Create_list(list_t **head, void *node_value) {
+    if (*head) {
+        printf("List Exist\n");
+    } else {
+        printf("List Creation\n");
+        printf("Add node %p\n",node_value);
+        *head=(list_t *)malloc(sizeof(list_t));
+        (*head)->value=node_value;
+        (*head)->prev=*head;
+        (*head)->next=*head;
+    }
+    return ;
+}
+
 void list_add_head(list_t** list, void* node_value){
     
     if(!(*list)){
-        printf("List Creation\n");
-        printf("Add node %p\n",node_value);
-        *list=(list_t *)malloc(sizeof(list_t));
-        (*list)->value=node_value;
-        (*list)->prev=*list;
-        (*list)->next=*list;
-        return;
+        Create_list(list, node_value);
+        return ;
     }
     list_t* new_node=(list_t *)malloc(sizeof(list_t));
     new_node->value=node_value;
@@ -32,12 +42,7 @@ void list_add_head(list_t** list, void* node_value){
 void list_add_tail(list_t** list, void* node_value){
 
     if(!(*list)){
-        printf("List Creation\n");
-        printf("Add node %p\n",node_value);
-        *list=(list_t *)malloc(sizeof(list_t));
-        (*list)->value=node_value;
-        (*list)->prev=(*list);
-        (*list)->next=(*list);
+        Create_list(list, node_value);
         return;
     }
     list_t* new_node=(list_t *)malloc(sizeof(list_t));
@@ -105,16 +110,16 @@ void list_remove_tail(list_t **list){
 * Print the list
 * @list: A pointer to list 
 */
-void print_list(list_t* list){
-    if(!list){
+void print_list(list_t** cur){
+    if(!*cur){
         printf("Empty List\n");
         return;
     }
-    list_t* temp=list;
+    list_t *head = *cur;
     do{
-        printf("%p\n",temp->value);
-        temp=temp->next;
-    }while(temp!=list);
+        printf("%p\n",(*cur)->value);
+        cur = &(*cur)->next;
+    }while(*cur != head);
 }
 /*
 * Free the list
