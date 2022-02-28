@@ -18,4 +18,5 @@ void list_remove_tail(list_t** );
 void print_list(list_t** );
 void free_list();
 void sort(list_t **, int(*compare)(const void *, const void*));
+void list_remove_specific_node(list_t**, void*);
 #endif

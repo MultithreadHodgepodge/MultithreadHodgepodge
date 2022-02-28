@@ -23,6 +23,11 @@ void create_list(list_t **head, void *node_value) {
     return ;
 }
 
+/*
+* Add node to head of list
+* @list: A pointer to pointer which point to list 
+* @node_value: Value of node added
+*/
 void list_add_head(list_t** list, void* node_value){
     
     if(!(*list)){
@@ -38,6 +43,7 @@ void list_add_head(list_t** list, void* node_value){
     *list=new_node;
     printf("Add node %p\n",node_value);
 }
+
 /*
 * Add node to tail of list
 * @list: A pointer to pointer which point to list 
@@ -60,7 +66,7 @@ void list_add_tail(list_t** list, void* node_value){
 
 /*
 * Remove the list from head
-* @list: A pointer to list 
+* @list: A pointer to pointer which point to list 
 */
 void list_remove_head(list_t **list){
     if(!(*list)){
@@ -88,7 +94,7 @@ void list_remove_head(list_t **list){
 }
 /*
 * Remove the list from tail
-* @list: A pointer to list 
+* @list: A pointer to pointer which point to list  
 */
 void list_remove_tail(list_t **list){
 
@@ -127,11 +133,54 @@ void list_remove_tail(list_t **list){
 
 }
 /*
+/*
+* Remove specific node value in the list 
+* @list: A pointer to pointer which point to list  
+*/
+*/
+void list_remove_specific_node(list_t **list, void *value){
+    /* Check no node */
+    if(!(*list)){
+        printf("Empty List nothing to remove\n");
+        return;
+    }
+   
+
+    
+    while((*list) && (*list)->value==value){
+        printf("Remove node %p \n",(*list)->value);
+        if(*list==(*list)->next){
+            free(*list);
+            *list=NULL;
+            return;
+        }
+        (*list)->prev->next=(*list)->next;
+        (*list)->next->prev=(*list)->prev;
+        list_t *temp=(*list);
+        *list = (*list)->next;
+        //list = &(*list)->next;
+        free(temp);
+    }
+    
+    list_t *head = *list;
+    do{
+        if((*list)->value==value){
+            printf("Remove node %p \n",(*list)->value);
+            (*list)->prev->next=(*list)->next;
+            (*list)->next->prev=(*list)->prev;
+
+        }
+
+        *list = (*list)->next;
+    }while(*list != head);
+*list=head;
+}
+/*
 * Print the list
-* @list: A pointer to list 
+* @list: A pointer to pointer which point to list  
 */
 void print_list(list_t** cur){
-    if(!*cur){
+    if(!(*cur)){
         printf("Empty List\n");
         return;
     }
@@ -143,7 +192,7 @@ void print_list(list_t** cur){
 }
 /*
 * Free the list
-* @list: A pointer to list 
+* @list: A pointer to pointer which point to list  
 */
 void free_list(list_t **list){
     if(!*list) {
@@ -233,7 +282,7 @@ void mergesort(list_t **head, int (*compare)(const void *, const void *))
         /* renew biggerNode to the next node */
         *node = (*node)->next;
     }
-    /* Let last of node connet currentNextPointer*/
+    /* Let last of node connect currentNextPointer*/
     (*list) = (list_t *)((uintptr_t )slow | (uintptr_t )fast);
 }
 

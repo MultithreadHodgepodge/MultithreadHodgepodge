@@ -3,7 +3,7 @@ OBJECTS_LIST=test_list.o
 OBJECTS_STACK=test_stack.o
 CC = gcc
 .PHONY: clean
-CFLAGS= -pthread -g -o
+CFLAGS= -pthread -g -O0 -o
 LIST_DIR=list/
 STACK_DIR=lock_stack/
 TEST_LIST_FILE= $(LIST_DIR)test_list.c
