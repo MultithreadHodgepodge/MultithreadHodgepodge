@@ -13,18 +13,20 @@ int main(){
     param2.value=2;
     param3.stack=stack;
     param3.value=3;
-    pthread_create(&thread1,NULL,&insert_stack,&param1);
-    pthread_create(&thread2,NULL,&insert_stack,&param2);
-    pthread_create(&thread3,NULL,&insert_stack,&param3);
-    pthread_join(thread1,NULL);
-    pthread_join(thread2,NULL);
-    pthread_join(thread3,NULL);
+    pthread_create(&thread1,NULL,&push,&param1);
+    
+
     pthread_t thread4 ,thread5,thread6;
-    pthread_create(&thread4,NULL,&remove_stack,stack);
-    pthread_create(&thread5,NULL,&remove_stack,stack);
-    pthread_create(&thread6,NULL,&remove_stack,stack);
+    pthread_create(&thread4,NULL,&pop,stack);
+    pthread_create(&thread5,NULL,&pop,stack);
+    pthread_create(&thread6,NULL,&pop,stack);
+    pthread_create(&thread2,NULL,&push,&param2);
+    pthread_create(&thread3,NULL,&push,&param3);
     pthread_join(thread1,NULL);
     pthread_join(thread2,NULL);
     pthread_join(thread3,NULL);
+    pthread_join(thread4,NULL);
+    pthread_join(thread5,NULL);
+    pthread_join(thread6,NULL);
     print_stack(stack);
 }
