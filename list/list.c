@@ -145,7 +145,7 @@ void list_remove_tail(list_t **list){
 * Remove specific node value in the list 
 * @list: A pointer to pointer which point to list  
 */
-*/
+
 void list_remove_specific_node(list_t **list, void *value){
     /* Check no node */
     if(!(*list)){
