@@ -10,7 +10,7 @@ typedef struct list{
     struct list* prev;
     void* value;
 }list_t;
-void Create_list(list_t **head, void *node_value);
+void create_list(list_t **head, void *node_value);
 void list_add_head(list_t**, void*);
 void list_add_tail(list_t**, void*);
 void list_remove_head(list_t** );
