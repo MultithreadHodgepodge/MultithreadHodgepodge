@@ -16,4 +16,5 @@ Multithread-Hodgepodge is written in C language. It utilizes object-oriented con
 
 ## Collaborators
 [**Chung Hsuan Chen**](https://github.com/ChungHsuanChen)
+
 [**Peter Kung**](https://github.com/Peter-Kung)
