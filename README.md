@@ -9,9 +9,9 @@ Multithread-Hodgepodge is written in C language. It utilizes object-oriented con
 
 - lock-stack: Implementation of thread-safe stack structure.
 
-# Multithread-Hodgepodge Afvantages
+# Multithread-Hodgepodge Advantages
 - Object-Oriented C Programming Style.
-- Implemetation of many house hold data structures.
+- Implemetation of many household data structures.
 - Thread-safe data structures.
 
 ## Collaborators
