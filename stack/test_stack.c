@@ -29,4 +29,5 @@ int main(){
     pthread_join(thread5,NULL);
     pthread_join(thread6,NULL);
     print_stack(stack);
+    free_stack(stack);
 }

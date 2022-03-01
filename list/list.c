@@ -1,4 +1,6 @@
 #include"list.h"
+
+
 /*
 * Add node to head of list
 * @list: A pointer to pointer which point to list 

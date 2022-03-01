@@ -6,7 +6,7 @@ CC = gcc
 .PHONY: clean
 CFLAGS= -pthread -g -O0 -o
 LIST_DIR=list/
-STACK_DIR=lock_stack/
+STACK_DIR=stack/
 QUEUE_DIR=queue/
 TEST_LIST_FILE= $(LIST_DIR)test_list.c
 LIST_SOURCE:= $(shell find $(LIST_DIR) -name '*.c')

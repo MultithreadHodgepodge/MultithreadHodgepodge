@@ -6,8 +6,8 @@ Multithread-Hodgepodge is written in C language. It utilizes object-oriented con
 
 # Multithread-Hodgepodge Architecture
 - list: The kernel implementation of Multithread-Hodgepodge Architecture. This struture includes almost all implementation details of function and other structure utilize the implemetation in list.
-
-- lock-stack: Implementation of thread-safe stack structure.
+- stack: Implementation of thread-safe stack structure.
+- queue: Implementation of thread-safe queue structure.
 
 # Multithread-Hodgepodge Advantages
 - Object-Oriented C Programming Style.
@@ -18,3 +18,6 @@ Multithread-Hodgepodge is written in C language. It utilizes object-oriented con
 [**Chung Hsuan Chen**](https://github.com/ChungHsuanChen)
 
 [**Peter Kung**](https://github.com/Peter-Kung)
+
+## Contribution
+Please feel free to make a pull request to Multithread-Hodgepodge!!
