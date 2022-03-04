@@ -55,16 +55,16 @@ void list_add_head(list_t** list, void* node_value){
 * @list: A pointer to pointer which point to list 
 * @node_value: Value of node added
 */
-void list_add_tail(list_t** list, void* node_value){
+int list_add_tail(list_t** list, void* node_value){
 
     if(!(*list)){
         create_list(list, node_value);
-        return;
+        return -1;
     }
     list_t* new_node=(list_t *)malloc(sizeof(list_t));
     if (!new_node) {
         puts("list add tail memory allocate fail");
-        return ;
+        return -1;
     }
     new_node->value=node_value;
     (*list)->prev->next=new_node;
@@ -72,6 +72,7 @@ void list_add_tail(list_t** list, void* node_value){
     new_node->next=(*list);
     (*list)->prev=new_node;
     printf("Add node %p\n",node_value);
+    return 0;
 }
 
 /*

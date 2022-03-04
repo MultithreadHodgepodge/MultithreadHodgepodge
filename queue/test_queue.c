@@ -14,19 +14,27 @@ int main()
     param2.val = 20;
     param3.val = 30;
 
+    
     pthread_create(&t1, NULL, enqueue, &param1);
     pthread_create(&t2, NULL, enqueue, &param2);
     pthread_create(&t3, NULL, enqueue, &param3);
+    
+    //print_queue(&q);
+    pthread_join(t1, NULL);
     pthread_join(t2, NULL);
     pthread_join(t3, NULL);
-    pthread_join(t1, NULL);
+    
     print_queue(&q);
-    pthread_create(&t1, NULL, dequeue, &q);
-    pthread_create(&t2, NULL, dequeue, &q);
-    pthread_join(t1, NULL);
-    pthread_join(t2, NULL);
+    /*
+    pthread_create(&t1, NULL, &dequeue, q);
+    pthread_create(&t2, NULL, &dequeue, q);
+    pthread_join(&t1, NULL);
+    pthread_join(&t2, NULL);
     print_queue(&q);
     free_queue(&q);
+    */
+    // print_queue(&q);
+    // free_queue(&q);
     return 0;
 
 }
