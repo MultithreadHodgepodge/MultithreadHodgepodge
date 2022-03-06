@@ -1,6 +1,8 @@
 #include "../list/list.h"
+#include "../test_macro.h"
 #include <pthread.h>
-#include<stdbool.h>
+#include <stdbool.h>
+
 typedef struct stack{
     list_t *top;
     void (*insert_func)(list_t **,void *);
@@ -13,10 +15,8 @@ typedef struct stack{
     pthread_cond_t *stack_cond_cap;
     pthread_cond_t *stack_cond_empty;
 }stack_t;
-struct thread_param{
-    stack_t *stack;
-    void *value;
-};
+
+DECLARE_THREAD(stack)
 void create_stack(stack_t **,int);
 void push(struct thread_param*);
 void pop(stack_t *);

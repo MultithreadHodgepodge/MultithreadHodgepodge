@@ -5,82 +5,82 @@
 
 
 /*
- * @rb: Return a ringbuffer object if allocate success
+ * @Ringbuffer: Return a ringbuffer object if allocate success
  * @qun: size of buffer size
  */
-void createRB(Ringbuffer_t **rb, int qun)
+void createRingbuffer(Ringbuffer_t **Ringbuffer, int qun)
 {
     /*  Check if ring buffer is exist */
-    if (*rb) {
+    if (*Ringbuffer) {
         puts("RingBuffer already exist!\n");
         return ;
     }
     
     /* Check if ring buffer can not be allocated */
-    *rb = (Ringbuffer_t *)malloc(sizeof(Ringbuffer_t));
-    if (!*rb) {
+    *Ringbuffer = (Ringbuffer_t *)malloc(sizeof(Ringbuffer_t));
+    if (!*Ringbuffer) {
         puts("RingBuffer memory allocate failed");
         return ;
     }
 
     /* Check if list can not be allcated */
-    (*rb)->counter = 0;
-    create_list(&(*rb)->front, -1);
-    if (!(*rb)->front) {
+    (*Ringbuffer)->counter = 0;
+    create_list(&(*Ringbuffer)->front, -1);
+    if (!(*Ringbuffer)->front) {
         puts("list_allocate failed\n");
-        free(*rb);
+        free(*Ringbuffer);
         return ;
     }
 
     /* Allcate enough size of ring buffer */
     int i;
     for (i = 0;i < qun - 1;++i) {
-        if (list_add_tail(&(*rb)->front, -1)) {
+        if (list_add_tail(&(*Ringbuffer)->front, -1)) {
             printf("%d st list allocate failed\n", i);
-            free_list(&(*rb)->front);
+            free_list(&(*Ringbuffer)->front);
             return ;
         } 
     }
 
     /* Reset pointer */
-    (*rb)->tail = (*rb)->front;
+    (*Ringbuffer)->tail = (*Ringbuffer)->front;
 
     /* Allocate lock */
-    (*rb)->lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-    if (!(*rb)->lock) {
+    (*Ringbuffer)->lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+    if (!(*Ringbuffer)->lock) {
         puts("Lock allocate failed");
-        free_list(&(*rb)->front);
-        free_list(*rb);
+        free_list(&(*Ringbuffer)->front);
+        free_list(*Ringbuffer);
         return ;
     }
 
     /* set mutex type */
-    pthread_mutex_init((*rb)->lock, NULL);
-    //pthread_mutexattr_settype((*rb)->lock, PTHREAD_MUTEX_ERRORCHECK);
+    pthread_mutex_init((*Ringbuffer)->lock, NULL);
+    //pthread_mutexattr_settype((*Ringbuffer)->lock, PTHREAD_MUTEX_ERRORCHECK);
 
     /* Allocate condition variable full */
-    (*rb)->full = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
-    if (!(*rb)->full) {
+    (*Ringbuffer)->full = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
+    if (!(*Ringbuffer)->full) {
         puts("condition variable full allocate failed\n");
-        free((*rb)->lock);
-        free_list(&(*rb)->front);
-        free(*rb);
+        free((*Ringbuffer)->lock);
+        free_list(&(*Ringbuffer)->front);
+        free(*Ringbuffer);
     }
 
     /* Allocate condition variable empty */
-    (*rb)->empty = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
-    if(!(*rb)->empty) {
+    (*Ringbuffer)->empty = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
+    if(!(*Ringbuffer)->empty) {
         puts("condition variable empty allocate failed\n");
-        free((*rb)->lock);
-        free((*rb)->lock);
-        free_list(&(*rb)->front);
-        free(*rb);
+        free((*Ringbuffer)->lock);
+        free((*Ringbuffer)->lock);
+        free_list(&(*Ringbuffer)->front);
+        free(*Ringbuffer);
         return ;
     }
     pthread_condattr_t cattr;
     int ret = pthread_condattr_init(&cattr);
-    pthread_cond_init((*rb)->full, &cattr);
-    pthread_cond_init((*rb)->empty, &cattr);
+    pthread_cond_init((*Ringbuffer)->full, &cattr);
+    pthread_cond_init((*Ringbuffer)->empty, &cattr);
 
 }
 
@@ -96,27 +96,27 @@ void enqueue(threadpa_t *t)
     }
 
     /* Check if ring buffer is exist */
-    if (!t->rb) {
+    if (!t->Ringbuffer) {
         puts("Enqueue: No Ringbuffer object\n");
         return ;
     }
 
-    Ringbuffer_t *rb = t->rb;
+    Ringbuffer_t *Ringbuffer = t->Ringbuffer;
     /* Concurrency */
-    pthread_mutex_lock(t->rb->lock);
+    pthread_mutex_lock(t->Ringbuffer->lock);
     /* If RingBuffer is full, wait here for signal */
-    while (rb->front == rb->tail && rb->tail->value != -1) {
+    while (Ringbuffer->front == Ringbuffer->tail && Ringbuffer->tail->value != -1) {
         puts("Enqueue: RingBuffer is full!\n");
-        pthread_cond_wait(t->rb->full, t->rb->lock);    
+        pthread_cond_wait(t->Ringbuffer->full, t->Ringbuffer->lock);    
     }
 
-    rb->front->value = t->val;
-    printf("enqueue %d into RingBuffer\n", t->val);
-    rb->front = rb->front->next;
+    Ringbuffer->front->value = t->value;
+    printf("enqueue %d into RingBuffer\n", t->value);
+    Ringbuffer->front = Ringbuffer->front->next;
     /* Wake up empty for dequeue */
-    pthread_cond_signal(t->rb->empty);
+    pthread_cond_signal(t->Ringbuffer->empty);
     /* Unlock */
-    pthread_mutex_unlock(t->rb->lock);
+    pthread_mutex_unlock(t->Ringbuffer->lock);
 }
 
 /*
@@ -129,43 +129,43 @@ void dequeue(threadpa_t *t)
         return ;
     }
 
-    if (!t->rb) {
+    if (!t->Ringbuffer) {
         puts("Dequeue: No Ringbuffer object\n");
         return ;
     }
 
-    Ringbuffer_t *rb = t->rb;
-    pthread_mutex_lock(t->rb->lock);
+    Ringbuffer_t *Ringbuffer = t->Ringbuffer;
+    pthread_mutex_lock(t->Ringbuffer->lock);
 
     /* Check buffer is empty or not */
-    while (rb->front == rb->tail && rb->tail->value == -1) {
+    while (Ringbuffer->front == Ringbuffer->tail && Ringbuffer->tail->value == -1) {
         puts("dequeue: RingBuffer is empty\n");
-        pthread_cond_wait(t->rb->empty, t->rb->lock);
+        pthread_cond_wait(t->Ringbuffer->empty, t->Ringbuffer->lock);
     } 
-    int val = rb->tail->value;
-    rb->tail->value = -1;
+    int val = Ringbuffer->tail->value;
+    Ringbuffer->tail->value = -1;
     printf("%d is dequeue\n", val);
-    rb->tail = rb->tail->next;
-    pthread_cond_signal(t->rb->full);
-    pthread_mutex_unlock(t->rb->lock);
+    Ringbuffer->tail = Ringbuffer->tail->next;
+    pthread_cond_signal(t->Ringbuffer->full);
+    pthread_mutex_unlock(t->Ringbuffer->lock);
 }
 
 /*
  *@t: thread parameter
  */
-void printRB(Ringbuffer_t *rb)
+void printRingbuffer(Ringbuffer_t *Ringbuffer)
 {
-    if (!rb) {
+    if (!Ringbuffer) {
         puts("RingBuffer is not exist\n");
         return ;
     }
 
-    if (!rb->front) {
+    if (!Ringbuffer->front) {
         puts("RingBuffer's list is mot exist\n");
         return ;
     }
 
-    pthread_mutex_lock(rb->lock);
-    print_list(&rb->front);
-    pthread_mutex_unlock(rb->lock);
+    pthread_mutex_lock(Ringbuffer->lock);
+    print_list(&Ringbuffer->front);
+    pthread_mutex_unlock(Ringbuffer->lock);
 }
