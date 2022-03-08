@@ -16,6 +16,7 @@ typedef struct __stack{
     pthread_cond_t *stack_cond_empty;
 }stack_t;
 
+DECLARE_THREAD(stack)
 void create_stack(stack_t **,int);
 void push(struct thread_param*);
 void pop(stack_t *);

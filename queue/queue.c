@@ -83,11 +83,8 @@ void print_queue(queue_t **queue)
         puts("queue is empty\n");
         return ;
     }
-    pthread_mutex_lock((*queue)->queue_lock);
-    if (!*queue){
-        puts("Queue is empty\n");
-        return ;
-    }
+    pthread_mutex_lock((*queue)->queue_lock);  
+    puts("queue list: ");
     (*queue)->printQueue(&(*queue)->list);
     pthread_mutex_unlock((*queue)->queue_lock);
 }
@@ -103,11 +100,6 @@ void free_queue(queue_t **queue)
         return ;
     }
     pthread_mutex_lock((*queue)->queue_lock);
-    if (!*queue){
-        puts("It's already null");
-        return;
-    }
-
     (*queue)->freeQueue(&(*queue)->list);
     pthread_mutex_unlock((*queue)->queue_lock);
 }

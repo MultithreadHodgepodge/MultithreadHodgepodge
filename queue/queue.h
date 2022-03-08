@@ -1,6 +1,8 @@
 #include "../list/list.h"
 #include <pthread.h>
 #include <semaphore.h>
+#include "../test_macro.h"
+
 typedef struct queue {
 
     list_t *list;
@@ -15,10 +17,7 @@ typedef struct queue {
     
 }queue_t;
 
-typedef struct thread_param {
-    queue_t *queue;
-    void *val;
-}threadpa_t;
+DECLARE_THREAD(queue)
 void create_queue(queue_t **, int) ;
 void enqueue(threadpa_t *);
 void dequeue(queue_t **);
