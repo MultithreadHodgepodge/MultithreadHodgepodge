@@ -8,6 +8,7 @@ CC = gcc
 CFLAGS= -pthread -g -O0 -o
 LIST_DIR=list/
 STACK_DIR=stack/
+OBSERVER_DIR=Observer/
 QUEUE_DIR=queue/
 RB_DIR=RingBuffer/
 TEST_LIST_FILE= $(LIST_DIR)test_list.c

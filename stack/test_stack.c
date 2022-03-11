@@ -1,21 +1,14 @@
 #include"stack.h"
 #include<pthread.h>
-
+#include"../threadpa_macro.h"
 int main(){
     stack_t *stack=NULL;
-    pthread_t thread1 ,thread2,thread3;
-    struct thread_param param1,param2,param3;
-    
+    pthread_t *thread1 ,*thread2,*thread3;
     create_stack(&stack,10);
-    param1.stack=stack;
-    param1.value=1;
-    param2.stack=stack;
-    param2.value=2;
-    param3.stack=stack;
-    param3.value=3;
+    threadpa_init(param1,stack,1)
+    threadpa_init(param2,stack,2)
+    threadpa_init(param3,stack,3)
     pthread_create(&thread1,NULL,&push,&param1);
-    
-
     pthread_t thread4 ,thread5,thread6;
     pthread_create(&thread4,NULL,&pop,stack);
     pthread_create(&thread5,NULL,&pop,stack);

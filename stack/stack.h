@@ -1,10 +1,9 @@
 #include "../list/list.h"
-#include "../Observer/observer.h"
 #include <pthread.h>
 #include<stdbool.h>
+#include "../test_macro.h"
 typedef struct __stack{
     list_t *top;
-    observer_t *observer;
     void (*insert_func)(list_t **,void *);
     void (*remove_func)(list_t **);
     void (*print_func)(list_t **);
@@ -17,8 +16,9 @@ typedef struct __stack{
 }stack_t;
 
 DECLARE_THREAD(stack)
-void create_stack(stack_t **,int);
-void push(struct thread_param*);
+
+void create_stack(stack_t **,int) ;
+void push(threadpa_t *);
 void pop(stack_t *);
 void print_stack(stack_t *);
 void free_stack(stack_t *);

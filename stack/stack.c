@@ -26,6 +26,7 @@ void create_stack(stack_t **stack,int capacity){
     (*stack)->stack_cond_cap=(pthread_cond_t *)malloc(sizeof(pthread_cond_t));
     (*stack)->stack_cond_empty=(pthread_cond_t *)malloc(sizeof(pthread_cond_t));
     pthread_mutex_init((*stack)->stack_lock,NULL);
+
     pthread_condattr_t  cattr;
     int ret = pthread_condattr_init(&cattr); 
     pthread_cond_init((*stack)->stack_cond_cap,&cattr);
@@ -36,17 +37,21 @@ void create_stack(stack_t **stack,int capacity){
 * Push node to stack
 * @stack_param: A thread_param structure contains struct and node value
 */
-void push(struct thread_param *stack_param){
+void push(threadpa_t *stack_param){
     stack_t *stack= stack_param->stack;
     void *value=stack_param->value;
+
     if(!stack){
         printf("------Stack not exists------\n");
     }
+    
     pthread_mutex_lock(stack->stack_lock);
+
     while(stack->count==stack->capacity){
         printf("------Please Wait!! Stack is full !!------\n");
         pthread_cond_wait(stack->stack_cond_cap,stack->stack_lock);
     }
+    
     stack->insert_func(&(stack->top),value);
     stack->count++;
     pthread_cond_signal(stack->stack_cond_empty);
@@ -94,3 +99,4 @@ bool isEmpty(stack_t *stack){
     if(stack->count==0) return true;
     return false;
 }
+
