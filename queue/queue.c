@@ -47,7 +47,7 @@ void enqueue(threadpa_t *para)
     }
     sem_wait(q->qremain);
     pthread_mutex_lock(q->queue_lock);
-    q->enqueue(&q->list, para->val);
+    q->enqueue(&q->list, para->value);
     q->counter++;
     pthread_mutex_unlock(q->queue_lock);
     sem_post(q->qitem);

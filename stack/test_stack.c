@@ -1,6 +1,6 @@
 #include"stack.h"
 #include<pthread.h>
-#include"../threadpa_macro.h"
+#include"../common/threadpa_macro.h"
 int main(){
     stack_t *stack=NULL;
     pthread_t *thread1 ,*thread2,*thread3;
