@@ -1,4 +1,4 @@
-#include "RingBuffer.h"
+#include "ringbuffer.h"
 #include "../list/list.h"
 #include <stdio.h>
 #include <stdlib.h>
