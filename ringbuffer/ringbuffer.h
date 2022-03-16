@@ -1,5 +1,5 @@
 #include "../list/list.h"
-#include "../test_macro.h"
+#include "../common/test_macro.h"
 #include <pthread.h>
 
 typedef struct Ringbuffer {

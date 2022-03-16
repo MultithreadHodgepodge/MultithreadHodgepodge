@@ -20,7 +20,8 @@ void list_remove_specific_node(list_t**, void*);
 void print_list(list_t** );
 void free_list(list_t **list);
 void sort(list_t **, int(*compare)(const void *, const void*));
-
+void *list_find_max(list_t **);
+void *list_find_min(list_t **);
 
 
 

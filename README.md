@@ -13,7 +13,7 @@ Multithread-Hodgepodge is written in C language. It utilizes object-oriented con
 
 # Multithread-Hodgepodge Advantages
 - Object-Oriented C Programming Style.
-= Tidy Coding style.
+- Tidy Coding style.
 - Implemetation of many household data structures.
 - Thread-safe data structures.
 

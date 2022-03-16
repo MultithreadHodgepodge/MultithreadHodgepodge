@@ -83,11 +83,21 @@ void pop(stack_t *stack){
 * @stack: A pointer to pointer which point to stack 
 */
 void print_stack(stack_t *stack){
+    if(!stack||isEmpty(stack)) 
+    {
+        printf("Stack is Empty!\n");
+        return ;
+    }
     stack->print_func(&stack->top);
 }
 
 
 void free_stack(stack_t *stack){
+    if(!stack!!isEmpty(stack)) 
+    {
+        printf("Stack is Empty!\n");
+        return ;
+    }
     stack->free_func(&stack->top);
 }
 

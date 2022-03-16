@@ -1,5 +1,5 @@
 #include"list.h"
-
+#include<limits.h>
 
 /*
 * Add node to head of list
@@ -224,7 +224,11 @@ void free_list(list_t **list){
     puts("All clear");
 }
 
-
+/*
+* Sort the list
+* @list: A pointer to pointer which point to list
+* @compare: Function pointer to compare  function   
+*/
 void sort(list_t **head, int( *compare)(const void *, const void *)) 
 {   
     void mergesort(list_t **, int(*)(const void *, const void *));
@@ -250,6 +254,11 @@ void sort(list_t **head, int( *compare)(const void *, const void *))
     tail->next = (*head);
 }
 
+/*
+* Sort the list
+* @list: A pointer to pointer which point to list
+* @compare: Function pointer to compare  function   
+*/
 void mergesort(list_t **head, int (*compare)(const void *, const void *)) 
 {
 
@@ -297,5 +306,32 @@ void mergesort(list_t **head, int (*compare)(const void *, const void *))
     (*list) = (list_t *)((uintptr_t )slow | (uintptr_t )fast);
 }
 
+/*
+* Find Maximum value in the list
+* @list: A pointer to pointer which point to list  
+*/
+void *list_find_max(list_t **list){
+    list_t *head = *list;
+    int max=INT_MIN;
+    do{
+        int temp=head->value;
+        if(temp>max) max=temp;
+        head = head->next;
+    }while(head != *list);
+    return max;
+}
 
-
+/*
+* Find Minimum value in the list
+* @list: A pointer to pointer which point to list  
+*/
+void *list_find_min(list_t **list){
+    list_t *head = *list;
+    int min=INT_MAX;
+    do{
+        int temp=head->value;
+        if(temp<min) min=temp;
+        head = head->next;
+    }while(head != *list);
+    return min;
+}

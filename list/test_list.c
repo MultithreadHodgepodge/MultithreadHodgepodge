@@ -28,6 +28,7 @@ int main()
     list_remove_tail(&new_list);
     */
     list_remove_specific_node(&new_list,(void *)3);
+    printf("MAX=%d\n",find_max(&new_list));
     print_list(&new_list);
     free_list(&new_list);
 }
