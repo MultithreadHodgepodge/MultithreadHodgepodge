@@ -22,6 +22,7 @@ void free_list(list_t **list);
 void sort(list_t **, int(*compare)(const void *, const void*));
 void *list_find_max(list_t **);
 void *list_find_min(list_t **);
+void list_reverse(list_t **);
 
 
 

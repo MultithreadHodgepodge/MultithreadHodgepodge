@@ -5,7 +5,7 @@ Multithread-Hodgepodge is written in C language. It utilizes object-oriented con
 
 
 # Multithread-Hodgepodge Architecture
-= common: Macro used commonly across different data strucrture.
+- common: Macro used commonly across different data strucrture.
 - list: The kernel implementation of Multithread-Hodgepodge Architecture. This struture includes almost all implementation details of function and other structure utilize the implemetation in list.
 - stack: Implementation of thread-safe stack structure.
 - queue: Implementation of thread-safe queue structure.

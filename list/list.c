@@ -201,6 +201,7 @@ void print_list(list_t** cur){
         cur = &(*cur)->next;
     }while(*cur != head);
 }
+
 /*
 * Free the list
 * @list: A pointer to pointer which point to list  
@@ -334,4 +335,29 @@ void *list_find_min(list_t **list){
         head = head->next;
     }while(head != *list);
     return min;
+}
+
+/*
+* Reverse the list
+* @list: A pointer to pointer which point to list  
+*/
+void list_reverse(list_t **list){
+    if(!(*list)) {
+        printf("List doesn't exist");
+        return;
+    }
+    list_t *last=(*list)->prev;
+    if(last==(*list)) return;
+
+    do{
+        list_t *next=(*list)->next;
+        (*list)->next=(*list)->prev;
+        (*list)->prev=next;
+        if(next==last){
+            next->prev=next->next;
+            next->next=(*list);
+        }
+        *list=(*list)->prev;
+    }while(*list!=last);
+    //*list=last;
 }
