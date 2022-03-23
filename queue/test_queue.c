@@ -6,9 +6,9 @@ int main()
     queue_t *queue = NULL;
     pthread_t t1, t2, t3, t4, t5;
     create_queue(&queue, 10);
-    threadpa_init(param1,queue,1)
-    threadpa_init(param2,queue,2)
-    threadpa_init(param3,queue,3)
+    THREADPA_INIT(param1,queue,1)
+    THREADPA_INIT(param2,queue,2)
+    THREADPA_INIT(param3,queue,3)
     pthread_create(&t4, NULL, dequeue, &queue);
     pthread_create(&t5, NULL, dequeue, &queue);
     pthread_create(&t1, NULL, enqueue, &param1);

@@ -5,9 +5,9 @@ int main(){
     stack_t *stack=NULL;
     pthread_t *thread1 ,*thread2,*thread3;
     create_stack(&stack,10);
-    threadpa_init(param1,stack,1)
-    threadpa_init(param2,stack,2)
-    threadpa_init(param3,stack,3)
+    THREADPA_INIT(param1,stack,1)
+    THREADPA_INIT(param2,stack,2)
+    THREADPA_INIT(param3,stack,3)
     pthread_create(&thread1,NULL,&push,&param1);
     pthread_t thread4 ,thread5,thread6;
     pthread_create(&thread4,NULL,&pop,stack);
