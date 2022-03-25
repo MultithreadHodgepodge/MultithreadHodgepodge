@@ -16,10 +16,10 @@ void create_stack(stack_t **stack,int capacity){
     *stack=(stack_t *)malloc(sizeof(stack_t));
     //list_t *top=(list_t *)malloc(sizeof(list_t));
     (*stack)->top=NULL;
-    (*stack)->insert_func=&list_add_tail;
-    (*stack)->remove_func=&list_remove_tail;
-    (*stack)->print_func=&print_list;
-    (*stack)->free_func=&free_list;
+    (*stack)->insert_func=list_add_tail;
+    (*stack)->remove_func=list_remove_tail;
+    (*stack)->print_func=print_list;
+    (*stack)->free_func=free_list;
     (*stack)->capacity=capacity;
     (*stack)->count=0;
     (*stack)->stack_lock=(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
@@ -93,12 +93,16 @@ void print_stack(stack_t *stack){
 
 
 void free_stack(stack_t *stack){
-    if(!stack!!isEmpty(stack)) 
+    if(!stack) 
     {
         printf("Stack is Empty!\n");
         return ;
     }
     stack->free_func(&stack->top);
+    free(stack->stack_lock);
+    free(stack->stack_cond_cap);
+    free(stack->stack_cond_empty);
+    free(stack);
 }
 
 /*

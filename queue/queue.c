@@ -13,10 +13,11 @@ void create_queue(queue_t **queue, int qun)
         puts("Memory allocate fail");
         return ;
     }
+    (*queue)->list = NULL;
     (*queue)->counter = 0;
     (*queue)->capacity = qun;
     (*queue)->enqueue = list_add_tail;
-    (*queue)->dequeue = list_remove_head;
+    (*queue)->dequeue = list_remove_tail;
     (*queue)->printQueue = print_list;
     (*queue)->freeQueue = free_list;
     (*queue)->queue_lock = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t));
@@ -25,7 +26,7 @@ void create_queue(queue_t **queue, int qun)
 
     sem_init((*queue)->qremain, 0, qun);
     sem_init((*queue)->qitem,  0, 0);
-
+    pthread_mutex_init((*queue)->queue_lock, NULL);
 }
 
 /*
@@ -99,7 +100,9 @@ void free_queue(queue_t **queue)
         puts("queue is empty\n");
         return ;
     }
-    pthread_mutex_lock((*queue)->queue_lock);
     (*queue)->freeQueue(&(*queue)->list);
-    pthread_mutex_unlock((*queue)->queue_lock);
+    free((*queue)->qremain);
+    free((*queue)->qitem);
+    free((*queue)->queue_lock);
+    free(*queue);
 }

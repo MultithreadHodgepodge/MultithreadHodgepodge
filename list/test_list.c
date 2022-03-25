@@ -12,16 +12,15 @@ int main()
     list_add_tail(&new_list,(void *)2);
     
     list_add_tail(&new_list,(void *)1);
-    /*
-    list_remove_tail(&new_list);
     
     list_remove_tail(&new_list);
     list_remove_tail(&new_list);
-    list_remove_tail(&new_list);
-    list_remove_tail(&new_list);
-    list_remove_tail(&new_list);
-    list_remove_tail(&new_list);
-    */
+    // list_remove_tail(&new_list);
+    // list_remove_tail(&new_list);
+    // list_remove_tail(&new_list);
+    // list_remove_tail(&new_list);
+    // list_remove_tail(&new_list);
+    
     
     printf("MAX=%d\n",list_find_max(&new_list));
     printf("Before= ");
