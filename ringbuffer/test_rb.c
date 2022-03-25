@@ -1,20 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <assert.h>
 #include "ringbuffer.h"
 
+Ringbuffer_t *rb = NULL;
+pthread_t t1, t2, t3, t4, t5, t6;
+    
+int handler();
+
 int main()
 {
-    Ringbuffer_t *rb = NULL;
     threadpa_t p1, p2, p3, p4, p5, p6;
-    pthread_t t1, t2, t3, t4, t5, t6;
     createRingbuffer(&rb, 3);
     p1.Ringbuffer = p2.Ringbuffer = p3.Ringbuffer = p4.Ringbuffer = p5.Ringbuffer = p6.Ringbuffer = rb;
     srand(time(NULL));
     
+    signal(SIGINT, handler);
+
     assert(rb != NULL);
 
-    while (1) {
+     while (1) {
 
 
         p1.value = rand() % 10 + 1;
@@ -39,6 +45,19 @@ int main()
         pthread_create(&t6, NULL, (void *)dequeue, &p6);
         printRingbuffer(rb);
         sleep(2);
-    }
+     }
     
+}
+
+int handler() 
+{
+    puts("\nClean mem\n");
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+    pthread_join(t3, NULL);
+    pthread_join(t4, NULL);
+    pthread_join(t5, NULL);
+    pthread_join(t6, NULL);
+    freeRingbuffer(&rb);
+    exit(0);
 }

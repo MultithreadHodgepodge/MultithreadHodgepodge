@@ -169,3 +169,18 @@ void printRingbuffer(Ringbuffer_t *Ringbuffer)
     print_list(&Ringbuffer->front);
     pthread_mutex_unlock(Ringbuffer->lock);
 }
+
+void freeRingbuffer(Ringbuffer_t **rb) 
+{
+    if (!*rb) {
+        puts("Ringbuffer is empty!\n");
+        return ;
+    }
+    free_list(&(*rb)->front);
+    free((*rb)->lock);
+    free((*rb)->full);
+    free((*rb)->empty);
+    free((*rb));
+    *rb = NULL;
+
+}

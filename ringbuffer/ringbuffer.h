@@ -17,3 +17,4 @@ void createRingbuffer(Ringbuffer_t **, int);
 void enqueue(threadpa_t *);
 void dequeue(threadpa_t *);
 void printRingbuffer(Ringbuffer_t *);
+void freeRingbuffer(Ringbuffer_t **);
