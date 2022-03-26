@@ -76,6 +76,68 @@ int list_add_tail(list_t** list, void* node_value){
 }
 
 /*
+* Add node after specific node value in list
+* @list: A pointer to pointer which point to list 
+* @node_value: Value of node added
+* @nspecific_ode_value: Value of node which want to add after
+*/
+void list_add_after_specific_node(list_t** list, void* node_value, void* specific_node_value){
+    if(!(*list)){
+        create_list(list, node_value);
+        return -1;
+    }
+    list_t *head = *list;
+    list_t* new_node=(list_t *)malloc(sizeof(list_t));
+    new_node->value=node_value;
+    do{
+        if(head->value==specific_node_value&&head->value!=head->next->value){
+            printf("Add node %p\n",node_value);
+            new_node->next=head->next;
+            new_node->prev=head;
+            head->next=new_node;
+            new_node->next->prev=new_node;
+            return;
+        }
+
+        head = head->next;
+    }while(head != *list);
+}
+
+/*
+* Add node before node larger than node_value in list
+* @list: A pointer to pointer which point to list 
+* @node_value: Value of node added
+*/
+void list_add_before_larger(list_t** list, void* node_value){
+    if(!(*list)){
+        create_list(list, node_value);
+        return -1;
+    }
+    list_t *head = *list;
+    list_t* new_node=(list_t *)malloc(sizeof(list_t));
+    new_node->value=node_value;
+    do{
+        if(new_node->value<=head->value){
+            printf("Add node %p\n",node_value);
+            new_node->next=head;
+            new_node->prev=head->prev;
+            head->prev=new_node;
+            new_node->prev->next=new_node;
+            if(head==*list){
+                *list=new_node;
+            }
+            return;
+        }
+
+        head = head->next;
+    }while(head != *list);
+    new_node->prev=head->prev;
+    new_node->next=head;
+    head->prev->next=new_node;
+    head->prev=new_node;
+}
+
+/*
 * Remove the list from head
 * @list: A pointer to pointer which point to list 
 */
