@@ -104,11 +104,12 @@ void list_add_after_specific_node(list_t** list, void* node_value, void* specifi
 }
 
 /*
-* Add node before node larger than node_value in list
+* Add node before the first node's value larger or smaller than node_value in list
 * @list: A pointer to pointer which point to list 
 * @node_value: Value of node added
+* @compare: function pointer to the compare function. bigger: add before first larget smaller: add before first smaller 
 */
-void list_add_before_larger(list_t** list, void* node_value){
+void list_add_before_larger_smaller(list_t** list, void* node_value,int( *compare)(const void *, const void *)){
     if(!(*list)){
         create_list(list, node_value);
         return -1;
@@ -117,7 +118,7 @@ void list_add_before_larger(list_t** list, void* node_value){
     list_t* new_node=(list_t *)malloc(sizeof(list_t));
     new_node->value=node_value;
     do{
-        if(new_node->value<=head->value){
+        if(compare(&new_node->value,&head->value)>=0){
             printf("Add node %p\n",node_value);
             new_node->next=head;
             new_node->prev=head->prev;

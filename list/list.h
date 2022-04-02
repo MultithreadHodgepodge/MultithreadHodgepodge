@@ -14,6 +14,7 @@ typedef struct list{
 void create_list(list_t **head, void *node_value);
 void list_add_head(list_t**, void*);
 int list_add_tail(list_t**, void*);
+void list_add_before_larger_smaller(list_t**, void*,int(*compare)(const void *, const void*));
 void list_remove_head(list_t** );
 void list_remove_tail(list_t** );
 void list_remove_specific_node(list_t**, void*);
@@ -24,6 +25,10 @@ void *list_find_max(list_t **);
 void *list_find_min(list_t **);
 void list_reverse(list_t **);
 
-
-
+static inline int smaller(const void *a, const void *b) {
+        return *(int *)a -*(int *)b;
+}
+static inline int bigger(const void *a, const void *b) {
+        return *(int *)b -*(int *)a;
+}
 #endif

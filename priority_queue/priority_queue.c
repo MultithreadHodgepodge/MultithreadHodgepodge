@@ -2,6 +2,7 @@
 void create_priority_queue(priority_queue_t **queue, int qun) {
     (*queue)=(priority_queue_t*)malloc(sizeof(priority_queue_t));
     create_queue(&((*queue)->queue),qun);
+    (*queue)->queue->enqueue =list_add_before_larger;
 }
 void enqueue(threadpa_t *para){
     if (!para) {
