@@ -9,11 +9,12 @@ int main()
     THREADPA_INIT(param1,queue,1)
     THREADPA_INIT(param2,queue,2)
     THREADPA_INIT(param3,queue,3)
-    pthread_create(&t4, NULL, dequeue, &queue);
-    pthread_create(&t5, NULL, dequeue, &queue);
     pthread_create(&t1, NULL, enqueue, &param1);
     pthread_create(&t2, NULL, enqueue, &param2);
     pthread_create(&t3, NULL, enqueue, &param3);
+    pthread_create(&t4, NULL, dequeue, &queue);
+    pthread_create(&t5, NULL, dequeue, &queue);
+    
     
     //print_queue(&q);
     pthread_join(t1, NULL);

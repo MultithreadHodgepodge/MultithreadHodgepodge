@@ -3,8 +3,10 @@
 #include<pthread.h>
 #include <stdint.h>
 #include <assert.h>
+#include "../common/compare.h"
 #ifndef LOCK_LIST_H__
 #define LOCK_LIST_H__
+
 typedef struct list{
     struct list* next;
     struct list* prev;
@@ -25,10 +27,5 @@ void *list_find_max(list_t **);
 void *list_find_min(list_t **);
 void list_reverse(list_t **);
 
-static inline int smaller(const void *a, const void *b) {
-        return *(int *)a -*(int *)b;
-}
-static inline int bigger(const void *a, const void *b) {
-        return *(int *)b -*(int *)a;
-}
+
 #endif

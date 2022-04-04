@@ -17,7 +17,7 @@ void create_queue(queue_t **queue, int qun)
     (*queue)->counter = 0;
     (*queue)->capacity = qun;
     (*queue)->enqueue = list_add_tail;
-    (*queue)->dequeue = list_remove_tail;
+    (*queue)->dequeue = list_remove_head;
     (*queue)->printQueue = print_list;
     (*queue)->freeQueue = free_list;
     (*queue)->queue_lock = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t));
