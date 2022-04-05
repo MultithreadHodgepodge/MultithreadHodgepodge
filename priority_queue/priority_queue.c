@@ -40,7 +40,17 @@ void enqueue(threadpa_t *para){
 }
 
 void dequeue(priority_queue_t **queue){
-
+    if (!*queue){
+        puts("queue is not exist");
+        return ;
+    }
+    priority_queue_t *q = (*queue);
+    sem_wait(q->qitem);
+    pthread_mutex_lock(q->queue_lock);
+    (*queue)->dequeue(&(*queue)->list);
+    (*queue)->counter--;
+    pthread_mutex_unlock(q->queue_lock);
+    sem_post(q->qremain);
 }
 
 
@@ -57,5 +67,13 @@ void print_queue(priority_queue_t **queue){
 }
 
 void free_queue(priority_queue_t **queue){
-    
+    if (!*queue) {
+        puts("queue is empty\n");
+        return ;
+    }
+    (*queue)->freeQueue(&(*queue)->list);
+    free((*queue)->qremain);
+    free((*queue)->qitem);
+    free((*queue)->queue_lock);
+    free(*queue);
 }
