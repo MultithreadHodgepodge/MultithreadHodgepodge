@@ -1,5 +1,4 @@
 #include "ringbuffer.h"
-#include "../list/list.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -177,9 +176,13 @@ void freeRingbuffer(Ringbuffer_t **rb)
         return ;
     }
     free_list(&(*rb)->front);
+    (*rb)->front = NULL;
     free((*rb)->lock);
+    (*rb)->lock = NULL;
     free((*rb)->full);
+    (*rb)->full = NULL;
     free((*rb)->empty);
+    (*rb)->empty = NULL;
     free((*rb));
     *rb = NULL;
 

@@ -7,7 +7,7 @@
 Ringbuffer_t *rb = NULL;
 pthread_t t1, t2, t3, t4, t5, t6;
     
-int handler();
+void handler();
 
 int main()
 {
@@ -16,8 +16,11 @@ int main()
     p1.Ringbuffer = p2.Ringbuffer = p3.Ringbuffer = p4.Ringbuffer = p5.Ringbuffer = p6.Ringbuffer = rb;
     srand(time(NULL));
     
-    signal(SIGINT, handler);
-
+    int ret = atexit(handler);
+    if (ret != 0) {
+        fprintf(stderr, "cannot set exit function\n");
+        exit(EXIT_FAILURE);
+    }
     assert(rb != NULL);
 
      while (1) {
@@ -49,7 +52,7 @@ int main()
     
 }
 
-int handler() 
+void handler()
 {
     puts("\nClean mem\n");
     pthread_join(t1, NULL);
@@ -59,5 +62,4 @@ int handler()
     pthread_join(t5, NULL);
     pthread_join(t6, NULL);
     freeRingbuffer(&rb);
-    exit(0);
 }

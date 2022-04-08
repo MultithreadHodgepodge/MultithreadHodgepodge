@@ -102,7 +102,11 @@ void free_queue(queue_t **queue)
     }
     (*queue)->freeQueue(&(*queue)->list);
     free((*queue)->qremain);
+    (*queue)->qremain = NULL;
     free((*queue)->qitem);
+    (*queue)->qitem = NULL;
     free((*queue)->queue_lock);
+    (*queue)->queue_lock = NULL;
     free(*queue);
+    (*queue) = NULL;
 }

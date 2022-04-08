@@ -79,7 +79,7 @@ int list_add_tail(list_t** list, void* node_value){
 * Add node after specific node value in list
 * @list: A pointer to pointer which point to list 
 * @node_value: Value of node added
-* @nspecific_ode_value: Value of node which want to add after
+* @specific_node_value: Value of node which want to add after
 */
 void list_add_after_specific_node(list_t** list, void* node_value, void* specific_node_value){
     if(!(*list)){
@@ -234,6 +234,7 @@ void list_remove_specific_node(list_t **list, void *value){
         *list = (*list)->next;
         //list = &(*list)->next;
         free(temp);
+        temp = NULL;
     }
     
     list_t *head = *list;
@@ -282,8 +283,10 @@ void free_list(list_t **list){
         prev = cur;
         cur = cur->next;
         free(prev);
+        prev = NULL;
     }
     free(tail);
+    tail = NULL;
     *list = NULL;
     puts("All clear");
 }

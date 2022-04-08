@@ -99,10 +99,15 @@ void free_stack(stack_t *stack){
         return ;
     }
     stack->free_func(&stack->top);
+    stack->top = NULL;
     free(stack->stack_lock);
+    stack->stack_lock = NULL;
     free(stack->stack_cond_cap);
+    stack->stack_cond_cap = NULL;
     free(stack->stack_cond_empty);
+    stack->stack_cond_empty = NULL;
     free(stack);
+    stack = NULL;
 }
 
 /*
