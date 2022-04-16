@@ -6,36 +6,14 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/mutex.h>
-const struct file_operations listprocess_fops = {
-    .owner = THIS_MODULE,
-    .read = listprocess_read,
-    .write = listprocess_write,
-    .open = listprocess_open,
-    .release = listprocess_release,
-    .llseek = listprocess_device_lseek,
-};
+
 #define DEV_LISTPROCESS_NAME "listprocess"
+static dev_t listprocess_dev = 0;
+static struct cdev *listprocess_cdev;
+static struct class *listprocess_class;
 static loff_t listprocess_device_lseek(struct file *file, loff_t offset, int orig)
 {
-    loff_t new_pos = 0;
-    switch (orig) {
-    case 0: /* SEEK_SET: */
-        new_pos = offset;
-        break;
-    case 1: /* SEEK_CUR: */
-        new_pos = file->f_pos + offset;
-        break;
-    case 2: /* SEEK_END: */
-        new_pos = MAX_LENGTH - offset;
-        break;
-    }
-
-    if (new_pos > MAX_LENGTH)
-        new_pos = MAX_LENGTH;  // max case
-    if (new_pos < 0)
-        new_pos = 0;        // min case
-    file->f_pos = new_pos;  // This is what we'll use now
-    return new_pos;
+    
 }
 
 static int listprocess_open(struct inode *inode, struct file *file){
@@ -57,9 +35,17 @@ static ssize_t listprocess_write(struct file *file,
                          loff_t *offset){
 
 }
+const struct file_operations listprocess_fops = {
+    .owner = THIS_MODULE,
+    .read = listprocess_read,
+    .write = listprocess_write,
+    .open = listprocess_open,
+    .release = listprocess_release,
+    .llseek = listprocess_device_lseek,
+};
 static int __init init_listprocess_dev(void){
     int rc = 0;
-    rc=alloc_chardev_region(&listprocess_dev,0,1,DEV_LISTPROCESS_NAME);
+    rc=alloc_chrdev_region(&listprocess_dev,0,1,DEV_LISTPROCESS_NAME);
     if(rc<0){
         printk(KERN_ALERT"Failed to register the fibonacci char device. rc = %i",
                rc);
@@ -72,7 +58,7 @@ static int __init init_listprocess_dev(void){
         goto failed_cdev;
     }
     listprocess_cdev->ops=&listprocess_fops;
-    rc=cdev_add(&listprocess_cdev,listprocess_dev,1);
+    rc=cdev_add(listprocess_cdev,listprocess_dev,1);
     if(rc<0){
         printk(KERN_ALERT "Failed to add cdev");
         rc=-2;
@@ -92,18 +78,20 @@ static int __init init_listprocess_dev(void){
     }
     return rc;
 failed_cdev:
-    unregister_chardev_region(listprocess_dev,1);
+    unregister_chrdev_region(listprocess_dev,1);
 failed_class_create:
     cdev_del(listprocess_cdev);
 failed_device_create:
     class_destroy(listprocess_class);
     return rc;
 }
+
 static void __exit exit_listprocess_dev(void){
     device_destroy(listprocess_class,listprocess_dev);
     class_destroy(listprocess_class);
     cdev_del(listprocess_cdev);
-    unregister_chardev_region(listprocess_dev,1);
+    unregister_chrdev_region(listprocess_dev,1);
 }
+
 module_init(init_listprocess_dev);
 module_exit(exit_listprocess_dev);
