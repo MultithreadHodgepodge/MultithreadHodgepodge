@@ -13,27 +13,27 @@ static struct cdev *listprocess_cdev;
 static struct class *listprocess_class;
 static loff_t listprocess_device_lseek(struct file *file, loff_t offset, int orig)
 {
-    
+    return 0;
 }
 
 static int listprocess_open(struct inode *inode, struct file *file){
-
+    return 0;
 }
 
 static int listprocess_release(struct inode *inode, struct file *file){
-
+    return 0;
 }
 static ssize_t listprocess_read(struct file *file,
                         char *buf,
                         size_t size,
                         loff_t *offset){
-
+    return 0;
 }
 static ssize_t listprocess_write(struct file *file,
                          const char *buf,
                          size_t size,
                          loff_t *offset){
-
+    return 0;
 }
 const struct file_operations listprocess_fops = {
     .owner = THIS_MODULE,
@@ -95,3 +95,4 @@ static void __exit exit_listprocess_dev(void){
 
 module_init(init_listprocess_dev);
 module_exit(exit_listprocess_dev);
+MODULE_LICENSE("GPL");
