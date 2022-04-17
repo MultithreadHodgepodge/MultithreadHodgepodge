@@ -7,17 +7,38 @@
 #include <linux/module.h>
 #include <linux/mutex.h>
 
+#include <linux/module.h>
+#include <linux/init.h>
+#include <linux/sched/signal.h>
+#include <linux/sched.h>
 #define DEV_LISTPROCESS_NAME "listprocess"
 static dev_t listprocess_dev = 0;
 static struct cdev *listprocess_cdev;
 static struct class *listprocess_class;
+struct task_struct *task;        /*    Structure defined in sched.h for tasks/processes    */
+struct task_struct *task_child;        /*    Structure needed to iterate through task children    */
+struct list_head *list;            /*    Structure needed to iterate through the list in each task->children struct    */
+MODULE_LICENSE("GPL");
 static loff_t listprocess_device_lseek(struct file *file, loff_t offset, int orig)
 {
-    
+    return offset;
 }
 
 static int listprocess_open(struct inode *inode, struct file *file){
+    for_each_process( task ){            /*    for_each_process() MACRO for iterating through each task in the os located in linux\sched\signal.h    */
+        printk(KERN_INFO "\nPARENT PID: %d PROCESS: %s STATE: %ld",task->pid, task->comm, task->state);/*    log parent id/executable name/state    */
+        list_for_each(list, &task->children){                        /*    list_for_each MACRO to iterate through task->children    */
 
+            task_child = list_entry( list, struct task_struct, sibling );    /*    using list_entry to declare all vars in task_child struct    */
+    
+            printk(KERN_INFO "\nCHILD OF %s[%d] PID: %d PROCESS: %s STATE: %ld",task->comm, task->pid, /*    log child of and child pid/name/state    */
+                task_child->pid, task_child->comm, task_child->state);
+        }
+        printk("-----------------------------------------------------");    /*for aesthetics*/
+    }    
+    
+
+    return 0;
 }
 
 static int listprocess_release(struct inode *inode, struct file *file){
@@ -27,6 +48,8 @@ static ssize_t listprocess_read(struct file *file,
                         char *buf,
                         size_t size,
                         loff_t *offset){
+    //printk(KERN_INFO "%s","LOADING MODULE\n");    /*    good practice to log when loading/removing modules    */
+    
 
 }
 static ssize_t listprocess_write(struct file *file,
@@ -45,13 +68,13 @@ const struct file_operations listprocess_fops = {
 };
 static int __init init_listprocess_dev(void){
     int rc = 0;
-    rc=alloc_chrdev_region(&listprocess_dev,0,1,DEV_LISTPROCESS_NAME);
+    rc=alloc_chrdev_region(&listprocess_dev,0,1,DEV_LISTPROCESS_NAME);//register device number and name
     if(rc<0){
         printk(KERN_ALERT"Failed to register the fibonacci char device. rc = %i",
                rc);
         return rc;
     }
-    listprocess_cdev=cdev_alloc();
+    listprocess_cdev=cdev_alloc(); //allocate a cdev structure
     if(listprocess_cdev==NULL){
         printk(KERN_ALERT"Failed to alloc cdev");
         rc=-1;
