@@ -49,7 +49,7 @@ static ssize_t listprocess_read(struct file *file,
                         size_t size,
                         loff_t *offset){
     //printk(KERN_INFO "%s","LOADING MODULE\n");    /*    good practice to log when loading/removing modules    */
-    
+    memcpy(buf, "test\n", 5);
 
 }
 static ssize_t listprocess_write(struct file *file,
