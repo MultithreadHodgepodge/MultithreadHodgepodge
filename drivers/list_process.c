@@ -11,6 +11,7 @@
 #include <linux/init.h>
 #include <linux/sched/signal.h>
 #include <linux/sched.h>
+#include<linux/slab.h>
 #define DEV_LISTPROCESS_NAME "listprocess"
 static dev_t listprocess_dev = 0;
 static struct cdev *listprocess_cdev;
@@ -25,19 +26,6 @@ static loff_t listprocess_device_lseek(struct file *file, loff_t offset, int ori
 }
 
 static int listprocess_open(struct inode *inode, struct file *file){
-    for_each_process( task ){            /*    for_each_process() MACRO for iterating through each task in the os located in linux\sched\signal.h    */
-        printk(KERN_INFO "\nPARENT PID: %d PROCESS: %s STATE: %ld",task->pid, task->comm, task->state);/*    log parent id/executable name/state    */
-        list_for_each(list, &task->children){                        /*    list_for_each MACRO to iterate through task->children    */
-
-            task_child = list_entry( list, struct task_struct, sibling );    /*    using list_entry to declare all vars in task_child struct    */
-    
-            printk(KERN_INFO "\nCHILD OF %s[%d] PID: %d PROCESS: %s STATE: %ld",task->comm, task->pid, /*    log child of and child pid/name/state    */
-                task_child->pid, task_child->comm, task_child->state);
-        }
-        printk("-----------------------------------------------------");    /*for aesthetics*/
-    }    
-    
-
     return 0;
 }
 
@@ -49,8 +37,26 @@ static ssize_t listprocess_read(struct file *file,
                         size_t size,
                         loff_t *offset){
     //printk(KERN_INFO "%s","LOADING MODULE\n");    /*    good practice to log when loading/removing modules    */
-    memcpy(buf, "test\n", 5);
+    char *comm_list=(char *)kmalloc( size, GFP_KERNEL);;
+    int i=0;
+    for_each_process( task ){            /*    for_each_process() MACRO for iterating through each task in the os located in linux\sched\signal.h    */
+        if(i>100) break;
+        comm_list[i++]=task->comm;
+        printk(KERN_INFO "\nPARENT PID: %d PROCESS: %s STATE: %ld",task->pid, task->comm, task->state);/*    log parent id/executable name/state    */
+        list_for_each(list, &task->children){                        /*    list_for_each MACRO to iterate through task->children    */
 
+            task_child = list_entry( list, struct task_struct, sibling );    /*    using list_entry to declare all vars in task_child struct    */
+    
+            printk(KERN_INFO "\nCHILD OF %s[%d] PID: %d PROCESS: %s STATE: %ld",task->comm, task->pid, /*    log child of and child pid/name/state    */
+                task_child->pid, task_child->comm, task_child->state);
+                comm_list[i++]=task_child->comm;
+        }
+        printk("-----------------------------------------------------");    /*for aesthetics*/
+    }   
+    
+    memcpy(buf,comm_list,100);
+    buf[i]='\0';
+    return 0;
 }
 static ssize_t listprocess_write(struct file *file,
                          const char *buf,
@@ -97,15 +103,17 @@ static int __init init_listprocess_dev(void){
     if(!device_create(listprocess_class,NULL,listprocess_dev,NULL,DEV_LISTPROCESS_NAME)){
         printk(KERN_ALERT "Failed to create device");
         rc = -4;
-        goto failed_class_create;
+        goto failed_device_create;
     }
     return rc;
-failed_cdev:
-    unregister_chrdev_region(listprocess_dev,1);
-failed_class_create:
-    cdev_del(listprocess_cdev);
+
+
 failed_device_create:
     class_destroy(listprocess_class);
+failed_class_create:
+    cdev_del(listprocess_cdev);
+failed_cdev:
+    unregister_chrdev_region(listprocess_dev,1);
     return rc;
 }
 

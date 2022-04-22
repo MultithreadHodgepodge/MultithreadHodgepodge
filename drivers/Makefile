@@ -9,7 +9,7 @@ PWD  := $(shell pwd)
 
 CC = gcc
 
-
+CONFIG_MODULE_SIG=n
 # -C: where your keren source
 # M : back to path M to build modules
 all:
