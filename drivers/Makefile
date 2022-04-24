@@ -7,17 +7,29 @@ TEST_SOURCE= client.c
 KERNELDIR := /lib/modules/$(shell uname -r)/build
 PWD  := $(shell pwd)
 
+CPPCHECK := 1
+
 CC = gcc
 
-CONFIG_MODULE_SIG=n
 # -C: where your keren source
 # M : back to path M to build modules
-all:
+all: check	
 	make -C $(KERNELDIR) M=$(PWD) modules
 
 test: $(OBJECT_TEST)
 $(OBJECT_TEST): $(TEST_SOURCE)
 	$(CC) -o $@ $^
+
+install:
+	sudo insmod $(TARGET_MODULE).ko
+
+uninstall:
+	sudo rmmod $(TARGET_MODULE)
+
+check:
+ifeq ($(CPPCHECK), 1)
+	cppcheck $(TARGET_MODULE).c
+endif
 
 clean:
 	make -C $(KERNELDIR) M=$(PWD) clean
