@@ -16,15 +16,19 @@ CC = gcc
 all: check	
 	make -C $(KERNELDIR) M=$(PWD) modules
 
-test: $(OBJECT_TEST)
+test: $(OBJECT_TEST) all install
 $(OBJECT_TEST): $(TEST_SOURCE)
 	$(CC) -o $@ $^
 
 install:
+ifeq ($(shell lsmod | grep hello), )
 	sudo insmod $(TARGET_MODULE).ko
+endif
 
 uninstall:
+ifneq ($(shell lsmod | grep hello), )
 	sudo rmmod $(TARGET_MODULE)
+endif
 
 check:
 ifeq ($(CPPCHECK), 1)
