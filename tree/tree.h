@@ -1,5 +1,9 @@
+#include<stdbool.h>
+#include<stdlib.h>
+typedef struct __tree tree_t;
 typedef struct __tree{
     void *value;
+    bool head;
     struct __tree *left;
     struct __tree *right;
     struct __tree *parent;

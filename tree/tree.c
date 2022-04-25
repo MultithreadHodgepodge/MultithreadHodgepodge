@@ -9,8 +9,8 @@ void create_tree(tree_t **tree){
         return;
     } 
     printf("Tree Creation\n");
-    (*tree)=(tree_t)malloc(sizeof(tree_t));
-    
+    (*tree)=(tree_t *)malloc(sizeof(tree_t));
+    (*tree)->head=false;
 }
 
 void set_tree_insert(tree_t **tree, void (*insert)(tree_t**, void*)){

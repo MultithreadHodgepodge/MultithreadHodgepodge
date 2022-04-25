@@ -1,9 +1,10 @@
 #include "../tree.h"
+#include <stdio.h>
+#include<stdlib.h>
 typedef struct __binary_tree{
-    tree_t *head;
-    tree_t *last;
+    tree_t *tree;
 }binary_tree_t;
 
 void create_binary_tree(binary_tree_t **);
-void insert_last(tree_t *,(void *)value);
+void insert_binary_tree(tree_t **,void *value);
 void delete_last(tree_t *);
