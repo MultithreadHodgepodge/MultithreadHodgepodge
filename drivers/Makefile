@@ -21,12 +21,12 @@ $(OBJECT_TEST): $(TEST_SOURCE)
 	$(CC) -o $@ $^
 
 install:
-ifeq ($(shell lsmod | grep hello), )
+ifeq ($(shell lsmod | grep $(TARGET_MODULE)), )
 	sudo insmod $(TARGET_MODULE).ko
 endif
 
 uninstall:
-ifneq ($(shell lsmod | grep hello), )
+ifneq ($(shell lsmod | grep $(TARGET_MODULE)), )
 	sudo rmmod $(TARGET_MODULE)
 endif
 
