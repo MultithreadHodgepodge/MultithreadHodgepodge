@@ -13,7 +13,7 @@ CC = gcc
 
 # -C: where your keren source
 # M : back to path M to build modules
-all: check	
+all: check
 	make -C $(KERNELDIR) M=$(PWD) modules
 
 test: $(OBJECT_TEST) all install
@@ -36,5 +36,6 @@ ifeq ($(CPPCHECK), 1)
 endif
 
 clean:
+	rm -rf *.out
 	make -C $(KERNELDIR) M=$(PWD) clean
-	rm -rf ./$(OBJ_DIR)*.o
+	

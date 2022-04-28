@@ -8,11 +8,14 @@
 #include <linux/mutex.h>
 
 #include <linux/init.h>
-#include <linux/module.h>
+
 #include <linux/sched.h>
 #include <linux/sched/signal.h>
 #include <linux/slab.h>
+
 #define DEV_LISTPROCESS_NAME "listprocess"
+
+
 static dev_t listprocess_dev = 0;
 static struct cdev *listprocess_cdev;
 static struct class *listprocess_class;
@@ -32,7 +35,6 @@ static ssize_t listprocess_read(struct file *file, char *buf, size_t size,
                                 loff_t *offset);
 static ssize_t listprocess_write(struct file *file, const char *buf,
                                  size_t size, loff_t *offset);
-
 const struct file_operations listprocess_fops = {
     .owner = THIS_MODULE,
     .read = listprocess_read,
@@ -58,13 +60,13 @@ static ssize_t listprocess_read(struct file *file, char *buf, size_t size,
                                 loff_t *offset) {
   // printk(KERN_INFO "%s","LOADING MODULE\n");    /*    good practice to log
   // when loading/removing modules    */
-  char *comm_list = (char *)kmalloc(size, GFP_KERNEL);
+  int *pid_list = (int *)kmalloc(size, GFP_KERNEL);
   int i = 0;
   for_each_process(task) { /*    for_each_process() MACRO for iterating through
                  each task in the os located in linux\sched\signal.h    */
     if (i > 100)
       break;
-    comm_list[i++] = task->comm;
+    pid_list[i++] = task->pid;
     printk(KERN_INFO "\nPARENT PID: %d PROCESS: %s STATE: %ld", task->pid,
            task->comm,
            task->state); /*    log parent id/executable name/state    */
@@ -79,15 +81,15 @@ static ssize_t listprocess_read(struct file *file, char *buf, size_t size,
              task->comm,
              task->pid, /*    log child of and child pid/name/state    */
              task_child->pid, task_child->comm, task_child->state);
-      comm_list[i++] = task_child->comm;
+      pid_list[i++] = task_child->pid;
     }
     printk(
         "-----------------------------------------------------"); /*for
                                                                      aesthetics*/
   }
 
-  memcpy(buf, comm_list, 100);
-  buf[i] = '\0';
+  memcpy(buf, pid_list, 100);
+
   return 0;
 }
 static ssize_t listprocess_write(struct file *file, const char *buf,

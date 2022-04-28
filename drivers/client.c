@@ -11,7 +11,7 @@ int main()
 {
     long long sz;
 
-    char buf[100];
+    int buf[100];
     char write_buf[] = "testing writing";
     int offset = 100; /* TODO: try test something bigger than the limit */
 
@@ -21,7 +21,9 @@ int main()
         exit(1);
     }
     sz = read(fd, buf, 100);
-    printf("%s\n",buf);
+    int i=0;
+    for (i=0;i<100;i++)
+        printf("%d\n",buf[i]);
     /*
     for (int i = 0; i <= offset; i++) {
         sz = write(fd, write_buf, strlen(write_buf));
