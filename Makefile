@@ -10,7 +10,7 @@ OBJECTS_BINARYTREE=test_binary_tree.o
 CC = gcc
 .PHONY: clean
 CFLAGS= -pthread -g -O0 -o
-
+CONFIG_BPF_SYSCALL=y
 ## Source DIR
 LIST_DIR=list/
 STACK_DIR=stack/
