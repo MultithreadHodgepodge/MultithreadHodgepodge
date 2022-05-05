@@ -12,7 +12,8 @@ Multithread-Hodgepodge is expected to be library of system software(device drive
 - queue: Implementation of thread-safe queue structure.
 - priority_queue: Implementation of thread-safe priority queue structure.
 - RingBuffer: Implementation of thread-safe Ring Buffer.
-- Tree:  Implementation of Tree including different types of tree.
+- Tree:  Implementation of Tree including different types of tree. Leverage function pointer to implement different tree, tree is only interface!!!(Same tree different implementation)
+    - binary_tree: only contain testing of binary tree
 
 # Multithread-Hodgepodge Advantages
 - Object-Oriented C Programming Style.

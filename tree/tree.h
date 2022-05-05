@@ -14,3 +14,9 @@ typedef struct __tree{
 void create_tree(tree_t **);
 void set_tree_insert(tree_t **, void (*insert)(tree_t**, void*));
 void set_tree_print(tree_t **,void (*printtree)(tree_t* ));
+void inorder(tree_t *);
+void postorder(tree_t *);
+void preorder(tree_t *);
+//============Binary_tree============//
+void insert_binary_tree(tree_t **,void *);
+

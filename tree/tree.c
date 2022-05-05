@@ -1,4 +1,5 @@
 #include"tree.h"
+
 /*
 * Create empty tree
 * @tree: A pointer to pointer which point to tree 
@@ -10,6 +11,7 @@ void create_tree(tree_t **tree){
     } 
     printf("Tree Creation\n");
     (*tree)=(tree_t *)malloc(sizeof(tree_t));
+    (*tree)->parent=(*tree);//parent will be changed while inserting
 }
 /*
 * set tree insert function
@@ -61,3 +63,4 @@ void postorder(tree_t *tree){
     printf("Tree Node: %p\n",tree->value);
     
 }
+
