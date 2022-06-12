@@ -41,10 +41,11 @@ void insert_binary_tree(tree_t **tree,void *value){
     temp->left=temp->right=NULL;
 
     int h=height(*tree),i=0;
+    
     for(i=0;i<h;i++){
         insert_node_traverse(tree,temp,i);
     }
-    
+
 }
 
 /*
@@ -65,10 +66,17 @@ void insert_node_traverse(tree_t **tree,tree_t *tree_node,int height){
         tree_node->parent=(*tree)->right;
         return;
     }
-    if (height==0) return;
-    else{
-        insert_node_traverse((*tree)->left,tree_node,height-1);
-        insert_node_traverse((*tree)->right,tree_node,height-1);
-    }
+    if(height==0) return;
+    insert_node_traverse((*tree)->left,tree_node,height-1);
+    insert_node_traverse((*tree)->right,tree_node,height-1);
 
+
+}
+
+void find_last_node(tree_t **tree,int h,tree_t **last_node){
+    if((*tree)==NULL) return;
+    if(h==1) (*last_node)=(*tree);
+
+    find_last_node(&(*tree)->left,h-1,last_node);
+    find_last_node(&(*tree)->right,h-1,last_node);
 }

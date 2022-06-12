@@ -63,4 +63,3 @@ void postorder(tree_t *tree){
     printf("Tree Node: %p\n",tree->value);
     
 }
-
