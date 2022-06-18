@@ -29,4 +29,4 @@ Created by:
 [**Peter Kung**](https://github.com/Peter-Kung)
 
 ## Contribution
-Please feel free to make a pull request to Multithread-Hodgepodge or leace a star for the project!!
+Please feel free to make a pull request to Multithread-Hodgepodge or leave a star for the project!!

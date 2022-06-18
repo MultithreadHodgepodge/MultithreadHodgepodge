@@ -35,8 +35,8 @@ void set_tree_print(tree_t **tree, void (*printtree)(tree_t*)){
 */
 void inorder(tree_t *tree){
     if(tree==NULL) return;
-    printf("Tree Node: %p\n",tree->value);
     inorder(tree->left);
+    printf("Tree Node: %p\n",tree->value);
     inorder(tree->right);
 }
 
@@ -46,9 +46,9 @@ void inorder(tree_t *tree){
 */
 void preorder(tree_t *tree){
     if(tree==NULL) return;
-    inorder(tree->left);
     printf("Tree Node: %p\n",tree->value);
-    inorder(tree->right);
+    preorder(tree->left);
+    preorder(tree->right);
 }
 
 
@@ -58,8 +58,8 @@ void preorder(tree_t *tree){
 */
 void postorder(tree_t *tree){
     if(tree==NULL) return;
-    inorder(tree->left);
-    inorder(tree->right);
+    postorder(tree->left);
+    postorder(tree->right);
     printf("Tree Node: %p\n",tree->value);
     
 }

@@ -18,9 +18,9 @@ int main(){
     tree->insert(&tree,1);
     tree->insert(&tree,2);
     tree->insert(&tree,3);
-    //tree->insert(&tree,4);
-    //tree->insert(&tree,5);
-    //tree->insert(&tree,6);
+    tree->insert(&tree,4);
+    tree->insert(&tree,5);
+    tree->insert(&tree,6);
     tree->printtree(tree);
 
     tree_t *last=(tree_t *)malloc(sizeof(tree_t));
