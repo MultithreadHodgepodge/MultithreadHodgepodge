@@ -16,13 +16,12 @@ int height(tree_t* tree)
         int rheight = height(tree->right);
  
         /* use the larger one */
-        if (lheight < rheight)
+        if (lheight > rheight)
             return (lheight + 1);
         else
             return (rheight + 1);
     }
 }
-
 /*
 * binarytree insert function
 * @tree: A pointer to pointer to tree 
@@ -59,12 +58,12 @@ bool insert_node_traverse(tree_t **tree,tree_t *tree_node,int height){
     if((*tree)==NULL) return false;
     if(!((*tree)->left)){
         (*tree)->left=tree_node;
-        tree_node->parent=(*tree)->left;
+        tree_node->parent=(*tree);
         return true;
     }
     else if(!((*tree)->right)){
         (*tree)->right=tree_node;
-        tree_node->parent=(*tree)->right;
+        tree_node->parent=(*tree);
         return true;
     }
     if(height==1) return false;
@@ -73,11 +72,29 @@ bool insert_node_traverse(tree_t **tree,tree_t *tree_node,int height){
 
 
 }
-
+/*
+* find last node in binary tree
+* @tree: A pointer to pointer to tree 
+* @height: height of binary tree
+* @tree_node: tree node to store the last node
+*/
 void find_last_node(tree_t **tree,int h,tree_t **last_node){
-    if((*tree)==NULL) return;
-    if(h==1) (*last_node)=(*tree);
+    if((*tree)==NULL ) return;
+    if(h==1) {(*last_node)=(*tree);}
 
     find_last_node(&(*tree)->left,h-1,last_node);
     find_last_node(&(*tree)->right,h-1,last_node);
+}
+/*
+* remove last node in binary tree
+* @tree: A pointer to pointer to tree
+*/
+void remove_binary_tree(tree_t **tree){
+    tree_t *last_node=(tree_t *)malloc(sizeof(tree_t));
+    int h=height(*tree);
+    find_last_node(tree,h,&last_node);
+    printf("Remove node %d\n",last_node->value);
+    if(last_node->parent->left==last_node)last_node->parent->left=NULL;
+    else if(last_node->parent->right==last_node)last_node->parent->right=NULL;
+    free(last_node);
 }

@@ -24,11 +24,21 @@ void set_tree_insert(tree_t **tree, void (*insert)(tree_t**, void*)){
 /*
 * set tree print function
 * @tree: A pointer to pointer which point to tree 
-* @insert: function pointer point to function
+* @printtree: function pointer point to print function
 */
 void set_tree_print(tree_t **tree, void (*printtree)(tree_t*)){
     (*tree)->printtree=printtree;
 }
+
+/*
+* set tree remove function
+* @tree: A pointer to pointer which point to tree 
+* @remove: function pointer point to remove function
+*/
+void set_tree_remove(tree_t **tree, void (*remove)(tree_t**)){
+    (*tree)->remove=remove;
+}
+
 /*
 * tree inorder traversal function
 * @tree: A pointer to tree 

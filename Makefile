@@ -9,7 +9,7 @@ OBJECTS_BINARYTREE=test_binary_tree.o
 ## GCC argument
 CC = gcc
 .PHONY: clean
-CFLAGS= -pthread -g -O0 -o
+CFLAGS= -pthread -g -O0  -o
 CONFIG_BPF_SYSCALL=y
 ## Source DIR
 LIST_DIR=list/
@@ -30,7 +30,7 @@ RB_SOURCE:= $(shell find $(RB_DIR) -name '*.c')
 COMMON_SOURCE:=$(filter-out $(TEST_LIST_FILE),$(LIST_SOURCE))
 TREE_SOURCE:=$(shell find $(TREE_DIR) -name '*.c')
 BINARY_TREE_SOURCE:=$(shell find $(BINARY_TREE_DIR) -name '*.c')
-
+BINARY_TREE_HEAD:=$(shell find $(BINARY_TREE_DIR) -name '*.h')
 ## Target DIR
 OBJ_DIR=build/
 
@@ -56,9 +56,10 @@ $(OBJ_DIR)$(OBJECTS_RB): $(COMMON_SOURCE) $(RB_SOURCE)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@ $^
 binarytree: $(OBJ_DIR)$(OBJECTS_BINARYTREE)
-$(OBJ_DIR)$(OBJECTS_BINARYTREE): $(TREE_SOURCE) $(BINARY_TREE_SOURCE)
+$(OBJ_DIR)$(OBJECTS_BINARYTREE): $(TREE_SOURCE) $(BINARY_TREE_SOURCE) 
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@ $^
+
 clean:
 	rm -rf ./$(OBJ_DIR)*.o
 	rm -d $(OBJ_DIR)
