@@ -3,7 +3,7 @@ bool insert_node_traverse(tree_t **,tree_t *, int);
 Implementation of binary tree function
 */
 /*
-* calculate height of tree
+* height()-calculate height of tree
 * @tree :pointer to tree 
 */
 int height(tree_t* tree)
@@ -22,8 +22,9 @@ int height(tree_t* tree)
             return (rheight + 1);
     }
 }
+
 /*
-* binarytree insert function
+* insert_binary_tree()-binarytree insert function
 * @tree: A pointer to pointer to tree 
 * @value: value to be insert
 */
@@ -49,7 +50,7 @@ void insert_binary_tree(tree_t **tree,void *value){
 }
 
 /*
-* binarytree levelorder traversal for finding insert place
+* insert_node_traverse()-binarytree levelorder traversal for finding insert place
 * @tree: A pointer to pointer to tree 
 * @tree_node: tree node to be insert
 * @height: current height
@@ -69,11 +70,10 @@ bool insert_node_traverse(tree_t **tree,tree_t *tree_node,int height){
     if(height==1) return false;
     if(insert_node_traverse(&(*tree)->left,tree_node,height-1)) return true;
     if(insert_node_traverse(&(*tree)->right,tree_node,height-1)) return true;
-
-
 }
+
 /*
-* find last node in binary tree
+* find_last_node()-find last node in binary tree
 * @tree: A pointer to pointer to tree 
 * @height: height of binary tree
 * @tree_node: tree node to store the last node
@@ -86,7 +86,7 @@ void find_last_node(tree_t **tree,int h,tree_t **last_node){
     find_last_node(&(*tree)->right,h-1,last_node);
 }
 /*
-* remove last node in binary tree
+* remove_binary_tree()-remove last node in binary tree
 * @tree: A pointer to pointer to tree
 */
 void remove_binary_tree(tree_t **tree){

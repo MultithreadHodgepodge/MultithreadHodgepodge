@@ -18,6 +18,5 @@ void set_tree_remove(tree_t **,void (*remove)(tree_t** ));
 void inorder(tree_t *);
 void postorder(tree_t *);
 void preorder(tree_t *);
-//============Binary_tree============//
-void insert_binary_tree(tree_t **,void *);
+void free_tree(tree_t **);
 

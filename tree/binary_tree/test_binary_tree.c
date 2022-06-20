@@ -16,4 +16,6 @@ int main(){
     tree->printtree(tree);
     tree->remove(&tree);
     tree->printtree(tree);
+    free_tree(&tree);
+
 }
