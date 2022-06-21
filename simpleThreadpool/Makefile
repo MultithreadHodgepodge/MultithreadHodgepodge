@@ -1,7 +1,6 @@
 CC := gcc
 CFLAG := -pthread -o
 TARGET := ./threadpool
-LISTLIB := ../list/list.c
 SOURCE := main.c
 
 all:
