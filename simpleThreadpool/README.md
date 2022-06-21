@@ -6,7 +6,7 @@ t1 t2 t3 t4 t5 -----
 					|
 					|    assign
 					|
-          work1()   work2() work3()  work4()
+          		work1()   work2() work3()  work4()
 					|
 					|    finished
 					| 
@@ -23,7 +23,17 @@ There are many tasks in queue originally, you can use command via crtl+c to add 
 
 add new task
 
-	a task_number
+	a 1 
+or
+	
+	a 2
+	
+or
+	
+	a 3
+	
+	
+task_number only has three types function to use.
 
 continue
 
@@ -34,4 +44,3 @@ exit
 	e
 
 
-task_number only has three type function to use.
