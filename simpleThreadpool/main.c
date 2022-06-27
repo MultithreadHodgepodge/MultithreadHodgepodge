@@ -10,7 +10,7 @@ int main()
 	threadpool_init(&tinfo, &rq);
 	
 	for (int i = 0;i < rq_capacity + 10;++i) {
-		add_task(&rq, i % 3 + 1);
+		add_task(&rq, i % 3);
 	}
 
 	//show(&rq);
@@ -64,15 +64,6 @@ targetfun task(RQ_t *rq)
 	return t;
 }
 
-void show(RQ_t **rq)
-{
-	while ((*rq)->ringbuffer[(*rq)->end] != NULL) {
-		(*rq)->ringbuffer[(*rq)->end]();
-		(*rq)->ringbuffer[(*rq)->end] = NULL;
-		(*rq)->end = ((*rq)->end + 1) % rq_capacity;
-	}
-}
-
 void add_task(RQ_t **rq, int num)
 {
 	sem_wait(&(*rq)->remain);
@@ -89,16 +80,12 @@ void add_task(RQ_t **rq, int num)
 
 targetfun select_job(int num)
 {
-	switch(num) {
-		case 1:
-			return foo1;
-		case 2:
-			return foo2;
-		case 3:
-			return foo3;
-		default:
-			return foo1;
-	}
+
+	void (*factory[])() = {foo1, foo2, foo3};
+	if (num < 3)
+		return factory[num];
+	else
+		return  factory[0];
 }	
 
 void threadpool_init(TINFO_t **tinfo, RQ_t **rq)
@@ -129,7 +116,6 @@ void close_threadpool(TINFO_t **tinfo)
 
 void *worker(void *arg)
 {
-	//printf("%d: hi\n", ((TINFO_t *)arg)->thread_num);
 	
 	RQ_t *rq = ((TINFO_t *)arg)->rq;
 	if (rq == NULL) {
@@ -179,6 +165,7 @@ void interrupt(int num)
 				for (int i = 0;i < threadQ;++i)
 					sem_post(&sigready_queue->item);
 				c[0] = 'c';
+				perror("exit ");
 				break;
 			default:
 				break;

@@ -39,34 +39,34 @@ BINARY_TREE_SOURCE:=$(shell find $(BINARY_TREE_DIR) -name '*.c')
 BINARY_SEARCH_TREE_SOURCE:=$(shell find $(BINARY_SEARCH_TREE_DIR) -name '*.c')
 
 ## Main Makefile
-list: $(OBJ_DIR)$(OBJECTS_LIST) 
+list: clean $(OBJ_DIR)$(OBJECTS_LIST) 
 $(OBJ_DIR)$(OBJECTS_LIST): $(LIST_SOURCE)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@ $^
-stack: $(OBJ_DIR)$(OBJECTS_STACK)
+stack: clean $(OBJ_DIR)$(OBJECTS_STACK)
 $(OBJ_DIR)$(OBJECTS_STACK): $(COMMON_SOURCE) $(STACK_SOURCE)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@ $^
-queue: $(OBJ_DIR)$(OBJECTS_QUEUE)
+queue: clean $(OBJ_DIR)$(OBJECTS_QUEUE)
 $(OBJ_DIR)$(OBJECTS_QUEUE): $(COMMON_SOURCE) $(QUEUE_SOURCE)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@ $^
-priorityqueue: $(OBJ_DIR)$(OBJECTS_PRIORITYQUEUE)
+priorityqueue: clean $(OBJ_DIR)$(OBJECTS_PRIORITYQUEUE)
 $(OBJ_DIR)$(OBJECTS_PRIORITYQUEUE): $(COMMON_SOURCE) $(PRIORITYQUEUE_SOURCE)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@ $^
-rb: $(OBJ_DIR)$(OBJECTS_RB)
+rb: clean $(OBJ_DIR)$(OBJECTS_RB)
 $(OBJ_DIR)$(OBJECTS_RB): $(COMMON_SOURCE) $(RB_SOURCE)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@ $^
-binarytree: $(OBJ_DIR)$(OBJECTS_BINARYTREE)
+binarytree: clean $(OBJ_DIR)$(OBJECTS_BINARYTREE)
 $(OBJ_DIR)$(OBJECTS_BINARYTREE): $(TREE_SOURCE) $(BINARY_TREE_SOURCE) 
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@  $^
-bst: $(OBJ_DIR)$(OBJECTS_BINARYSEARCHTREE)
+bst: clean $(OBJ_DIR)$(OBJECTS_BINARYSEARCHTREE)
 $(OBJ_DIR)$(OBJECTS_BINARYSEARCHTREE): $(TREE_SOURCE) $(BINARY_SEARCH_TREE_SOURCE) 
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@  $^
 clean:
-	rm -rf ./$(OBJ_DIR)*.o
-	rm -d $(OBJ_DIR)
+	rm -rf ./$(OBJ_DIR)*.o >/dev/null 2>/dev/null || true
+	rm -d $(OBJ_DIR)  >/dev/null 2>/dev/null || true
