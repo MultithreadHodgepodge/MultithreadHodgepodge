@@ -5,11 +5,11 @@ OBJECTS_QUEUE=test_queue.o
 OBJECTS_PRIORITYQUEUE=test_priorityqueue.o
 OBJECTS_RB=test_RB.o
 OBJECTS_BINARYTREE=test_binary_tree.o
-
+OBJECTS_BINARYSEARCHTREE=test_binary_search_tree.o
 ## GCC argument
 CC = gcc
 .PHONY: clean
-CFLAGS= -pthread -g -O0 -MD -o
+CFLAGS= -pthread -g -O0 -o
 CONFIG_BPF_SYSCALL=y
 ## Source DIR
 LIST_DIR=list/
@@ -19,23 +19,25 @@ PRIORITYQUEUE_DIR=priority_queue/
 RB_DIR=ringbuffer/
 TREE_DIR=tree/
 BINARY_TREE_DIR=tree/binary_tree/
-
+BINARY_SEARCH_TREE_DIR=tree/binary_search_tree/
 
 ## Target DIR
 OBJ_DIR=build/
 
 ## Source .c file
 TEST_LIST_FILE= $(LIST_DIR)test_list.c
+
 LIST_SOURCE:= $(shell find $(LIST_DIR) -name '*.c')
 STACK_SOURCE:= $(shell find $(STACK_DIR) -name '*.c')
 QUEUE_SOURCE:= $(shell find $(QUEUE_DIR) -name '*.c') 
 PRIORITYQUEUE_SOURCE:= $(shell find $(PRIORITYQUEUE_DIR) -name '*.c') 
 RB_SOURCE:= $(shell find $(RB_DIR) -name '*.c')
 COMMON_SOURCE:=$(filter-out $(TEST_LIST_FILE),$(LIST_SOURCE))
-TREE_SOURCE:=$(shell find $(TREE_DIR) -name '*.c')
+TREE_SOURCE:=$(shell find $(TREE_DIR) -maxdepth 1 -name '*.c')
+
 BINARY_TREE_SOURCE:=$(shell find $(BINARY_TREE_DIR) -name '*.c')
-BINARY_TREE_HEAD:=  build/test_binary_tree.d
--include build/test_binary_tree.d
+BINARY_SEARCH_TREE_SOURCE:=$(shell find $(BINARY_SEARCH_TREE_DIR) -name '*.c')
+
 ## Main Makefile
 list: $(OBJ_DIR)$(OBJECTS_LIST) 
 $(OBJ_DIR)$(OBJECTS_LIST): $(LIST_SOURCE)
@@ -61,7 +63,10 @@ binarytree: $(OBJ_DIR)$(OBJECTS_BINARYTREE)
 $(OBJ_DIR)$(OBJECTS_BINARYTREE): $(TREE_SOURCE) $(BINARY_TREE_SOURCE) 
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@  $^
-
+bst: $(OBJ_DIR)$(OBJECTS_BINARYSEARCHTREE)
+$(OBJ_DIR)$(OBJECTS_BINARYSEARCHTREE): $(TREE_SOURCE) $(BINARY_SEARCH_TREE_SOURCE) 
+	mkdir -p $(@D)
+	$(CC) $(CFLAGS) $@  $^
 clean:
 	rm -rf ./$(OBJ_DIR)*.o
 	rm -d $(OBJ_DIR)

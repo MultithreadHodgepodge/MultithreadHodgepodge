@@ -13,6 +13,7 @@ void create_tree(tree_t **tree){
     (*tree)=(tree_t *)malloc(sizeof(tree_t));
     (*tree)->parent=(*tree);//parent will be changed while inserting
 }
+
 /*
 * set_tree_insert()- set tree insert function
 * @tree: A pointer to pointer which point to tree 
@@ -21,6 +22,7 @@ void create_tree(tree_t **tree){
 void set_tree_insert(tree_t **tree, void (*insert)(tree_t**, void*)){
     (*tree)->insert=insert;
 }
+
 /*
 * set_tree_print()-set tree print function
 * @tree: A pointer to pointer which point to tree 
