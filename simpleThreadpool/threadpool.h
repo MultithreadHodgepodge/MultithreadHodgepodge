@@ -17,6 +17,7 @@ typedef struct Readyqueue {
 	sem_t item, remain;
 	pthread_mutex_t mutex;
 	targetfun *ringbuffer;
+	
 
 }RQ_t;
 
@@ -36,12 +37,12 @@ void foo2();
 void foo3();
 void *worker(void *);
 void interrupt(int );
-void close_threadpool(TINFO_t **);
+void close_threadpool(RQ_t **,TINFO_t **);
 void add_task(RQ_t **, int );
 void show(RQ_t **);
-targetfun task(RQ_t *);
+void* task(RQ_t *);
 RQ_t *sigready_queue;
-targetfun select_job(int );
+void* select_job(int );
 
-int finish = 1;
+static int finish = 1;
 

@@ -1,33 +1,15 @@
-#include "main.h"
+#include "threadpool.h"
 
-
-int main()
-{	
-	signal(SIGINT, interrupt);
-	TINFO_t *tinfo;
-	RQ_t *rq;
-	readyqueue_init(&rq);
-	threadpool_init(&tinfo, &rq);
-	
-	for (int i = 0;i < rq_capacity + 10;++i) {
-		add_task(&rq, i % 3);
-	}
-
-	//show(&rq);
-
-	close_threadpool(&tinfo);
-	puts("\n----------finished----------");
-}
 
 void readyqueue_init(RQ_t **rq)
 {
 	int front, end;
 	sem_t item, remain;
 	pthread_mutex_t mutex;
-	targetfun *ringbuffer;
+	void *ringbuffer;
 
 	*rq = (RQ_t *)malloc(sizeof(RQ_t));
-	(*rq)->ringbuffer = (targetfun *)calloc(rq_capacity, sizeof(targetfun));
+	(*rq)->ringbuffer = calloc(rq_capacity, sizeof(void *));
 	(*rq)->front = (*rq)->end = 0;
 	sem_init(&(*rq)->item, 0, 0);
 	sem_init(&(*rq)->remain, 0, rq_capacity);
@@ -37,7 +19,7 @@ void readyqueue_init(RQ_t **rq)
 }
 
 
-targetfun task(RQ_t *rq)
+void* task(RQ_t *rq)
 {
 	
 
@@ -46,7 +28,7 @@ targetfun task(RQ_t *rq)
 		exit(3);
 	}
 
-	targetfun t;
+	void* t;
 	sem_wait(&rq->item);
 
 	if (!finish)
@@ -78,7 +60,7 @@ void add_task(RQ_t **rq, int num)
 	sem_post(&(*rq)->item);
 }
 
-targetfun select_job(int num)
+void* select_job(int num)
 {
 
 	void (*factory[])() = {foo1, foo2, foo3};
@@ -105,13 +87,15 @@ void threadpool_init(TINFO_t **tinfo, RQ_t **rq)
 	}
 }
 
-void close_threadpool(TINFO_t **tinfo)
+void close_threadpool(RQ_t **rq, TINFO_t **tinfo)
 {
 	void *ret = 0;
 	for (int i = 0;i < threadQ;++i, ret = 0)
 		pthread_join((*tinfo)[i].thread_id, &ret);
 
 	free(*tinfo);
+	free((*rq)->ringbuffer);
+	free(*rq);
 }
 
 void *worker(void *arg)
@@ -123,15 +107,15 @@ void *worker(void *arg)
 		exit(4);
 	}
 
-	targetfun t;
+	void* t;
 	while(finish) {
 		t = task(rq);
 		
 		if (t == NULL)
 			break;
-		t();
+		((targetfun)t)();
 	}
-	
+	return t;
 }
 
 void interrupt(int num)

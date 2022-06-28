@@ -1,8 +1,8 @@
 CC := gcc
 CFLAG := -pthread -o
 TARGET := ./threadpool
-SOURCE := main.c
 
+SOURCE:= $(shell find  -name '*.c')
 all: 
 	$(CC) $(LISTLIB) $(SOURCE) $(CFLAG) $(TARGET)
 
