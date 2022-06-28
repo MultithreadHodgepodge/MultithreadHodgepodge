@@ -1,6 +1,14 @@
 #include "threadpool.h"
 
-
+/*
+ * @front : ringbuffer's start index
+ * @end   : ringbuffer's tail index
+ * @item  : how many function in this ringbuffer semaphore counter
+ * @remain: how many space in this ringbuffer semaphore counter
+ * @mutex : critical section control for take jobs and add jobs
+ * @ringbuffer: it will calloc a circular queue for containing jobs
+ * @rq    : threadpool's pointer, for accessing ringbuffer
+ */
 void readyqueue_init(RQ_t **rq)
 {
 	int front, end;
@@ -18,6 +26,9 @@ void readyqueue_init(RQ_t **rq)
 	sigready_queue = *rq;
 }
 
+/* @rq: threadpool's ringbuffer 
+ * @t : contain job assgning to thread
+ */
 
 void* task(RQ_t *rq)
 {
@@ -36,7 +47,7 @@ void* task(RQ_t *rq)
 
 	pthread_mutex_lock(&rq->mutex);	
 
-	t  = rq->ringbuffer[rq->end];
+	t = rq->ringbuffer[rq->end];
 	rq->ringbuffer[rq->end] = NULL;
 	rq->end = (rq->end + 1) % rq_capacity;
 	
@@ -45,6 +56,10 @@ void* task(RQ_t *rq)
 	
 	return t;
 }
+
+/* @rq :threadpool's ringbuffer
+ * @num: choose which jobs selected
+ */
 
 void add_task(RQ_t **rq, int num)
 {
@@ -60,6 +75,9 @@ void add_task(RQ_t **rq, int num)
 	sem_post(&(*rq)->item);
 }
 
+/* @num: decide which jobs is selected 
+ */
+
 void* select_job(int num)
 {
 
@@ -69,6 +87,10 @@ void* select_job(int num)
 	else
 		return  factory[0];
 }	
+
+/* @tinfo: contain thread information: tid, thread worker id, jobs pointer ....
+ * @rq   : threadpool's ringbuffer, make worker thread to know the address of readyqueue 
+ */
 
 void threadpool_init(TINFO_t **tinfo, RQ_t **rq)
 {
@@ -87,6 +109,10 @@ void threadpool_init(TINFO_t **tinfo, RQ_t **rq)
 	}
 }
 
+/* @rq   : threadpool's ringbuffer
+ * @tinfo: contain current thread information 
+ */
+
 void close_threadpool(RQ_t **rq, TINFO_t **tinfo)
 {
 	void *ret = 0;
@@ -97,6 +123,9 @@ void close_threadpool(RQ_t **rq, TINFO_t **tinfo)
 	free((*rq)->ringbuffer);
 	free(*rq);
 }
+
+/* @arg: pthread_create's argument
+ */
 
 void *worker(void *arg)
 {
@@ -117,6 +146,9 @@ void *worker(void *arg)
 	}
 	return t;
 }
+
+/* @num: tell which asychronize interrupt happend 
+ */
 
 void interrupt(int num)
 {
@@ -157,6 +189,11 @@ void interrupt(int num)
 		}
 	}
 }
+
+/* @foo1: mock function
+ * @foo2: mock function
+ * @foo3: mock function
+ */
 
 void foo1()
 {
