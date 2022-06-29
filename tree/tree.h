@@ -7,7 +7,7 @@ typedef struct __tree{
     struct __tree *right;
     struct __tree *parent;
     void (*insert)(tree_t**, void*);
-    void (*remove)(tree_t**);
+    void (*remove)(tree_t**,...);
     void (*printtree)(tree_t* );
     void (*freetree)(tree_t **);
 }tree_t;
