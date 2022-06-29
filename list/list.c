@@ -55,16 +55,16 @@ void list_add_head(list_t** list, void* node_value){
 * @list: A pointer to pointer which point to list 
 * @node_value: Value of node added
 */
-int list_add_tail(list_t** list, void* node_value){
+void list_add_tail(list_t** list, void* node_value){
 
     if(!(*list)){
         create_list(list, node_value);
-        return -1;
+        return ;
     }
     list_t* new_node=(list_t *)malloc(sizeof(list_t));
     if (!new_node) {
         puts("list add tail memory allocate fail");
-        return -1;
+        return ;
     }
     new_node->value=node_value;
     (*list)->prev->next=new_node;
@@ -72,7 +72,7 @@ int list_add_tail(list_t** list, void* node_value){
     new_node->next=(*list);
     (*list)->prev=new_node;
     printf("Add node %p\n",node_value);
-    return 0;
+
 }
 
 /*
@@ -84,7 +84,7 @@ int list_add_tail(list_t** list, void* node_value){
 void list_add_after_specific_node(list_t** list, void* node_value, void* specific_node_value){
     if(!(*list)){
         create_list(list, node_value);
-        return -1;
+        return ;
     }
     list_t *head = *list;
     list_t* new_node=(list_t *)malloc(sizeof(list_t));
@@ -112,7 +112,7 @@ void list_add_after_specific_node(list_t** list, void* node_value, void* specifi
 void list_add_before_larger_smaller(list_t** list, void* node_value,int( *compare)(const void *, const void *)){
     if(!(*list)){
         create_list(list, node_value);
-        return -1;
+        return ;
     }
     list_t *head = *list;
     list_t* new_node=(list_t *)malloc(sizeof(list_t));
@@ -267,7 +267,7 @@ void print_list(list_t** cur){
 }
 
 /*
-* Free the list
+* free_list()-Free the list
 * @list: A pointer to pointer which point to list  
 */
 void free_list(list_t **list){
@@ -292,7 +292,7 @@ void free_list(list_t **list){
 }
 
 /*
-* Sort the list
+* sort()-Sort the list
 * @list: A pointer to pointer which point to list
 * @compare: Function pointer to compare  function   
 */
@@ -322,7 +322,7 @@ void sort(list_t **head, int( *compare)(const void *, const void *))
 }
 
 /*
-* Sort the list
+* mergesort()-Sort the list
 * @list: A pointer to pointer which point to list
 * @compare: Function pointer to compare  function   
 */
@@ -374,14 +374,15 @@ void mergesort(list_t **head, int (*compare)(const void *, const void *))
 }
 
 /*
-* Find Maximum value in the list
+* list_find_max()-Find Maximum value in the list
 * @list: A pointer to pointer which point to list  
 */
 void *list_find_max(list_t **list){
     list_t *head = *list;
-    int max=INT_MIN;
+    void *max=(void *)INT_MIN;
+
     do{
-        int temp=head->value;
+        void *temp=head->value;
         if(temp>max) max=temp;
         head = head->next;
     }while(head != *list);
@@ -389,14 +390,14 @@ void *list_find_max(list_t **list){
 }
 
 /*
-* Find Minimum value in the list
+* list_find_min()-Find Minimum value in the list
 * @list: A pointer to pointer which point to list  
 */
 void *list_find_min(list_t **list){
     list_t *head = *list;
-    int min=INT_MAX;
+    void *min=(void *)INT_MAX;
     do{
-        int temp=head->value;
+        void *temp=head->value;
         if(temp<min) min=temp;
         head = head->next;
     }while(head != *list);
@@ -404,7 +405,7 @@ void *list_find_min(list_t **list){
 }
 
 /*
-* Reverse the list
+* list_reverse()-Reverse the list
 * @list: A pointer to pointer which point to list  
 */
 void list_reverse(list_t **list){

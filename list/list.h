@@ -15,7 +15,7 @@ typedef struct list{
 
 void create_list(list_t **head, void *node_value);
 void list_add_head(list_t**, void*);
-int list_add_tail(list_t**, void*);
+void list_add_tail(list_t**, void*);
 void list_add_before_larger_smaller(list_t**, void*,int(*compare)(const void *, const void*));
 void list_remove_head(list_t** );
 void list_remove_tail(list_t** );

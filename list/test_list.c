@@ -21,6 +21,7 @@ int main()
     list_add_before_larger_smaller(&new_list,(void *)8,bigger);
 
     print_list(&new_list);
+    free_list(&new_list);
     //list_reverse(&new_list);
 
 }
