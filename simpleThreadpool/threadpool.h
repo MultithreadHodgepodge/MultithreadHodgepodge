@@ -4,6 +4,8 @@
 #include <string.h>
 #include <semaphore.h>
 #include <pthread.h>
+#include <errno.h>
+
 /*
  * Info about readyqueue 
  * @rq_capacity: ringbuffer's maximum element

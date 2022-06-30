@@ -6,6 +6,7 @@ OBJECTS_PRIORITYQUEUE=test_priorityqueue.o
 OBJECTS_RB=test_RB.o
 OBJECTS_BINARYTREE=test_binary_tree.o
 OBJECTS_BINARYSEARCHTREE=test_binary_search_tree.o
+OBJECTS_THPOOL = test_threadpool.o
 ## GCC argument
 CC = gcc
 .PHONY: clean
@@ -20,6 +21,7 @@ RB_DIR=ringbuffer/
 TREE_DIR=tree/
 BINARY_TREE_DIR=tree/binary_tree/
 BINARY_SEARCH_TREE_DIR=tree/binary_search_tree/
+THPOOL_DIR = simpleThreadpool/
 
 ## Target DIR
 OBJ_DIR=build/
@@ -34,6 +36,7 @@ PRIORITYQUEUE_SOURCE:= $(shell find $(PRIORITYQUEUE_DIR) -name '*.c')
 RB_SOURCE:= $(shell find $(RB_DIR) -name '*.c')
 COMMON_SOURCE:=$(filter-out $(TEST_LIST_FILE),$(LIST_SOURCE))
 TREE_SOURCE:=$(shell find $(TREE_DIR) -maxdepth 1 -name '*.c')
+THPOOL_SOURCE := $(shell find $(THPOOL_DIR) -name '*.c')
 
 BINARY_TREE_SOURCE:=$(shell find $(BINARY_TREE_DIR) -name '*.c')
 BINARY_SEARCH_TREE_SOURCE:=$(shell find $(BINARY_SEARCH_TREE_DIR) -name '*.c')
@@ -67,6 +70,11 @@ bst: clean $(OBJ_DIR)$(OBJECTS_BINARYSEARCHTREE)
 $(OBJ_DIR)$(OBJECTS_BINARYSEARCHTREE): $(TREE_SOURCE) $(BINARY_SEARCH_TREE_SOURCE) 
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@  $^
+thpool: clean $(OBJ_DIR)$(OBJECTS_THPOOL)
+$(OBJ_DIR)$(OBJECTS_THPOOL): $(THPOOL_SOURCE)
+	mkdir -p $(@D)
+	$(CC) $(CFLAGS) $@ $^
+
 clean:
 	rm -rf ./$(OBJ_DIR)*.o >/dev/null 2>/dev/null || true
 	rm -d $(OBJ_DIR)  >/dev/null 2>/dev/null || true
