@@ -1,15 +1,7 @@
 #include "threadpool.h"
 
-/*
- * @front : ringbuffer's start index
- * @end   : ringbuffer's tail index
- * @item  : how many function in this ringbuffer semaphore counter
- * @remain: how many space in this ringbuffer semaphore counter
- * @mutex : critical section control for take jobs and add jobs
- * @ringbuffer: it will calloc a circular queue for containing jobs
- * @rq    : threadpool's pointer, for accessing ringbuffer
- */
-void readyqueue_init(RQ_t **rq)
+
+void readyqueue_init(RQ_t **rq,int rq_capacity, int threadQ)
 {
 	int front, end;
 	sem_t item, remain;
@@ -22,7 +14,8 @@ void readyqueue_init(RQ_t **rq)
 	sem_init(&(*rq)->item, 0, 0);
 	sem_init(&(*rq)->remain, 0, rq_capacity);
 	pthread_mutex_init(&(*rq)->mutex, NULL);
-	
+	(*rq)->rq_capacity=rq_capacity;
+	(*rq)->threadQ=threadQ;
 	sigready_queue = *rq;
 }
 
@@ -49,7 +42,7 @@ void* task(RQ_t *rq)
 
 	t = rq->ringbuffer[rq->end];
 	rq->ringbuffer[rq->end] = NULL;
-	rq->end = (rq->end + 1) % rq_capacity;
+	rq->end = (rq->end + 1) % (rq->rq_capacity);
 	
 	pthread_mutex_unlock(&rq->mutex);
 	sem_post(&rq->remain);
@@ -67,7 +60,7 @@ void add_task(RQ_t **rq, int num)
 	pthread_mutex_lock(&(*rq)->mutex);
 	if ((*rq)->ringbuffer[(*rq)->front] == NULL) {
 		(*rq)->ringbuffer[(*rq)->front] = select_job(num);
-		(*rq)->front = ((*rq)->front + 1) % rq_capacity;
+		(*rq)->front = ((*rq)->front + 1) % ((*rq)->rq_capacity);
 	} else {
 		puts("Ringbuffer is full");
 	}
@@ -92,7 +85,7 @@ void* select_job(int num)
  * @rq   : threadpool's ringbuffer, make worker thread to know the address of readyqueue 
  */
 
-void threadpool_init(TINFO_t **tinfo, RQ_t **rq)
+void threadpool_init(TINFO_t **tinfo, RQ_t **rq,int threadQ)
 {
 	*tinfo = (TINFO_t *)malloc(sizeof(TINFO_t) * threadQ);
 
@@ -104,7 +97,7 @@ void threadpool_init(TINFO_t **tinfo, RQ_t **rq)
 			exit(2);
 		} else {
 			printf("%d ", (*tinfo)[i].thread_num);
-			puts("init sucess");
+			puts("init success");
 		}
 	}
 }
@@ -113,7 +106,7 @@ void threadpool_init(TINFO_t **tinfo, RQ_t **rq)
  * @tinfo: contain current thread information 
  */
 
-void close_threadpool(RQ_t **rq, TINFO_t **tinfo)
+void close_threadpool(RQ_t **rq, TINFO_t **tinfo, int threadQ)
 {
 	void *ret = 0;
 	for (int i = 0;i < threadQ;++i, ret = 0)
@@ -124,8 +117,9 @@ void close_threadpool(RQ_t **rq, TINFO_t **tinfo)
 	free(*rq);
 }
 
-/* @arg: pthread_create's argument
- */
+/* 
+@arg: pthread_create's argument
+*/
 
 void *worker(void *arg)
 {
@@ -136,19 +130,20 @@ void *worker(void *arg)
 		exit(4);
 	}
 
-	void* t;
+	void (*t)();
 	while(finish) {
 		t = task(rq);
 		
 		if (t == NULL)
 			break;
-		((targetfun)t)();
+		t();
 	}
 	return t;
 }
 
-/* @num: tell which asychronize interrupt happend 
- */
+/* 
+@num: tell which asychronize interrupt happend 
+*/
 
 void interrupt(int num)
 {
@@ -178,7 +173,7 @@ void interrupt(int num)
 			case 'e':
 			case 'E':
 				finish = 0;
-				for (int i = 0;i < threadQ;++i)
+				for (int i = 0;i < sigready_queue->threadQ;++i)
 					sem_post(&sigready_queue->item);
 				c[0] = 'c';
 				perror("exit ");
@@ -190,28 +185,23 @@ void interrupt(int num)
 	}
 }
 
-/* @foo1: mock function
- * @foo2: mock function
- * @foo3: mock function
- */
-
 void foo1()
 {
-	int c = t;
+	int c = 5;
 	while (c--)
 		puts("this is foo1");
 }
 
 void foo2()
 {
-	int c = t;
+	int c = 5;
 	while (c--)
 		puts("    this is foo2");
 }
 
 void foo3()
 {
-	int c = t;
+	int c = 5;
 	while (c--)
 		puts("        this is foo3");
 }
