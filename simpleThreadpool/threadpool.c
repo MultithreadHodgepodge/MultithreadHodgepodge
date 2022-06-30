@@ -120,7 +120,7 @@ void threadpool_init(TINFO_t **tinfo, RQ_t **rq,int threadQ)
 
 	return ;
 fail:
-	while(i-- < 0) {
+	while(--i < 0) {
 		pthread_join((*tinfo)[i].thread_id, NULL);
 	}
 	free(*tinfo);
