@@ -3,32 +3,32 @@
 
 void readyqueue_init(RQ_t **rq,int rq_capacity, int threadQ)
 {
-		int front, end;
-		sem_t item, remain;
-		pthread_mutex_t mutex;
-		void *ringbuffer;
+	int front, end;
+	sem_t item, remain;
+	pthread_mutex_t mutex;
+	void *ringbuffer;
 
-		*rq = (RQ_t *)malloc(sizeof(RQ_t));
-		if (*rq == NULL) {
-			perror("rq_init: ");
-			exit(errno);
-		}
-		(*rq)->ringbuffer = calloc(rq_capacity, sizeof(void *));
-		if ((*rq)->ringbuffer == NULL) {
-			goto ringbuffer_fail;
-		}	
-		(*rq)->front = (*rq)->end = 0;
-		sem_init(&(*rq)->item, 0, 0);
-		sem_init(&(*rq)->remain, 0, rq_capacity);
-		pthread_mutex_init(&(*rq)->mutex, NULL);
-		(*rq)->rq_capacity=rq_capacity;
-		(*rq)->threadQ=threadQ;
-		sigready_queue = *rq;
+	*rq = (RQ_t *)malloc(sizeof(RQ_t));
+	if (*rq == NULL) {
+		perror("rq_init: ");
+		exit(errno);
+	}
+	(*rq)->ringbuffer = calloc(rq_capacity, sizeof(void *));
+	if ((*rq)->ringbuffer == NULL) {
+		goto ringbuffer_fail;
+	}	
+	(*rq)->front = (*rq)->end = 0;
+	sem_init(&(*rq)->item, 0, 0);
+	sem_init(&(*rq)->remain, 0, rq_capacity);
+	pthread_mutex_init(&(*rq)->mutex, NULL);
+	(*rq)->rq_capacity=rq_capacity;
+	(*rq)->threadQ=threadQ;
+	sigready_queue = *rq;
 
-		return;	
+	return;	
 
 ringbuffer_fail:
-	
+
 	free(*rq);
 	exit(errno);
 
@@ -40,29 +40,27 @@ ringbuffer_fail:
 
 void* task(RQ_t *rq)
 {
+	if (rq == NULL) {
+		puts("rq is NULL");
+		exit(3);
+	}
 
+	void* t;
+	sem_wait(&rq->item);
 
-		if (rq == NULL) {
-				puts("rq is NULL");
-				exit(3);
-		}
+	if (!finish)
+		return NULL;
 
-		void* t;
-		sem_wait(&rq->item);
+	pthread_mutex_lock(&rq->mutex);	
 
-		if (!finish)
-				return NULL;
+	t = rq->ringbuffer[rq->end];
+	rq->ringbuffer[rq->end] = NULL;
+	rq->end = (rq->end + 1) % (rq->rq_capacity);
 
-		pthread_mutex_lock(&rq->mutex);	
+	pthread_mutex_unlock(&rq->mutex);
+	sem_post(&rq->remain);
 
-		t = rq->ringbuffer[rq->end];
-		rq->ringbuffer[rq->end] = NULL;
-		rq->end = (rq->end + 1) % (rq->rq_capacity);
-
-		pthread_mutex_unlock(&rq->mutex);
-		sem_post(&rq->remain);
-
-		return t;
+	return t;
 }
 
 /* @rq :threadpool's ringbuffer
@@ -71,16 +69,16 @@ void* task(RQ_t *rq)
 
 void add_task(RQ_t **rq, int num)
 {
-		sem_wait(&(*rq)->remain);
-		pthread_mutex_lock(&(*rq)->mutex);
-		if ((*rq)->ringbuffer[(*rq)->front] == NULL) {
-				(*rq)->ringbuffer[(*rq)->front] = select_job(num);
-				(*rq)->front = ((*rq)->front + 1) % ((*rq)->rq_capacity);
-		} else {
-				puts("Ringbuffer is full");
-		}
-		pthread_mutex_unlock(&(*rq)->mutex);
-		sem_post(&(*rq)->item);
+	sem_wait(&(*rq)->remain);
+	pthread_mutex_lock(&(*rq)->mutex);
+	if ((*rq)->ringbuffer[(*rq)->front] == NULL) {
+		(*rq)->ringbuffer[(*rq)->front] = select_job(num);
+		(*rq)->front = ((*rq)->front + 1) % ((*rq)->rq_capacity);
+	} else {
+		puts("Ringbuffer is full");
+	}
+	pthread_mutex_unlock(&(*rq)->mutex);
+	sem_post(&(*rq)->item);
 }
 
 /* @num: decide which jobs is selected 
@@ -88,12 +86,11 @@ void add_task(RQ_t **rq, int num)
 
 void* select_job(int num)
 {
-
-		void (*factory[])() = {foo1, foo2, foo3};
-		if (num < 3)
-				return factory[num];
-		else
-				return  factory[0];
+	void (*factory[])() = {foo1, foo2, foo3};
+	if (num < 3)
+		return factory[num];
+	else
+		return  factory[0];
 }	
 
 /* @tinfo: contain thread information: tid, thread worker id, jobs pointer ....
@@ -102,26 +99,26 @@ void* select_job(int num)
 
 void threadpool_init(TINFO_t **tinfo, RQ_t **rq,int threadQ)
 {
-		*tinfo = (TINFO_t *)malloc(sizeof(TINFO_t) * threadQ);
-		if (*tinfo == NULL) {
-			perror("threadpool_init: ");
-			return ;
-		}
-
-		int i;
-		for (i = 0;i < threadQ;i++) {
-				(*tinfo)[i].thread_num = i;
-				(*tinfo)[i].rq = (*rq);
-				if (pthread_create(&(*tinfo)[i].thread_id, NULL, worker, &(*tinfo)[i])) {	
-						perror("pthread_create: ");
-						goto fail;
-				} else {
-						printf("%d ", (*tinfo)[i].thread_num);
-				}
-		}
-
-
+	*tinfo = (TINFO_t *)malloc(sizeof(TINFO_t) * threadQ);
+	if (*tinfo == NULL) {
+		perror("threadpool_init: ");
 		return ;
+	}
+
+	int i;
+	for (i = 0;i < threadQ;i++) {
+		(*tinfo)[i].thread_num = i;
+		(*tinfo)[i].rq = (*rq);
+		if (pthread_create(&(*tinfo)[i].thread_id, NULL, worker, &(*tinfo)[i])) {	
+			perror("pthread_create: ");
+			goto fail;
+		} else {
+			printf("%d ", (*tinfo)[i].thread_num);
+		}
+	}
+
+
+	return ;
 fail:
 	while(i-- < 0) {
 		pthread_join((*tinfo)[i].thread_id, NULL);
@@ -136,13 +133,13 @@ fail:
 
 void close_threadpool(RQ_t **rq, TINFO_t **tinfo, int threadQ)
 {
-		void *ret = 0;
-		for (int i = 0;i < threadQ;++i, ret = 0)
-				pthread_join((*tinfo)[i].thread_id, &ret);
+	void *ret = 0;
+	for (int i = 0;i < threadQ;++i, ret = 0)
+		pthread_join((*tinfo)[i].thread_id, &ret);
 
-		free(*tinfo);
-		free((*rq)->ringbuffer);
-		free(*rq);
+	free(*tinfo);
+	free((*rq)->ringbuffer);
+	free(*rq);
 }
 
 /* 
@@ -152,21 +149,21 @@ void close_threadpool(RQ_t **rq, TINFO_t **tinfo, int threadQ)
 void *worker(void *arg)
 {
 
-		RQ_t *rq = ((TINFO_t *)arg)->rq;
-		if (rq == NULL) {
-				puts("worker: rq is NULL");
-				exit(4);
-		}
+	RQ_t *rq = ((TINFO_t *)arg)->rq;
+	if (rq == NULL) {
+		puts("worker: rq is NULL");
+		exit(4);
+	}
 
-		void (*t)();
-		while(finish) {
-				t = task(rq);
+	void (*t)();
+	while(finish) {
+		t = task(rq);
 
-				if (t == NULL)
-						break;
-				t();
-		}
-		return t;
+		if (t == NULL)
+			break;
+		t();
+	}
+	return t;
 }
 
 /* 
@@ -175,72 +172,72 @@ void *worker(void *arg)
 
 void interrupt(int num)
 {
-		if (num == SIGINT) {
-				int n;
-				char *jd;
-				char c[100] = {0};
-				char *sptr = NULL;
-				while(c[0] != 'c' && c[0] != 'C') {
-						printf("\nshell -> ");
-						fgets(c, 100, stdin);
+	if (num == SIGINT) {
+		int n;
+		char *jd;
+		char c[100] = {0};
+		char *sptr = NULL;
+		while(c[0] != 'c' && c[0] != 'C') {
+			printf("\nshell -> ");
+			fgets(c, 100, stdin);
 
-						if(!strcmp(c, "help\n")) {
-								puts("		C/c: threadpool continue");
-								puts("		A/a: add task into threadpool");
-								puts("		E/e: cloes threadpool");
-						}
-						else {
-								switch(c[0]) {
-										case 'c':
-										case 'C':
-												break;
+			if(!strcmp(c, "help\n")) {
+				puts("		C/c: threadpool continue");
+				puts("		A/a: add task into threadpool");
+				puts("		E/e: cloes threadpool");
+			}
+			else {
+				switch(c[0]) {
+					case 'c':
+					case 'C':
+						break;
 
-										case 'a':
-										case 'A':
-												jd = strtok_r(c, " ", &sptr);
-												while(jd = strtok_r(NULL, " ", &sptr)) {
-														if (n = atoi(jd)) {
-																add_task(&sigready_queue, n-1);
-																printf("task: %d\n", n);
-														}
-												}
-												break;
-										case 'e':
-										case 'E':
-										case 'q':
-										case 'Q':
-												finish = 0;
-												for (int i = 0;i < sigready_queue->threadQ;++i)
-														sem_post(&sigready_queue->item);
-												c[0] = 'c';
-												perror("exit ");
-												break;
-										default:
-											printf("unknown command, check <help> to fetch more information");
-												break;
-								}
+					case 'a':
+					case 'A':
+						jd = strtok_r(c, " ", &sptr);
+						while(jd = strtok_r(NULL, " ", &sptr)) {
+							if (n = atoi(jd)) {
+								add_task(&sigready_queue, n-1);
+								printf("task: %d\n", n);
+							}
 						}
+						break;
+					case 'e':
+					case 'E':
+					case 'q':
+					case 'Q':
+						finish = 0;
+						for (int i = 0;i < sigready_queue->threadQ;++i)
+							sem_post(&sigready_queue->item);
+						c[0] = 'c';
+						perror("exit ");
+						break;
+					default:
+						printf("unknown command, check <help> to fetch more information");
+						break;
 				}
+			}
 		}
+	}
 }
 
 void foo1()
 {
-		int c = 5;
-		while (c--)
-				puts("this is foo1");
+	int c = 5;
+	while (c--)
+		puts("this is foo1");
 }
 
 void foo2()
 {
-		int c = 5;
-		while (c--)
-				puts("    this is foo2");
+	int c = 5;
+	while (c--)
+		puts("    this is foo2");
 }
 
 void foo3()
 {
-		int c = 5;
-		while (c--)
-				puts("        this is foo3");
+	int c = 5;
+	while (c--)
+		puts("        this is foo3");
 }
