@@ -13,6 +13,16 @@ void readyqueue_init(RQ_t **rq,int rq_capacity, int threadQ)
 		perror("rq_init: ");
 		exit(errno);
 	}
+
+	/* judge is 2^x or not */
+	if (rq_capacity & (rq_capacity - 1)) {
+		/* padding to 2^x */
+		int c = 1;
+		while(rq_capacity >>= 1)c++;
+		rq_capacity = 1<<c;
+		//printf("cap: %d \n", rq_capacity);
+	}
+
 	(*rq)->ringbuffer = calloc(rq_capacity, sizeof(void *));
 	if ((*rq)->ringbuffer == NULL) {
 		goto ringbuffer_fail;
@@ -38,7 +48,7 @@ ringbuffer_fail:
  * @t : contain job assgning to thread
  */
 
-void* task(RQ_t *rq)
+void* take_task(RQ_t *rq)
 {
 	if (rq == NULL) {
 		puts("rq is NULL");
@@ -52,11 +62,7 @@ void* task(RQ_t *rq)
 		return NULL;
 
 	pthread_mutex_lock(&rq->mutex);	
-
-	t = rq->ringbuffer[rq->end];
-	rq->ringbuffer[rq->end] = NULL;
-	rq->end = (rq->end + 1) % (rq->rq_capacity);
-
+	t = rq->ringbuffer[rq->end++ & (rq->rq_capacity - 1)];
 	pthread_mutex_unlock(&rq->mutex);
 	sem_post(&rq->remain);
 
@@ -67,18 +73,13 @@ void* task(RQ_t *rq)
  * @num: choose which jobs selected
  */
 
-void add_task(RQ_t **rq, int num)
+void add_task(RQ_t *rq, int num)
 {
-	sem_wait(&(*rq)->remain);
-	pthread_mutex_lock(&(*rq)->mutex);
-	if ((*rq)->ringbuffer[(*rq)->front] == NULL) {
-		(*rq)->ringbuffer[(*rq)->front] = select_job(num);
-		(*rq)->front = ((*rq)->front + 1) % ((*rq)->rq_capacity);
-	} else {
-		puts("Ringbuffer is full");
-	}
-	pthread_mutex_unlock(&(*rq)->mutex);
-	sem_post(&(*rq)->item);
+	sem_wait(&rq->remain);
+	pthread_mutex_lock(&rq->mutex);
+	rq->ringbuffer[rq->front++ & (rq->rq_capacity - 1)] = select_job(num);
+	pthread_mutex_unlock(&rq->mutex);
+	sem_post(&rq->item);
 }
 
 /* @num: decide which jobs is selected 
@@ -157,7 +158,7 @@ void *worker(void *arg)
 
 	void (*t)();
 	while(finish) {
-		t = task(rq);
+		t = take_task(rq);
 
 		if (t == NULL)
 			break;
@@ -197,7 +198,7 @@ void interrupt(int num)
 						jd = strtok_r(c, " ", &sptr);
 						while(jd = strtok_r(NULL, " ", &sptr)) {
 							if (n = atoi(jd)) {
-								add_task(&sigready_queue, n-1);
+								add_task(sigready_queue, n-1);
 								printf("task: %d\n", n);
 							}
 						}

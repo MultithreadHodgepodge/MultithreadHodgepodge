@@ -50,11 +50,10 @@ void foo3();
 void *worker(void *);
 void interrupt(int );
 void close_threadpool(RQ_t **,TINFO_t **,int);
-void add_task(RQ_t **, int );
+void add_task(RQ_t *, int );
 void show(RQ_t **);
-void* task(RQ_t *);
+void* take_task(RQ_t *);
 RQ_t *sigready_queue;
 void* select_job(int );
 
 static int finish = 1;
-

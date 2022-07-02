@@ -11,7 +11,7 @@ int main()
 	threadpool_init(&tinfo, &rq,threadQ);
 	
 	for (int i = 0;i < rq_capacity + 10;++i) {
-		add_task(&rq, i % 3);
+		add_task(rq, i % 3);
 	}
 
 	//show(&rq);
