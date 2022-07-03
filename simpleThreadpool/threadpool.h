@@ -5,7 +5,7 @@
 #include <semaphore.h>
 #include <pthread.h>
 #include <errno.h>
-
+#include"../list/list.h"
 /*
  * Info about readyqueue 
  * @rq_capacity: ringbuffer's maximum element
@@ -24,10 +24,14 @@ typedef struct Readyqueue {
 	sem_t item, remain;
 	pthread_mutex_t mutex;
 	void (**ringbuffer)();
-	
+	task_list *task_rq;
 
 }RQ_t;
 
+typedef struct __task{
+	list_t *list;
+	void (*task_func)();
+}task_list;
 /*
  * Info about each thread
  * @thread_id: Id of thread
@@ -55,5 +59,4 @@ void show(RQ_t **);
 void* take_task(RQ_t *);
 RQ_t *sigready_queue;
 void* select_job(int );
-
 static int finish = 1;

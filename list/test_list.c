@@ -6,10 +6,12 @@ int main()
 {
     
     list_t* new_list=NULL;
-    list_add_before_larger_smaller(&new_list,(void *)3,bigger);
-    list_add_before_larger_smaller(&new_list,(void *)2,bigger);
+    list_t *node1=(list_t*)malloc(sizeof(list_t)),*node2=(list_t*)malloc(sizeof(list_t)),*node3=(list_t*)malloc(sizeof(list_t)),*node4=(list_t*)malloc(sizeof(list_t));
+    list_add_tail(&new_list,node1);
+    list_add_tail(&new_list,node2);
+    list_add_tail(&new_list,node3);
     
-    list_add_before_larger_smaller(&new_list,(void *)1,bigger);
+    list_add_tail(&new_list,node4);
     
     //list_remove_tail(&new_list);
     //list_remove_tail(&new_list);
@@ -18,7 +20,7 @@ int main()
     // list_remove_tail(&new_list);
     // list_remove_tail(&new_list);
     // list_remove_tail(&new_list);
-    list_add_before_larger_smaller(&new_list,(void *)8,bigger);
+    //list_add_tail(&new_list,(void *)8,bigger);
 
     print_list(&new_list);
     free_list(&new_list);

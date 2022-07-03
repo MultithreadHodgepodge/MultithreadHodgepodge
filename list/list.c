@@ -2,100 +2,96 @@
 #include<limits.h>
 
 /*
-* Add node to head of list
+* create_list()-Add node to head of list
 * @list: A pointer to pointer which point to list 
 * @node_value: Value of node added
 */
 
-void create_list(list_t **head, void *node_value) {
+void create_list(list_t **head) {
     if (*head) {
         printf("List Exist\n");
     } else {
         printf("List Creation\n");
-        printf("Add node %p\n",node_value);
         *head=(list_t *)malloc(sizeof(list_t));
         if (!head) {
             puts("List memory allocate fail\n");
             return;
         }   
-        (*head)->value=node_value;
         (*head)->prev=*head;
         (*head)->next=*head;
     }
-    return ;
 }
 
 /*
 * Add node to head of list
 * @list: A pointer to pointer which point to list 
-* @node_value: Value of node added
+* @node: Node to be added
 */
-void list_add_head(list_t** list, void* node_value){
+void list_add_head(list_t** list, list_t *node){
     
     if(!(*list)){
-        create_list(list, node_value);
+        create_list(list);
         return ;
     }
-    list_t* new_node=(list_t *)malloc(sizeof(list_t));
-    if (!new_node) {
-        puts("list add head memory allocate fail");
+
+    if (!node) {
+        puts("Node is empty\n");
         return ;
     }
-    new_node->value=node_value;
-    new_node->prev=(*list)->prev;
-    (*list)->prev->next=new_node;
-    (*list)->prev=new_node;
-    new_node->next=*list;
-    *list=new_node;
-    printf("Add node %p\n",node_value);
+
+    node->prev=(*list)->prev;
+    (*list)->prev->next=node;
+    (*list)->prev=node;
+    node->next=*list;
+    *list=node;
+    printf("Node is added\n");
 }
 
 /*
 * Add node to tail of list
 * @list: A pointer to pointer which point to list 
-* @node_value: Value of node added
+* @node: Node to be added
 */
-void list_add_tail(list_t** list, void* node_value){
+void list_add_tail(list_t** list,  list_t *node){
 
     if(!(*list)){
-        create_list(list, node_value);
+        create_list(list);
         return ;
     }
-    list_t* new_node=(list_t *)malloc(sizeof(list_t));
-    if (!new_node) {
-        puts("list add tail memory allocate fail");
+
+    if (!node) {
+        puts("Node is empty\n");
         return ;
     }
-    new_node->value=node_value;
-    (*list)->prev->next=new_node;
-    new_node->prev=(*list)->prev;
-    new_node->next=(*list);
-    (*list)->prev=new_node;
-    printf("Add node %p\n",node_value);
+    node->prev=(*list)->prev;
+    (*list)->prev->next=node;
+    (*list)->prev=node;
+    node->next=*list;
+    (*list)->prev=node;
+    printf("Node is added\n");
 
 }
 
 /*
 * Add node after specific node value in list
 * @list: A pointer to pointer which point to list 
-* @node_value: Value of node added
-* @specific_node_value: Value of node which want to add after
+* @node: Node to be added
+* @specific_node: Node which want to add after
 */
-void list_add_after_specific_node(list_t** list, void* node_value, void* specific_node_value){
+void list_add_after_specific_node(list_t** list, list_t *node, list_t *specific_node){
     if(!(*list)){
-        create_list(list, node_value);
+        create_list(list);
         return ;
     }
     list_t *head = *list;
-    list_t* new_node=(list_t *)malloc(sizeof(list_t));
-    new_node->value=node_value;
+
     do{
-        if(head->value==specific_node_value&&head->value!=head->next->value){
-            printf("Add node %p\n",node_value);
-            new_node->next=head->next;
-            new_node->prev=head;
-            head->next=new_node;
-            new_node->next->prev=new_node;
+        if(head==specific_node){
+            printf("Node is added\n");
+            node->next=head->next;
+            node->prev=head;
+            head->next=node;
+            node->next->prev=node;
             return;
         }
 
@@ -103,40 +99,6 @@ void list_add_after_specific_node(list_t** list, void* node_value, void* specifi
     }while(head != *list);
 }
 
-/*
-* Add node before the first node's value larger or smaller than node_value in list
-* @list: A pointer to pointer which point to list 
-* @node_value: Value of node added
-* @compare: function pointer to the compare function. bigger: add before first larget smaller: add before first smaller 
-*/
-void list_add_before_larger_smaller(list_t** list, void* node_value,int( *compare)(const void *, const void *)){
-    if(!(*list)){
-        create_list(list, node_value);
-        return ;
-    }
-    list_t *head = *list;
-    list_t* new_node=(list_t *)malloc(sizeof(list_t));
-    new_node->value=node_value;
-    do{
-        if(compare(&new_node->value,&head->value)>=0){
-            printf("Add node %p\n",node_value);
-            new_node->next=head;
-            new_node->prev=head->prev;
-            head->prev=new_node;
-            new_node->prev->next=new_node;
-            if(head==*list){
-                *list=new_node;
-            }
-            return;
-        }
-
-        head = head->next;
-    }while(head != *list);
-    new_node->prev=head->prev;
-    new_node->next=head;
-    head->prev->next=new_node;
-    head->prev=new_node;
-}
 
 /*
 * Remove the list from head
@@ -148,7 +110,7 @@ void list_remove_head(list_t **list){
         return;
     }
     list_t *temp=*list;
-    printf("Remove node %p \n",temp->value);
+    printf("Node is removed\n");
     //If only one node, and you free like line 70 71. It won't take place because the address is still in *list but the memory is freed(Segmentation Fault).
     //當只有一個node如果還是像第70 71行這樣雖然空間被釋放了但位址只有temp被清成NULL(*list的還存著原本的外面還是找得到位置不會是NULL)，多個node可以因為我們還需存下個node的位址，所以當一個node我們直接free(*list)再清成NULL就好
     if(*list==(*list)->next){
@@ -180,7 +142,7 @@ void list_remove_tail(list_t **list){
    
     /* Check if only one node*/
     if(*list==(*list)->next){
-        printf("Remove node %p \n",(*list)->value);
+        printf("Node is removed\n");
         free(*list);
         *list=NULL;
         return;
@@ -193,7 +155,7 @@ void list_remove_tail(list_t **list){
      * - - - - - -
      */
     temp->prev=temp->prev->prev; 
-    printf("Remove node %p \n",temp->prev->next->value);
+    printf("Node is removed\n");
     /* A  non <- C
      * |         |
      * - - - - - -
@@ -210,9 +172,10 @@ void list_remove_tail(list_t **list){
 /*
 * Remove specific node value in the list 
 * @list: A pointer to pointer which point to list  
+* @node: Node to be removed
 */
 
-void list_remove_specific_node(list_t **list, void *value){
+void list_remove_specific_node(list_t **list, list_t *node){
     /* Check no node */
     if(!(*list)){
         printf("Empty List nothing to remove\n");
@@ -221,8 +184,8 @@ void list_remove_specific_node(list_t **list, void *value){
    
 
     
-    while((*list) && (*list)->value==value){
-        printf("Remove node %p \n",(*list)->value);
+    while((*list) && (*list)==node){
+        printf("Node is removed\n");
         if(*list==(*list)->next){
             free(*list);
             *list=NULL;
@@ -239,8 +202,8 @@ void list_remove_specific_node(list_t **list, void *value){
     
     list_t *head = *list;
     do{
-        if((*list)->value==value){
-            printf("Remove node %p \n",(*list)->value);
+        if((*list)==node){
+            printf("Node is removed\n");
             (*list)->prev->next=(*list)->next;
             (*list)->next->prev=(*list)->prev;
 
@@ -260,8 +223,9 @@ void print_list(list_t** cur){
         return;
     }
     list_t *head = *cur;
+    int i=0;
     do{
-        printf("%p\n",(*cur)->value);
+        printf("%d\n",i++);
         cur = &(*cur)->next;
     }while(*cur != head);
 }
@@ -296,30 +260,31 @@ void free_list(list_t **list){
 * @list: A pointer to pointer which point to list
 * @compare: Function pointer to compare  function   
 */
-void sort(list_t **head, int( *compare)(const void *, const void *)) 
-{   
-    void mergesort(list_t **, int(*)(const void *, const void *));
+
+//void sort(list_t **head, int( *compare)(const void *, const void *)) 
+//{   
+//    void mergesort(list_t **, int(*)(const void *, const void *));
 
     /* quntity below 2 skip sort */
-    if (!*head || !(*head)->next) 
-        return ;
+//    if (!*head || !(*head)->next) 
+//        return ;
 
     /* make list be not circular */
-    (*head)->prev->next = NULL;
+//    (*head)->prev->next = NULL;
     
 
-    mergesort(head, compare);
+//    mergesort(head, compare);
     
     /* find tail */
-    list_t *tail = *head;
-    while(tail->next) {
-        tail = tail->next;
-    }
+//    list_t *tail = *head;
+//    while(tail->next) {
+//        tail = tail->next;
+//    }
     
     /* make list be circular */
-    (*head)->prev= tail;
-    tail->next = (*head);
-}
+//    (*head)->prev= tail;
+//    tail->next = (*head);
+//}
 
 /*
 * mergesort()-Sort the list
@@ -329,7 +294,7 @@ void sort(list_t **head, int( *compare)(const void *, const void *))
 void mergesort(list_t **head, int (*compare)(const void *, const void *)) 
 {
 
-    /* use fast slow pointer method */
+    //use fast slow pointer method 
 
     if (!*head || !((*head)->next)) { 
         return ;
@@ -338,13 +303,13 @@ void mergesort(list_t **head, int (*compare)(const void *, const void *))
     list_t *slow = *head;
     list_t *fast = (*head)->next;
 
-    /* find middle node */
+    //find middle node */
     while(fast && fast->next) {
         slow = slow->next;
         fast = fast->next->next;
     }
 
-    /* break into two list */
+    // break into two list */
     fast = slow->next;
     slow->next = NULL;
     slow = *head;
@@ -353,12 +318,12 @@ void mergesort(list_t **head, int (*compare)(const void *, const void *))
     mergesort(&fast, compare);
 
 
-    /* phase merge */
+    // phase merge */
     list_t **list = head;
     list_t **stub = NULL;
     for (list_t **node = NULL;slow && fast;list = &(*list)->next) {
         /* take the bigger one */
-        node = (compare(&slow->value, &fast->value) < 0)?&slow:&fast;
+        //node = (compare(&slow->value, &fast->value) < 0)?&slow:&fast;
         /* list is current next pointer address ,and node is the bigger node address
         *  dereference these two pointer will be like
         *  currentNode->next = biggerNode
@@ -377,6 +342,7 @@ void mergesort(list_t **head, int (*compare)(const void *, const void *))
 * list_find_max()-Find Maximum value in the list
 * @list: A pointer to pointer which point to list  
 */
+/*
 void *list_find_max(list_t **list){
     list_t *head = *list;
     void *max=(void *)INT_MIN;
@@ -388,11 +354,12 @@ void *list_find_max(list_t **list){
     }while(head != *list);
     return max;
 }
-
+*/
 /*
 * list_find_min()-Find Minimum value in the list
 * @list: A pointer to pointer which point to list  
 */
+/*
 void *list_find_min(list_t **list){
     list_t *head = *list;
     void *min=(void *)INT_MAX;
@@ -403,7 +370,7 @@ void *list_find_min(list_t **list){
     }while(head != *list);
     return min;
 }
-
+*/
 /*
 * list_reverse()-Reverse the list
 * @list: A pointer to pointer which point to list  
