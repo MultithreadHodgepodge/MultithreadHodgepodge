@@ -22,7 +22,6 @@ int main()
     // list_remove_tail(&new_list);
     //list_add_tail(&new_list,(void *)8,bigger);
 
-    print_list(&new_list);
     free_list(&new_list);
     //list_reverse(&new_list);
 
