@@ -5,7 +5,7 @@ obj-m +=  $(TARGET).o
 
 CPPCHECK := 1
 CC := gcc
-CFLAG := -O
+CFLAG := -pthread -o
 
 KERNELDIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
@@ -30,7 +30,8 @@ uninstall:
 
 test: all $(TESTOBJ) install use
 $(TESTOBJ):$(TESTSRC)
-	$(CC) -o $@ $^
+	$(CC) $(CFLAG) $@ $^
 
 use:
 	sudo ./$(TESTOBJ) > out.txt
+

@@ -1,30 +1,63 @@
 #include <stdio.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <pthread.h>
+#include <time.h>
+#include <stdlib.h>
 
 #define OBJECT_DEVICE "/dev/rwdriver"
 
-int main() 
+void *read_work(void *);
+void *write_work(void *);
+void *select_jobs();
+
+void *(*work[2])(void *) = {
+	read_work,
+	write_work,	
+};
+
+int main(void ) 
 {
 	int fd = open(OBJECT_DEVICE, O_RDWR); 
-/*	
-	char buf1[100] = {0};
-	if(read(fd, buf1, 100)) {
-		puts("No data in buffer");
-	} 
+	srand(time(NULL));	
+	pthread_t id[5];
+	
+	int th_quntity = rand() % 5 + 1;
 
-	char buf2[] = {"Data is here"};
-	if (write(fd, buf2, sizeof(buf2))) {
-		puts("No Space for write");
-	}
+	for(int i = 0;i < th_quntity;i++)
+		pthread_create(&id[i], NULL, select_jobs(), &fd);
 
-	char buf3[101] = {0};
-	if (read(fd, buf, 100)) {
-		puts("No data in buffer");
-	}
 
-	puts(buf3);	
-*/
+	for (int i = 0;i < th_quntity;i++)
+		pthread_join(id[i], NULL);
+
 	close(fd);
 	
 	return 0;	
+}
+
+void *select_jobs()
+{
+	return work[rand() % 2];
+}
+
+void *read_work(void *arg) 
+{
+	int fd = *(int *)arg;
+	char buf[100] = {0};
+	if(read(fd, buf, 100)) {
+		puts("No data in buffer");
+	} 
+	if (buf[0])
+		puts(buf);
+}
+
+
+void *write_work(void *arg) 
+{
+	int fd = *(int *)arg;
+	char buf[] = {"Data is here"};
+	if (write(fd, buf, sizeof(buf))) {
+		puts("No Space for write");
+	}
 }
