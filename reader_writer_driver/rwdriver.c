@@ -41,7 +41,6 @@ RW_buffer *buff;
 
 
 static struct class *cls;
-unsigned char kernel_buffer[BUF_LEN] = {0};
 
 /* VFS register the driver method */
 static struct file_operations fops = {
@@ -177,11 +176,11 @@ static ssize_t rwdriver_write(struct file *filp, const char __user *buffer,
 
 	snprintf(buff->msg, len, buffer);
 
+	pr_info("buffer contains: %s\n", buff->msg);
 	write_unlock_irqrestore(&buff->myrwlock, flags);
 	
 	pr_info("Write Unlocked\n");
 
-	pr_info("buffer contains: %s\n", buff->msg);
 	buff->size = len;
 	return 0;
 }
