@@ -17,6 +17,11 @@
  * @mutex : critical section control for take jobs and add jobs
  * @ringbuffer: it will calloc a circular queue for containing jobs(Pointer to pointer)
  */
+
+typedef struct __task{
+	list_t *list;
+	void (*task_func)();
+}task_list;
 typedef struct Readyqueue {	
 	int rq_capacity;
 	int threadQ;
@@ -28,10 +33,6 @@ typedef struct Readyqueue {
 
 }RQ_t;
 
-typedef struct __task{
-	list_t *list;
-	void (*task_func)();
-}task_list;
 /*
  * Info about each thread
  * @thread_id: Id of thread

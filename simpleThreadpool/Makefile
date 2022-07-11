@@ -12,6 +12,7 @@ SOURCE:= $(shell find  -name '*.c')
 all: $(OBJS)
 	$(CC) $(OBJS) $(CFLAG) $(TARGET)
 
+#GNU Make pattern rule: if %.o is not exist, use %.c and rule make a %.o file
 # all c file will be compile into object file
 # gcc -c := compile but link
 %.o: %.c
