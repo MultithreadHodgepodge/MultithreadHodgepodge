@@ -2,11 +2,12 @@
 
 int main()
 {	
+
 	signal(SIGINT, interrupt);
 	TINFO_t *tinfo;
 	RQ_t *rq;
 	int rq_capacity=20;
-	int threadQ=4;
+	int threadQ=1;
 	readyqueue_init(&rq,rq_capacity,threadQ);
 	threadpool_init(&tinfo, &rq,threadQ);
 	
@@ -17,5 +18,6 @@ int main()
 	//show(&rq);
 
 	close_threadpool(&rq,&tinfo,threadQ);
+	
 	puts("\n----------finished----------");
 }

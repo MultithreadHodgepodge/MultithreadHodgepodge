@@ -1,7 +1,8 @@
 CC := gcc
 CFLAG := -pthread  -o
 TARGET := ./threadpool
-
+LIST_SOURCE:=../list/list.c
+LIST_OBJ:= list.o
 # find all c file 
 SRCS := $(wildcard *.c)
 
@@ -9,13 +10,13 @@ SRCS := $(wildcard *.c)
 OBJS := $(SRCS:.c=.o)
 SOURCE:= $(shell find  -name '*.c')
 
-all: $(OBJS)
+all: $(OBJS) 
 	$(CC) $(OBJS) $(CFLAG) $(TARGET)
 
 # all c file will be compile into object file
 # gcc -c := compile but link
-%.o: %.c
-	$(CC) -c  $< $(CFLAG) $@
+%.o: %.c 
+	$(CC)  $< $(LIST_SOURCE) $(CFLAG) $@
 
 exe: clean all
 	$(TARGET)

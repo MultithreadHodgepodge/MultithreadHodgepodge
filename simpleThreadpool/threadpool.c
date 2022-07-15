@@ -1,12 +1,17 @@
 #include "threadpool.h"
 
-
+/** 
+ * readyqueue_init()- Initialize RQ_T
+ * @rq: Pointer to pointer RQ_t
+ * @rq_capacity: Size of RQ
+ * @threadQ: Thread number operating on RQ
+ */
 void readyqueue_init(RQ_t **rq,int rq_capacity, int threadQ)
 {
 	int front, end;
 	sem_t item, remain;
 	pthread_mutex_t mutex;
-	void *ringbuffer;
+	//void *ringbuffer;
 
 	*rq = (RQ_t *)malloc(sizeof(RQ_t));
 	if (*rq == NULL) {
@@ -20,19 +25,16 @@ void readyqueue_init(RQ_t **rq,int rq_capacity, int threadQ)
 		int c = 1;
 		while(rq_capacity >>= 1)c++;
 		rq_capacity = 1<<c;
-		//printf("cap: %d \n", rq_capacity);
 	}
 
-	(*rq)->ringbuffer = calloc(rq_capacity, sizeof(void *));
-	if ((*rq)->ringbuffer == NULL) {
-		goto ringbuffer_fail;
-	}	
 	(*rq)->front = (*rq)->end = 0;
 	sem_init(&(*rq)->item, 0, 0);
 	sem_init(&(*rq)->remain, 0, rq_capacity);
 	pthread_mutex_init(&(*rq)->mutex, NULL);
 	(*rq)->rq_capacity=rq_capacity;
 	(*rq)->threadQ=threadQ;
+	(*rq)->task_rq=(task_list *)malloc(sizeof(task_list));
+	(*rq)->task_rq=NULL;
 	sigready_queue = *rq;
 
 	return;	
@@ -43,11 +45,9 @@ ringbuffer_fail:
 	exit(errno);
 
 }
-
-/* @rq: threadpool's ringbuffer 
- * @t : contain job assgning to thread
+/** take_task()- Get task from RQ 
+ * @rq: Pointer to RQ_t
  */
-
 void* take_task(RQ_t *rq)
 {
 	if (rq == NULL) {
@@ -55,38 +55,76 @@ void* take_task(RQ_t *rq)
 		exit(3);
 	}
 
-	void* t;
+	void (*t)();
+	t = NULL;
+
 	sem_wait(&rq->item);
 
 	if (!finish)
 		return NULL;
 
 	pthread_mutex_lock(&rq->mutex);	
-	t = rq->ringbuffer[rq->end++ & (rq->rq_capacity - 1)];
+	
+
+	t=rq->task_rq->task_func;
+	task_list *temp=rq->task_rq;
+	rq->task_rq=list_entry((rq->task_rq->list.next),task_list ,list);
+
 	pthread_mutex_unlock(&rq->mutex);
 	sem_post(&rq->remain);
 
 	return t;
 }
+/** 
+ * create_task_list()-@rq :Create new task_list
+ * @rq: Pointer to pointer to task_list
+ */
+void create_task_list(task_list **task){
+	*task=(task_list*)malloc(sizeof(task_list));
+	
+	list_t *head = &(*task)->list;
+	CONNECT_SELF(head)
+	(*task)->task_func=NULL;
+}
+/** 
+ * add_task_list()-@rq :Add task into RQ
+ * @rq: Pointer to pointer to RQ_t
+ * @new_task: Pointer to task_list 
+ */
+void add_task_list(RQ_t **rq,task_list *new_task){
+	//Check if task_rq is empty
+	if((*rq)->task_rq==NULL)
+	{
+		(*rq)->task_rq=new_task; 
+		return;
+	}
+	list_add_tail((&(*rq)->task_rq->list),&new_task->list);
 
-/* @rq :threadpool's ringbuffer
+}
+/** 
+ * add_task()-Add task into RQ
+ * @rq: Pointer to RQ_t
  * @num: choose which jobs selected
  */
-
 void add_task(RQ_t *rq, int num)
 {
 	sem_wait(&rq->remain);
 	pthread_mutex_lock(&rq->mutex);
-	rq->ringbuffer[rq->front++ & (rq->rq_capacity - 1)] = select_job(num);
+	task_list *new_task;
+	create_task_list(&new_task);
+	new_task->task_func=select_job(num);
+	add_task_list(&rq,new_task);
 	pthread_mutex_unlock(&rq->mutex);
 	sem_post(&rq->item);
 }
 
-/* @num: decide which jobs is selected 
- */
+/** select_job()-Select Task 
+* @num: decide which jobs is selected 
+*/
 
 void* select_job(int num)
 {
+
 	void (*factory[])() = {foo1, foo2, foo3};
 	if (num < 3)
 		return factory[num];
@@ -94,8 +132,10 @@ void* select_job(int num)
 		return  factory[0];
 }	
 
-/* @tinfo: contain thread information: tid, thread worker id, jobs pointer ....
- * @rq   : threadpool's ringbuffer, make worker thread to know the address of readyqueue 
+/** threadpool_init()- Initialize threadpool
+ * @tinfo: contain thread information: tid, thread worker id, jobs pointer ....
+ * @rq: Pointer to pointer to RQ_t make worker thread to know the address of readyqueue 
+ * @threadQ: Thread number
  */
 
 void threadpool_init(TINFO_t **tinfo, RQ_t **rq,int threadQ)
@@ -128,7 +168,8 @@ fail:
 	exit(2);
 }
 
-/* @rq   : threadpool's ringbuffer
+/** close_threadpool()-Close RQ 
+ * @rq   : threadpool's ringbuffer
  * @tinfo: contain current thread information 
  */
 
@@ -139,14 +180,13 @@ void close_threadpool(RQ_t **rq, TINFO_t **tinfo, int threadQ)
 		pthread_join((*tinfo)[i].thread_id, &ret);
 
 	free(*tinfo);
-	free((*rq)->ringbuffer);
+	free((*rq)->task_rq);
 	free(*rq);
 }
 
-/* 
-   @arg: pthread_create's argument
- */
-
+/** worker()- Take task to execute
+* @arg: pthread_create's argument
+*/
 void *worker(void *arg)
 {
 
@@ -157,20 +197,23 @@ void *worker(void *arg)
 	}
 
 	void (*t)();
+	t = foo1;
 	while(finish) {
+
 		t = take_task(rq);
 
-		if (t == NULL)
+		if (t == NULL){
+			
 			break;
+		}
 		t();
 	}
 	return t;
 }
 
-/* 
-   @num: tell which asychronize interrupt happend 
- */
-
+/** interrupt()-Tell process do what
+* @num: tell which asychronize interrupt happend 
+*/
 void interrupt(int num)
 {
 	if (num == SIGINT) {
@@ -199,7 +242,6 @@ void interrupt(int num)
 						while(jd = strtok_r(NULL, " ", &sptr)) {
 							if (n = atoi(jd)) {
 								add_task(sigready_queue, n-1);
-								printf("task: %d\n", n);
 							}
 						}
 						break;

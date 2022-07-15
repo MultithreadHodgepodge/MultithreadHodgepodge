@@ -37,11 +37,18 @@
  * @list: pointer to pointer to list node(Add @node before this list node)
  */
 #define CONNECT_PREV_NEXT(node,list)\
-    node->prev=(*list)->prev; \
-    (*list)->prev->next=node; \
-    (*list)->prev=node; \
-    node->next=*list; \
-
+    node->prev=list->prev; \
+    list->prev->next=node; \
+    list->prev=node; \
+    node->next=list; \
+    
+/**
+ * CONNECT_SELF() - Point node prev and next to node
+ * @node: pointer to list node 
+ */
+#define CONNECT_SELF(node) \
+    node->prev=node;\
+    node->next=node;\
 
 typedef struct list{
     struct list* next;
@@ -49,9 +56,9 @@ typedef struct list{
 }list_t;
 
 
-void create_list(list_t **head);
-void list_add_head(list_t**, list_t*);
-void list_add_tail(list_t**, list_t*);
+void create_list(list_t **);
+void list_add_head(list_t*, list_t*);
+void list_add_tail(list_t*, list_t*);
 void list_remove_head(list_t** );
 void list_remove_tail(list_t** );
 void list_remove_specific_node(list_t**, list_t*);

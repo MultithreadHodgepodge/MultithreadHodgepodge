@@ -6,6 +6,10 @@
 #include <pthread.h>
 #include <errno.h>
 #include"../list/list.h"
+typedef struct __task{
+	list_t list;
+	void (*task_func)();
+}task_list;
 /*
  * Info about readyqueue 
  * @rq_capacity: ringbuffer's maximum element
@@ -28,10 +32,7 @@ typedef struct Readyqueue {
 
 }RQ_t;
 
-typedef struct __task{
-	list_t *list;
-	void (*task_func)();
-}task_list;
+
 /*
  * Info about each thread
  * @thread_id: Id of thread

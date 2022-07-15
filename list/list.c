@@ -15,10 +15,11 @@ void create_list(list_t **head) {
         if (!head) {
             puts("List memory allocate fail\n");
             return;
-        }   
-        (*head)->prev=*head;
-        (*head)->next=*head;
+        }  
+        //*head=NULL;
     }
+    CONNECT_SELF((*head))
+
 }
 
 /**
@@ -26,20 +27,9 @@ void create_list(list_t **head) {
 * @list: A pointer to pointer which point to list 
 * @node: Node to be added
 */
-void list_add_head(list_t** list, list_t *node){
-    
-    if(!(*list)){
-        create_list(list);
-        return ;
-    }
-
-    if (!node) {
-        puts("Node is empty\n");
-        return ;
-    }
-
+void list_add_head(list_t* list, list_t *node){
     CONNECT_PREV_NEXT(node,list)
-    *list=node;
+    list=node;
     printf("Node is added\n");
 }
 
@@ -48,19 +38,10 @@ void list_add_head(list_t** list, list_t *node){
 * @list: A pointer to pointer which point to list 
 * @node: Node to be added
 */
-void list_add_tail(list_t** list,  list_t *node){
+void list_add_tail(list_t* list,  list_t *node){
 
-    if(!(*list)){
-        create_list(list);
-        return ;
-    }
-
-    if (!node) {
-        puts("Node is empty\n");
-        return ;
-    }
     CONNECT_PREV_NEXT(node,list)
-    (*list)->prev=node;
+    (list)->prev=node;
     printf("Node is added\n");
 
 }
@@ -213,13 +194,13 @@ void list_remove_specific_node(list_t **list, list_t *node){
 * @list: A pointer to pointer which point to list  
 */
 void free_list(list_t **list){
-    if(!*list) {
+    if(!(*list)) {
         printf("Nothing to free\n");
         return;
     }
 
     list_t *tail= (*list)->prev;
-    list_t *prev = *list;
+    list_t *prev;
     list_t *cur =  *list;
     while(cur != tail) {
         prev = cur;

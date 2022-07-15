@@ -6,12 +6,13 @@ int main()
 {
     
     list_t* new_list=NULL;
+    create_list(&new_list);
     list_t *node1=(list_t*)malloc(sizeof(list_t)),*node2=(list_t*)malloc(sizeof(list_t)),*node3=(list_t*)malloc(sizeof(list_t)),*node4=(list_t*)malloc(sizeof(list_t));
-    list_add_tail(&new_list,node1);
-    list_add_tail(&new_list,node2);
-    list_add_tail(&new_list,node3);
+    list_add_tail(new_list,node1);
+    list_add_tail(new_list,node2);
+    list_add_tail(new_list,node3);
     
-    list_add_tail(&new_list,node4);
+    list_add_tail(new_list,node4);
     
     //list_remove_tail(&new_list);
     //list_remove_tail(&new_list);
