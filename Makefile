@@ -7,6 +7,8 @@ OBJECTS_RB=test_RB.o
 OBJECTS_BINARYTREE=test_binary_tree.o
 OBJECTS_BINARYSEARCHTREE=test_binary_search_tree.o
 OBJECTS_THPOOL = test_threadpool.o
+OBJECTS_RWLOCK = test_rwlock.o
+
 ## GCC argument
 CC = gcc
 .PHONY: clean
@@ -22,6 +24,7 @@ TREE_DIR=tree/
 BINARY_TREE_DIR=tree/binary_tree/
 BINARY_SEARCH_TREE_DIR=tree/binary_search_tree/
 THPOOL_DIR = simpleThreadpool/
+RWLOCK_DIR = rwlock/
 
 ## Target DIR
 OBJ_DIR=build/
@@ -37,6 +40,7 @@ RB_SOURCE:= $(shell find $(RB_DIR) -name '*.c')
 COMMON_SOURCE:=$(filter-out $(TEST_LIST_FILE),$(LIST_SOURCE))
 TREE_SOURCE:=$(shell find $(TREE_DIR) -maxdepth 1 -name '*.c')
 THPOOL_SOURCE := $(shell find $(THPOOL_DIR) -name '*.c')
+RWLOCK_SOURCE := $(shell find $(RWLOCK_DIR) -name '*.c')
 
 BINARY_TREE_SOURCE:=$(shell find $(BINARY_TREE_DIR) -name '*.c')
 BINARY_SEARCH_TREE_SOURCE:=$(shell find $(BINARY_SEARCH_TREE_DIR) -name '*.c')
@@ -74,6 +78,10 @@ thpool: clean $(OBJ_DIR)$(OBJECTS_THPOOL)
 $(OBJ_DIR)$(OBJECTS_THPOOL): $(THPOOL_SOURCE) $(COMMON_SOURCE)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@ $^
+rwlock: clean $(OBJ_DIR)$(OBJECTS_RWLOCK)
+$(OBJ_DIR)$(OBJECTS_RWLOCK): $(RWLOCK_SOURCE)
+	mkdir -p $(@D)
+	$(CC) $(CFLAGS) $@ $^ 
 
 clean:
 	rm -rf ./$(OBJ_DIR)*.o >/dev/null 2>/dev/null || true

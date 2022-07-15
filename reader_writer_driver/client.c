@@ -23,6 +23,8 @@ int main(void )
 	pthread_t id[5];
 	
 	int th_quntity = rand() % 5 + 1;
+	
+	write_work(&fd);
 
 	for(int i = 0;i < th_quntity;i++)
 		pthread_create(&id[i], NULL, select_jobs(), &fd);
@@ -31,6 +33,8 @@ int main(void )
 	for (int i = 0;i < th_quntity;i++)
 		pthread_join(id[i], NULL);
 
+	read_work(&fd);
+
 	close(fd);
 	
 	return 0;	
@@ -38,7 +42,7 @@ int main(void )
 
 void *select_jobs()
 {
-	return work[rand() % 2];
+	return work[rand() & 1];
 }
 
 void *read_work(void *arg) 
