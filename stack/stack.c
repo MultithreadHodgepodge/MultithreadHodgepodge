@@ -1,8 +1,8 @@
 #include<stdio.h>
 #include "stack.h"
-/*
-* Create and initialize stack
-* @stack: A pointer to pointer which point to stack 
+/**
+* create_stack()-Create and initialize stack
+* @stack: A pointer to pointer to stack 
 * @capacity: Capacity of stack
 */
 void create_stack(stack_t **stack,int capacity){
@@ -14,11 +14,9 @@ void create_stack(stack_t **stack,int capacity){
     printf("Stack Creation\n");
 
     *stack=(stack_t *)malloc(sizeof(stack_t));
-    //list_t *top=(list_t *)malloc(sizeof(list_t));
     (*stack)->top=NULL;
     (*stack)->insert_func=list_add_tail;
     (*stack)->remove_func=list_remove_tail;
-    (*stack)->print_func=print_list;
     (*stack)->free_func=free_list;
     (*stack)->capacity=capacity;
     (*stack)->count=0;
@@ -33,13 +31,13 @@ void create_stack(stack_t **stack,int capacity){
     pthread_cond_init((*stack)->stack_cond_empty,&cattr);
 }
 
-/*
-* Push node to stack
-* @stack_param: A thread_param structure contains struct and node value
+/**
+* push()-Push node to stack
+* @stack_param: Parameter to thread
 */
 void push(threadpa_t *stack_param){
     stack_t *stack= stack_param->stack;
-    void *value=stack_param->value;
+
 
     if(!stack){
         printf("------Stack not exists------\n");
@@ -51,16 +49,16 @@ void push(threadpa_t *stack_param){
         printf("------Please Wait!! Stack is full !!------\n");
         pthread_cond_wait(stack->stack_cond_cap,stack->stack_lock);
     }
-    
-    stack->insert_func(&(stack->top),value);
+    if(!(stack->top)) create_list(&(stack->top));
+    else    stack->insert_func(stack->top, stack_param->node);
     stack->count++;
     pthread_cond_signal(stack->stack_cond_empty);
     pthread_mutex_unlock(stack->stack_lock);
 }
 
-/*
-* Remove node from stack
-* @stack: A pointer to pointer which point to stack 
+/**
+* pop()-Remove node from stack
+* @stack: A pointer to pointer to stack 
 */
 void pop(stack_t *stack){
     if(!stack){
@@ -78,20 +76,10 @@ void pop(stack_t *stack){
     pthread_mutex_unlock(stack->stack_lock);
 }
 
-/*
-* Print node in stack
-* @stack: A pointer to pointer which point to stack 
+/**
+* free_stack()-Free stack
+* @stack: A pointer to stack 
 */
-void print_stack(stack_t *stack){
-    if(!stack||isEmpty(stack)) 
-    {
-        printf("Stack is Empty!\n");
-        return ;
-    }
-    stack->print_func(&stack->top);
-}
-
-
 void free_stack(stack_t *stack){
     if(!stack) 
     {

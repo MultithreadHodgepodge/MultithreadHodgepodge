@@ -1,7 +1,7 @@
 #include "queue.h"
 
-/*  
-* create a queue instance 
+/**  
+* create_queue()-create a queue instance 
 * @queue: return a queue instance
 * @qun: queue quntity
 */
@@ -18,7 +18,6 @@ void create_queue(queue_t **queue, int qun)
     (*queue)->capacity = qun;
     (*queue)->enqueue = list_add_tail;
     (*queue)->dequeue = list_remove_head;
-    (*queue)->printQueue = print_list;
     (*queue)->freeQueue = free_list;
     (*queue)->queue_lock = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t));
     (*queue)->qremain = (sem_t*)malloc(sizeof(sem_t));
@@ -29,10 +28,9 @@ void create_queue(queue_t **queue, int qun)
     pthread_mutex_init((*queue)->queue_lock, NULL);
 }
 
-/*
-* add a val into queue 
-* @queue: return a queue after enqueue
-* @val  : insert value
+/**
+* enqueue()-add a node into queue 
+* @para: Parameter send to thread 
 */
 
 void enqueue(threadpa_t *para)
@@ -48,15 +46,16 @@ void enqueue(threadpa_t *para)
     }
     sem_wait(q->qremain);
     pthread_mutex_lock(q->queue_lock);
-    q->enqueue(&q->list, para->value);
+    if(!(q->list)) create_list(&(q->list));
+    else    q->enqueue(q->list, para->node);
     q->counter++;
     pthread_mutex_unlock(q->queue_lock);
     sem_post(q->qitem);
 }
 
-/*
-* remove first val in the queue
-* @queue: return a queue after dequeue
+/**
+* dequeue()-remove first node from the queue
+* @queue: pointer to pointer to queue
 */
 void dequeue(queue_t **queue)
 {
@@ -74,25 +73,9 @@ void dequeue(queue_t **queue)
 }
 
 
-/*
-* show contents of queue
-* @queue: return a queue after print_queue
-*/
-void print_queue(queue_t **queue)
-{
-    if (!*queue) {
-        puts("queue is empty\n");
-        return ;
-    }
-    pthread_mutex_lock((*queue)->queue_lock);  
-    puts("queue list: ");
-    (*queue)->printQueue(&(*queue)->list);
-    pthread_mutex_unlock((*queue)->queue_lock);
-}
-
-/*
-* free list of queue
-* @queue: return queue after free_queue
+/**
+* free_queue()-free queue
+* @queue: pointer to pointer to queue
 */
 void free_queue(queue_t **queue) 
 {

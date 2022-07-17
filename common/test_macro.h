@@ -1,6 +1,6 @@
 #define DECLARE_THREAD(type) \
         typedef struct thread_param { \
             type##_t *type;  \
-            void *value;     \
+            list_t *node;     \
         }threadpa_t;
         
