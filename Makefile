@@ -16,9 +16,8 @@ CFLAGS= -pthread -g -O0 -o
 CONFIG_BPF_SYSCALL=y
 ## Source DIR
 LIST_DIR=list/
-STACK_DIR=stack/
-QUEUE_DIR=queue/
-PRIORITYQUEUE_DIR=priority_queue/
+STACK_DIR=$(LIST_DIR)stack/
+QUEUE_DIR=$(LIST_DIR)queue/
 RB_DIR=ringbuffer/
 TREE_DIR=tree/
 BINARY_TREE_DIR=tree/binary_tree/
@@ -32,10 +31,9 @@ OBJ_DIR=build/
 ## Source .c file
 TEST_LIST_FILE= $(LIST_DIR)test_list.c
 
-LIST_SOURCE:= $(shell find $(LIST_DIR) -name '*.c')
+LIST_SOURCE:= $(shell find $(LIST_DIR) -maxdepth 1 -name '*.c')
 STACK_SOURCE:= $(shell find $(STACK_DIR) -name '*.c')
 QUEUE_SOURCE:= $(shell find $(QUEUE_DIR) -name '*.c') 
-PRIORITYQUEUE_SOURCE:= $(shell find $(PRIORITYQUEUE_DIR) -name '*.c') 
 RB_SOURCE:= $(shell find $(RB_DIR) -name '*.c')
 COMMON_SOURCE:=$(filter-out $(TEST_LIST_FILE),$(LIST_SOURCE))
 TREE_SOURCE:=$(shell find $(TREE_DIR) -maxdepth 1 -name '*.c')
@@ -56,10 +54,6 @@ $(OBJ_DIR)$(OBJECTS_STACK): $(COMMON_SOURCE) $(STACK_SOURCE)
 	$(CC) $(CFLAGS) $@ $^
 queue: clean $(OBJ_DIR)$(OBJECTS_QUEUE)
 $(OBJ_DIR)$(OBJECTS_QUEUE): $(COMMON_SOURCE) $(QUEUE_SOURCE)
-	mkdir -p $(@D)
-	$(CC) $(CFLAGS) $@ $^
-priorityqueue: clean $(OBJ_DIR)$(OBJECTS_PRIORITYQUEUE)
-$(OBJ_DIR)$(OBJECTS_PRIORITYQUEUE): $(COMMON_SOURCE) $(PRIORITYQUEUE_SOURCE)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@ $^
 rb: clean $(OBJ_DIR)$(OBJECTS_RB)

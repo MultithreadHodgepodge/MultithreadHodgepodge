@@ -1,7 +1,7 @@
-#include "../list/list.h"
+#include "../list.h"
 #include <pthread.h>
 #include<stdbool.h>
-#include "../common/test_macro.h"
+#include "../../common/test_macro.h"
 typedef struct __stack{
     list_t *top;
     void (*insert_func)(list_t *,list_t *);

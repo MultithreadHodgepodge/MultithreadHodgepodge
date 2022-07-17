@@ -1,6 +1,6 @@
 #include "queue.h"
 #include <pthread.h>
-#include"../common/threadpa_macro.h"
+#include"../../common/threadpa_macro.h"
 int main() 
 {
     queue_t *queue = NULL;

@@ -1,7 +1,7 @@
-#include "../list/list.h"
+#include "../list.h"
 #include <pthread.h>
 #include <semaphore.h>
-#include "../common/test_macro.h"
+#include "../../common/test_macro.h"
 
 typedef struct queue {
 
