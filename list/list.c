@@ -46,32 +46,6 @@ void list_add_tail(list_t* list,  list_t *node){
 
 }
 
-/**
-* list_add_after_specific_node()-Add node after specific node value in list
-* @list: A pointer to pointer which point to list 
-* @node: Node to be added
-* @specific_node: Node which want to add after
-*/
-void list_add_after_specific_node(list_t** list, list_t *node, list_t *specific_node){
-    if(!(*list)){
-        create_list(list);
-        return ;
-    }
-    list_t *head = *list;
-
-    do{
-        if(head==specific_node){
-            printf("Node is added\n");
-            node->next=head->next;
-            node->prev=head;
-            head->next=node;
-            node->next->prev=node;
-            return;
-        }
-
-        head = head->next;
-    }while(head != *list);
-}
 
 
 /**

@@ -12,5 +12,6 @@ int main(){
     tree->insert(&tree,2);
     tree->insert(&tree,3);
     tree->remove(&tree,3);
+    find_bst(&tree,5);
     tree->printtree(tree);
 }

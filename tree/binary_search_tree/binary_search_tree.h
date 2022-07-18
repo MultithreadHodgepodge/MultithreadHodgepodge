@@ -1,4 +1,4 @@
-/*
+/**
 * insert_binary_search_tree()-binary search tree insert function
 * @tree: A pointer to pointer to tree 
 * @value: value to be insert
@@ -17,7 +17,7 @@ void insert_binary_search_tree(tree_t **tree, void *value){
     insert_bst_traversal(tree,temp);
 }
 
-/*
+/**
 * insert_bst_traverse()-binary search tree traversal for finding insert place
 * @tree: A pointer to pointer to tree 
 * @node: tree node to be insert
@@ -33,7 +33,7 @@ void insert_bst_traversal(tree_t **tree, tree_t *node){
     }
 }
 
-/*
+/**
 * minValueNode()-find min value node
 * @tree: A pointer to tree_t 
 * Returns: Pointer to min value node
@@ -49,7 +49,7 @@ tree_t* minValueNode(tree_t* node)
     return current;
 }
 
-/*
+/**
 * __remove_binary_search_tree()-Delete node function
 * @tree: A pointer to pointer to tree_t 
 * @value: value to be deleted
@@ -80,7 +80,7 @@ tree_t* __remove_binary_search_tree(tree_t **tree, void *value){
     return *tree;
 }
 
-/*
+/**
 * remove_binary_search_tree_interface()-Delete node function interface(Outter usage)
 * @tree: A pointer to pointer to tree_t 
 * @value: value to be deleted
@@ -88,4 +88,19 @@ tree_t* __remove_binary_search_tree(tree_t **tree, void *value){
 //TODO: Remove interface
 void remove_binary_search_tree_interface(tree_t **tree, void *value){
     tree_t *temp=__remove_binary_search_tree(tree,value);
+}
+/**
+* find_bst()-Find if specific value is in bst
+* @tree: A pointer to pointer to tree_t 
+* @value: value to be found
+*/
+void find_bst(tree_t **tree, void *value){
+    if(!(*tree)) return;
+    if(value<(*tree)->value){
+        find_bst(&(*tree)->left,value);
+    }
+    else if(value>(*tree)->value){
+        find_bst(&(*tree)->right,value);
+    }
+    else printf("Found %p!!!\n",value);
 }
