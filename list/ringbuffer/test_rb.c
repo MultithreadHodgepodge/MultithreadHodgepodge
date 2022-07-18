@@ -13,7 +13,10 @@ int main()
 {
     threadpa_t p1, p2, p3, p4, p5, p6;
     createRingbuffer(&rb, 3);
-    p1.Ringbuffer = p2.Ringbuffer = p3.Ringbuffer = p4.Ringbuffer = p5.Ringbuffer = p6.Ringbuffer = rb;
+    list_t *node1=(list_t*)malloc(sizeof(list_t)),*node2=(list_t*)malloc(sizeof(list_t)),*node3=(list_t*)malloc(sizeof(list_t));
+    THREADPA_INIT(p1,Ringbuffer,node1)
+    THREADPA_INIT(p2,Ringbuffer,node2)
+    THREADPA_INIT(p3,Ringbuffer,node3)
     srand(time(NULL));
     
     int ret = atexit(handler);

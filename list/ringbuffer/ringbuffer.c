@@ -3,7 +3,8 @@
 #include <stdlib.h>
 
 
-/*
+/**
+ * createRingbuffer(): Create and initilize ringbuffer
  * @Ringbuffer: Return a ringbuffer object if allocate success
  * @qun: size of buffer size
  */
@@ -34,7 +35,8 @@ void createRingbuffer(Ringbuffer_t **Ringbuffer, int qun)
     /* Allcate enough size of ring buffer */
     int i;
     for (i = 0;i < qun - 1;++i) {
-        if (list_add_tail(&(*Ringbuffer)->front, -1)) {
+        list_t *node1=(list_t*)malloc(sizeof(list_t));
+        if (list_add_tail(&(*Ringbuffer)->front, node1)) {
             printf("%d st list allocate failed\n", i);
             free_list(&(*Ringbuffer)->front);
             return ;
@@ -83,7 +85,8 @@ void createRingbuffer(Ringbuffer_t **Ringbuffer, int qun)
 
 }
 
-/*
+/**
+ * enqueue(): Add node into ringbuffer
  *@t: thread parameter
  */
 void enqueue(threadpa_t *t)
@@ -109,8 +112,8 @@ void enqueue(threadpa_t *t)
         pthread_cond_wait(t->Ringbuffer->full, t->Ringbuffer->lock);    
     }
 
-    Ringbuffer->front->value = t->value;
-    printf("enqueue %d into RingBuffer\n", t->value);
+    //Ringbuffer->front->value = t->value;
+    //printf("enqueue %d into RingBuffer\n", t->value);
     Ringbuffer->front = Ringbuffer->front->next;
     /* Wake up empty for dequeue */
     pthread_cond_signal(t->Ringbuffer->empty);

@@ -1,5 +1,5 @@
-#include "../list/list.h"
-#include "../common/test_macro.h"
+#include "../list.h"
+#include "../../common/test_macro.h"
 #include <pthread.h>
 
 typedef struct Ringbuffer {
@@ -16,5 +16,4 @@ DECLARE_THREAD(Ringbuffer)
 void createRingbuffer(Ringbuffer_t **, int);
 void enqueue(threadpa_t *);
 void dequeue(threadpa_t *);
-void printRingbuffer(Ringbuffer_t *);
 void freeRingbuffer(Ringbuffer_t **);
