@@ -24,7 +24,7 @@ BINARY_TREE_DIR=tree/binary_tree/
 BINARY_SEARCH_TREE_DIR=tree/binary_search_tree/
 THPOOL_DIR = simpleThreadpool/
 RWLOCK_DIR = rwlock/
-
+SOCKET_DIR = socket/
 ## Target DIR
 OBJ_DIR=build/
 
@@ -39,10 +39,10 @@ COMMON_SOURCE:=$(filter-out $(TEST_LIST_FILE),$(LIST_SOURCE))
 TREE_SOURCE:=$(shell find $(TREE_DIR) -maxdepth 1 -name '*.c')
 THPOOL_SOURCE := $(shell find $(THPOOL_DIR) -name '*.c')
 RWLOCK_SOURCE := $(shell find $(RWLOCK_DIR) -name '*.c')
-
+SOCKET_SOURCE := $(shell find $(SOCKET_DIR) -name '*.c')
 BINARY_TREE_SOURCE:=$(shell find $(BINARY_TREE_DIR) -name '*.c')
 BINARY_SEARCH_TREE_SOURCE:=$(shell find $(BINARY_SEARCH_TREE_DIR) -name '*.c')
-
+OBJECTS_SOCKET = $(patsubst %.c, %.o, $(SOCKET_SOURCE))
 ## Main Makefile
 list: clean $(OBJ_DIR)$(OBJECTS_LIST) 
 $(OBJ_DIR)$(OBJECTS_LIST): $(LIST_SOURCE)
@@ -76,7 +76,7 @@ rwlock: clean $(OBJ_DIR)$(OBJECTS_RWLOCK)
 $(OBJ_DIR)$(OBJECTS_RWLOCK): $(RWLOCK_SOURCE)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@ $^ 
-
+	
 clean:
 	rm -rf ./$(OBJ_DIR)*.o >/dev/null 2>/dev/null || true
 	rm -d $(OBJ_DIR)  >/dev/null 2>/dev/null || true
