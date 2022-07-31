@@ -1,54 +1,83 @@
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include "client.h"
+void* clienthread(void* args)
+{
+ 
+    int client_request = *((int*)args);
+    int network_socket;
+ 
+    // Create a stream socket
+    network_socket = socket(AF_INET,
+                            SOCK_STREAM, 0);
+ 
+    // Initialise port number and address
+    struct sockaddr_in server_address;
+    server_address.sin_family = AF_INET;
+    server_address.sin_addr.s_addr = INADDR_ANY;
+    server_address.sin_port = htons(PORT);
+ 
+    // Initiate a socket connection
+    int connection_status = connect(network_socket,
+                                    (struct sockaddr*)&server_address,
+                                    sizeof(server_address));
+ 
+    // Check for connection error
+    if (connection_status < 0) {
+        puts("Error\n");
+        return 0;
+    }
+ 
+    printf("Connection established\n");
+ 
+    // Send data to the socket
+    send(network_socket, &client_request,
+         sizeof(client_request), 0);
+ 
+    // Close the connection
+    close(network_socket);
+    pthread_exit(NULL);
+ 
+    return 0;
+}
  
 int main(void)
 {
-    struct sockaddr_in stSockAddr;
-    int Res;
-    int SocketFD = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+    printf("1. Read\n");
+    printf("2. Write\n");
  
-    if (-1 == SocketFD)
-    {
-        perror("cannot create socket");
-        exit(EXIT_FAILURE);
+    // Input
+    int choice;
+    scanf("%d", &choice);
+    pthread_t tid;
+ 
+    // Create connection
+    // depending on the input
+    switch (choice) {
+    case 1: {
+        int client_request = 1;
+ 
+        // Create thread
+        pthread_create(&tid, NULL,
+                       clienthread,
+                       &client_request);
+        sleep(20);
+        break;
+    }
+    case 2: {
+        int client_request = 2;
+ 
+        // Create thread
+        pthread_create(&tid, NULL,
+                       clienthread,
+                       &client_request);
+        sleep(20);
+        break;
+    }
+    default:
+        printf("Invalid Input\n");
+        break;
     }
  
-    memset(&stSockAddr, 0, sizeof(struct sockaddr_in));
- 
-    stSockAddr.sin_family = AF_INET;
-    stSockAddr.sin_port = htons(1100);
-    Res = inet_pton(AF_INET, "192.168.1.3", &stSockAddr.sin_addr);
- 
-    if (0 > Res)
-    {
-        perror("error: first parameter is not a valid address family");
-        close(SocketFD);
-        exit(EXIT_FAILURE);
-    }
-    else if (0 == Res)
-    {
-        perror("char string (second parameter does not contain valid ipaddress");
-        close(SocketFD);
-        exit(EXIT_FAILURE);
-    }
- 
-    if (-1 == connect(SocketFD, (const struct sockaddr *)&stSockAddr, sizeof(struct sockaddr_in)))
-    {
-        perror("connect failed");
-        close(SocketFD);
-        exit(EXIT_FAILURE);
-    }
- 
-    /* perform read write operations ... */
- 
-    shutdown(SocketFD, SHUT_RDWR);
- 
-    close(SocketFD);
-    return 0;
+    // Suspend execution of
+    // calling thread
+    pthread_join(tid, NULL);
 }
