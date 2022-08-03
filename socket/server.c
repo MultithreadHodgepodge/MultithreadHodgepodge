@@ -2,6 +2,7 @@
 // Reader Function
 void* reader(void* param)
 {
+    int *data=(int *)param;
     // Lock the semaphore
     sem_wait(&x);
     readercount++;
@@ -14,7 +15,7 @@ void* reader(void* param)
  
     printf("\n%d reader is inside",
            readercount);
- 
+    printf("\nCurrent counter %d",*data);
     sleep(5);
  
     // Lock the semaphore
@@ -36,13 +37,16 @@ void* reader(void* param)
 // Writer Function
 void* writer(void* param)
 {
-    printf("\nWriter is trying to enter");
+    int *data=(int *)param;
+
+    printf("\nWriter is trying to enter %d",*data);
  
     // Lock the semaphore
     sem_wait(&y);
  
     printf("\nWriter has entered");
- 
+    //Increment Counter
+    *data=*data+1;
     // Unlock the semaphore
     sem_post(&y);
  
@@ -83,6 +87,7 @@ int main(void)
         exit(EXIT_FAILURE);
     }
     int i=0;
+    int counter=0;
     for(;;)
     {
         int addr_size = sizeof(serverStorage);
@@ -98,11 +103,11 @@ int main(void)
         }
         recv(ConnectFD,
              &choice, sizeof(choice), 0);
-        printf("Choice: %d\n",choice);
+
         if (choice == 1) {
             // Creater readers thread
             if (pthread_create(&readerthreads[i++], NULL,
-                               reader, &ConnectFD)
+                               reader, &counter)
                 != 0)
  
                 // Error in creating thread
@@ -111,7 +116,7 @@ int main(void)
         else if (choice == 2) {
             // Create writers thread
             if (pthread_create(&writerthreads[i++], NULL,
-                               writer, &ConnectFD)
+                               writer, &counter)
                 != 0)
  
                 // Error in creating thread
