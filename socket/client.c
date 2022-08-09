@@ -39,14 +39,15 @@ void* clienthread(void* args)
     return 0;
 }
  
-int main(void)
+int main(int argc,char *argv[])
 {
     printf("1. Read\n");
     printf("2. Write\n");
  
     // Input
     int choice;
-    scanf("%d", &choice);
+
+    sscanf(argv[1],"%d", &choice);
     pthread_t tid;
  
     // Create connection
@@ -59,7 +60,7 @@ int main(void)
         pthread_create(&tid, NULL,
                        clienthread,
                        &client_request);
-        sleep(20);
+        sleep(5);
         break;
     }
     case 2: {
@@ -69,7 +70,7 @@ int main(void)
         pthread_create(&tid, NULL,
                        clienthread,
                        &client_request);
-        sleep(20);
+        sleep(5);
         break;
     }
     default:
