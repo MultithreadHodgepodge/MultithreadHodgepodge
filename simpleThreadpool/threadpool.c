@@ -12,7 +12,6 @@ void readyqueue_init(RQ_t **rq,int rq_capacity, int threadQ)
 	sem_t item, remain;
 	pthread_mutex_t mutex;
 	//void *ringbuffer;
-
 	*rq = (RQ_t *)malloc(sizeof(RQ_t));
 	if (*rq == NULL) {
 		perror("rq_init: ");
@@ -118,14 +117,19 @@ void add_task(RQ_t *rq, int num)
 	sem_post(&rq->item);
 }
 
+/** set_job()-Set job list 
+* @task: Function pointer to be assigned  
+* @index: The index of the function in function pointer list factory
+*/
+void set_job(void (*task)(),int index){
+	factory[index]=task;
+}
+
 /** select_job()-Select Task 
 * @num: decide which jobs is selected 
 */
-
 void* select_job(int num)
 {
-
-	void (*factory[])() = {foo1, foo2, foo3};
 	if (num < 3)
 		return factory[num];
 	else
@@ -137,7 +141,6 @@ void* select_job(int num)
  * @rq: Pointer to pointer to RQ_t make worker thread to know the address of readyqueue 
  * @threadQ: Thread number
  */
-
 void threadpool_init(TINFO_t **tinfo, RQ_t **rq,int threadQ)
 {
 	*tinfo = (TINFO_t *)malloc(sizeof(TINFO_t) * threadQ);
@@ -172,7 +175,6 @@ fail:
  * @rq   : threadpool's ringbuffer
  * @tinfo: contain current thread information 
  */
-
 void close_threadpool(RQ_t **rq, TINFO_t **tinfo, int threadQ)
 {
 	void *ret = 0;

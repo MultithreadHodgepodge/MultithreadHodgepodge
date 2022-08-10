@@ -59,5 +59,7 @@ void add_task(RQ_t *, int );
 void show(RQ_t **);
 void* take_task(RQ_t *);
 RQ_t *sigready_queue;
+void (*factory[])();
+void set_job(void (*)(),int);
 void* select_job(int );
 static int finish = 1;

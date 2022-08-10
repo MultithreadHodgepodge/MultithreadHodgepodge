@@ -18,13 +18,12 @@ CONFIG_BPF_SYSCALL=y
 LIST_DIR=list/
 STACK_DIR=$(LIST_DIR)stack/
 QUEUE_DIR=$(LIST_DIR)queue/
-RB_DIR=$(LIST_DIR)ringbuffer/
 TREE_DIR=tree/
 BINARY_TREE_DIR=tree/binary_tree/
 BINARY_SEARCH_TREE_DIR=tree/binary_search_tree/
 THPOOL_DIR = simpleThreadpool/
 RWLOCK_DIR = rwlock/
-SOCKET_DIR = socket/
+
 ## Target DIR
 OBJ_DIR=build/
 
@@ -34,12 +33,10 @@ TEST_LIST_FILE= $(LIST_DIR)test_list.c
 LIST_SOURCE:= $(shell find $(LIST_DIR) -maxdepth 1 -name '*.c')
 STACK_SOURCE:= $(shell find $(STACK_DIR) -name '*.c')
 QUEUE_SOURCE:= $(shell find $(QUEUE_DIR) -name '*.c') 
-RB_SOURCE:= $(shell find $(RB_DIR) -name '*.c')
 COMMON_SOURCE:=$(filter-out $(TEST_LIST_FILE),$(LIST_SOURCE))
 TREE_SOURCE:=$(shell find $(TREE_DIR) -maxdepth 1 -name '*.c')
 THPOOL_SOURCE := $(shell find $(THPOOL_DIR) -name '*.c')
 RWLOCK_SOURCE := $(shell find $(RWLOCK_DIR) -name '*.c')
-SOCKET_SOURCE := $(shell find $(SOCKET_DIR) -name '*.c')
 BINARY_TREE_SOURCE:=$(shell find $(BINARY_TREE_DIR) -name '*.c')
 BINARY_SEARCH_TREE_SOURCE:=$(shell find $(BINARY_SEARCH_TREE_DIR) -name '*.c')
 OBJECTS_SOCKET = $(patsubst %.c, %.o, $(SOCKET_SOURCE))
@@ -56,10 +53,7 @@ queue: clean $(OBJ_DIR)$(OBJECTS_QUEUE)
 $(OBJ_DIR)$(OBJECTS_QUEUE): $(COMMON_SOURCE) $(QUEUE_SOURCE)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@ $^
-rb: clean $(OBJ_DIR)$(OBJECTS_RB)
-$(OBJ_DIR)$(OBJECTS_RB): $(COMMON_SOURCE) $(RB_SOURCE)
-	mkdir -p $(@D)
-	$(CC) $(CFLAGS) $@ $^
+
 binarytree: clean $(OBJ_DIR)$(OBJECTS_BINARYTREE)
 $(OBJ_DIR)$(OBJECTS_BINARYTREE): $(TREE_SOURCE) $(BINARY_TREE_SOURCE) 
 	mkdir -p $(@D)
