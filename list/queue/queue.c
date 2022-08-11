@@ -5,7 +5,6 @@
 * @queue: return a queue instance
 * @qun: queue quntity
 */
-
 void create_queue(queue_t **queue, int qun) 
 {
     (*queue) = (queue_t*)malloc(sizeof(queue_t));
@@ -32,7 +31,6 @@ void create_queue(queue_t **queue, int qun)
 * enqueue()-add a node into queue 
 * @para: Parameter send to thread 
 */
-
 void enqueue(threadpa_t *para)
 {
     if (!para) {
