@@ -1,8 +1,8 @@
 #include"list.h"
-#include<limits.h>
+
 
 /**
-* create_list()-Add node to head of list
+* @brief: create_list()-Add node to head of list
 * @list: A pointer to pointer which point to list 
 * @node_value: Value of node added
 */
@@ -11,7 +11,7 @@ void create_list(list_t **head) {
         printf("List Exist\n");
     } else {
         printf("List Creation\n");
-        *head=(list_t *)malloc(sizeof(list_t));
+        *head=MALLOC_LIST()
         if (!head) {
             puts("List memory allocate fail\n");
             return;
@@ -23,7 +23,7 @@ void create_list(list_t **head) {
 }
 
 /**
-* list_add_head()-Add node to head of list
+* @brief: list_add_head()-Add node to head of list
 * @list: A pointer to pointer which point to list 
 * @node: Node to be added
 */
@@ -34,7 +34,7 @@ void list_add_head(list_t* list, list_t *node){
 }
 
 /**
-* list_add_tail()-Add node to tail of list
+* @brief: list_add_tail()-Add node to tail of list
 * @list: A pointer to pointer which point to list 
 * @node: Node to be added
 */
@@ -49,7 +49,7 @@ void list_add_tail(list_t* list,  list_t *node){
 
 
 /**
-* list_remove_head()-Remove the list from head
+* @brief: list_remove_head()-Remove the list from head
 * @list: A pointer to pointer which point to list 
 */
 void list_remove_head(list_t **list){
@@ -77,7 +77,7 @@ void list_remove_head(list_t **list){
     
 }
 /**
-* list_remove_tail()-Remove the list from tail
+* @brief: list_remove_tail()-Remove the list from tail
 * @list: A pointer to pointer which point to list  
 */
 void list_remove_tail(list_t **list){
@@ -118,7 +118,7 @@ void list_remove_tail(list_t **list){
 }
 
 /**
-* list_remove_specific_node()-Remove specific node value in the list 
+* @brief: list_remove_specific_node()-Remove specific node value in the list 
 * @list: A pointer to pointer which point to list  
 * @node: Node to be removed
 */
@@ -164,7 +164,7 @@ void list_remove_specific_node(list_t **list, list_t *node){
 
 
 /**
-* free_list()-Free the list
+* @brief: free_list()-Free the list
 * @list: A pointer to pointer which point to list  
 */
 void free_list(list_t **list){
@@ -191,7 +191,7 @@ void free_list(list_t **list){
 
 
 /**
-* list_reverse()-Reverse the list
+* @brief: list_reverse()-Reverse the list
 * @list: A pointer to pointer which point to list  
 */
 void list_reverse(list_t **list){

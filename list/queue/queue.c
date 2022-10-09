@@ -1,7 +1,7 @@
 #include "queue.h"
 
 /**  
-* create_queue()-create a queue instance 
+* @brief: reate_queue()-create a queue instance 
 * @queue: return a queue instance
 * @qun: queue quntity
 */
@@ -28,7 +28,7 @@ void create_queue(queue_t **queue, int qun)
 }
 
 /**
-* enqueue()-add a node into queue 
+* @brief: enqueue()-add a node into queue 
 * @para: Parameter send to thread 
 */
 void enqueue(threadpa_t *para)
@@ -52,7 +52,7 @@ void enqueue(threadpa_t *para)
 }
 
 /**
-* dequeue()-remove first node from the queue
+* @brief: dequeue()-remove first node from the queue
 * @queue: pointer to pointer to queue
 */
 void dequeue(queue_t **queue)
@@ -72,7 +72,7 @@ void dequeue(queue_t **queue)
 
 
 /**
-* free_queue()-free queue
+* @brief: free_queue()-free queue
 * @queue: pointer to pointer to queue
 */
 void free_queue(queue_t **queue) 

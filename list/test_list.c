@@ -7,7 +7,12 @@ int main()
     
     list_t* new_list=NULL;
     create_list(&new_list);
-    list_t *node1=(list_t*)malloc(sizeof(list_t)),*node2=(list_t*)malloc(sizeof(list_t)),*node3=(list_t*)malloc(sizeof(list_t)),*node4=(list_t*)malloc(sizeof(list_t));
+    list_t *node1=MALLOC_LIST()
+    list_t *node2=MALLOC_LIST()
+    list_t *node3=MALLOC_LIST()
+    list_t *node4=MALLOC_LIST()
+    list_t *node5=MALLOC_LIST()
+    
     list_add_tail(new_list,node1);
     list_add_tail(new_list,node2);
     list_add_tail(new_list,node3);

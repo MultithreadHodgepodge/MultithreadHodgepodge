@@ -1,5 +1,6 @@
 #include "../list.h"
 #include <pthread.h>
+#include<stdio.h>
 #include<stdbool.h>
 #include "../../common/test_macro.h"
 typedef struct __stack{

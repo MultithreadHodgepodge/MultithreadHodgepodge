@@ -3,10 +3,16 @@
 #include<pthread.h>
 #include <stdint.h>
 #include <assert.h>
+#include<limits.h>
 #include <stddef.h>
 #include "../common/compare.h"
 #ifndef LOCK_LIST_H__
 #define LOCK_LIST_H__
+
+typedef struct list{
+    struct list* next;
+    struct list* prev;
+}list_t;
 /**
  * container_of() - Calculate address of object that contains address ptr
  * @ptr: pointer to member variable
@@ -50,11 +56,11 @@
     node->prev=node;\
     node->next=node;\
 
-typedef struct list{
-    struct list* next;
-    struct list* prev;
-}list_t;
-
+/**
+ * @brief: malloc space for list_t node
+*/
+#define MALLOC_LIST() \
+    (list_t*)malloc(sizeof(list_t));\
 
 void create_list(list_t **);
 void list_add_head(list_t*, list_t*);

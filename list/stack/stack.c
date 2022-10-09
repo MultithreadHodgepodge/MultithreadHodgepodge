@@ -1,7 +1,6 @@
-#include<stdio.h>
 #include "stack.h"
 /**
-* create_stack()-Create and initialize stack
+* @brief: create_stack()-Create and initialize stack
 * @stack: A pointer to pointer to stack 
 * @capacity: Capacity of stack
 */
@@ -32,7 +31,7 @@ void create_stack(stack_t **stack,int capacity){
 }
 
 /**
-* push()-Push node to stack
+* @brief: push()-Push node to stack
 * @stack_param: Parameter to thread
 */
 void push(threadpa_t *stack_param){
@@ -57,7 +56,7 @@ void push(threadpa_t *stack_param){
 }
 
 /**
-* pop()-Remove node from stack
+* @brief: pop()-Remove node from stack
 * @stack: A pointer to pointer to stack 
 */
 void pop(stack_t *stack){
@@ -77,7 +76,7 @@ void pop(stack_t *stack){
 }
 
 /**
-* free_stack()-Free stack
+* @brief: free_stack()-Free stack
 * @stack: A pointer to stack 
 */
 void free_stack(stack_t *stack){
@@ -98,12 +97,4 @@ void free_stack(stack_t *stack){
     stack = NULL;
 }
 
-/*
-* Check if stack is empty or not
-* @stack: A pointer to pointer which point to stack 
-*/
-bool isEmpty(stack_t *stack){
-    if(stack->count==0) return true;
-    return false;
-}
 
