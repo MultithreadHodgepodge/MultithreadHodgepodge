@@ -16,7 +16,6 @@ void create_list(list_t **head) {
             puts("List memory allocate fail\n");
             return;
         }  
-        //*head=NULL;
     }
     CONNECT_SELF((*head))
 

@@ -2,7 +2,7 @@
 OBJECTS_LIST=test_list.o
 OBJECTS_STACK=test_stack.o
 OBJECTS_QUEUE=test_queue.o
-OBJECTS_PRIORITYQUEUE=test_priorityqueue.o
+OBJECTS_HASH=test_hashtable.o
 OBJECTS_RB=test_RB.o
 OBJECTS_BINARYTREE=test_binary_tree.o
 OBJECTS_BINARYSEARCHTREE=test_binary_search_tree.o
@@ -18,6 +18,7 @@ CONFIG_BPF_SYSCALL=y
 LIST_DIR=list/
 STACK_DIR=$(LIST_DIR)stack/
 QUEUE_DIR=$(LIST_DIR)queue/
+HASH_DIR=$(LIST_DIR)hashtable/
 TREE_DIR=tree/
 BINARY_TREE_DIR=tree/binary_tree/
 BINARY_SEARCH_TREE_DIR=tree/binary_search_tree/
@@ -29,10 +30,10 @@ OBJ_DIR=build/
 
 ## Source .c file
 TEST_LIST_FILE= $(LIST_DIR)test_list.c
-
 LIST_SOURCE:= $(shell find $(LIST_DIR) -maxdepth 1 -name '*.c')
 STACK_SOURCE:= $(shell find $(STACK_DIR) -name '*.c')
 QUEUE_SOURCE:= $(shell find $(QUEUE_DIR) -name '*.c') 
+HASH_SOURCE:= $(shell find $(HASH_DIR) -name '*.c') 
 COMMON_SOURCE:=$(filter-out $(TEST_LIST_FILE),$(LIST_SOURCE))
 TREE_SOURCE:=$(shell find $(TREE_DIR) -maxdepth 1 -name '*.c')
 THPOOL_SOURCE := $(shell find $(THPOOL_DIR) -name '*.c')
@@ -53,7 +54,10 @@ queue: clean $(OBJ_DIR)$(OBJECTS_QUEUE)
 $(OBJ_DIR)$(OBJECTS_QUEUE): $(COMMON_SOURCE) $(QUEUE_SOURCE)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $@ $^
-
+hash: clean $(OBJ_DIR)$(OBJECTS_HASH)
+$(OBJ_DIR)$(OBJECTS_HASH): $(COMMON_SOURCE) $(HASH_SOURCE)
+	mkdir -p $(@D)
+	$(CC) $(CFLAGS) $@ $^
 binarytree: clean $(OBJ_DIR)$(OBJECTS_BINARYTREE)
 $(OBJ_DIR)$(OBJECTS_BINARYTREE): $(TREE_SOURCE) $(BINARY_TREE_SOURCE) 
 	mkdir -p $(@D)

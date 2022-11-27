@@ -10,7 +10,6 @@ typedef struct queue {
     int capacity;
     void (*enqueue)(list_t*, list_t *);
     void (*dequeue)(list_t**);
-
     void (*freeQueue)(list_t **);
     pthread_mutex_t *queue_lock;
     sem_t *qremain, *qitem;
