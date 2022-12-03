@@ -1,0 +1,15 @@
+name: C/C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  list:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2.4.0
+    - name: make list
+      run: make list
+    - name: test list
+      run: ./build/test_list.o
+    - name: make clean
+      run: make clean
