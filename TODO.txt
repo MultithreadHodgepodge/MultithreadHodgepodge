@@ -1,0 +1,9 @@
+1. HashTable
+    - Function
+    - Test
+    - Optimization
+2. All function naming
+    - Make func name realted with MultithreadHodgepodge
+    - More accurate func name
+3. stack queue
+    - Optimization

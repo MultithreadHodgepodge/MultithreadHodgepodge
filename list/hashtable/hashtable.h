@@ -1,9 +1,10 @@
 #include "../list.h"
 #include <pthread.h>
-#define VALUE_LIST_NUM 10
-#define HASH_TABLE_SIZE 69 
+static int HASH_TABLE_SIZE=69;
 typedef struct hashtable{
     int key;
-    list_t value_list[VALUE_LIST_NUM];
+    list_t *list;
 }hash_t;
 hash_t *create_hash_table(int);
+void insert_hash(hash_t*, int);
+void print_hash(hash_t *,int);

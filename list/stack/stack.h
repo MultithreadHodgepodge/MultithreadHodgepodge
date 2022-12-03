@@ -5,9 +5,8 @@
 #include "../../common/test_macro.h"
 typedef struct __stack{
     list_t *top;
-    void (*insert_func)(list_t *,list_t *);
-    void (*remove_func)(list_t **);
-    void (*free_func)(list_t **);
+    void (*insert)(list_t *,list_t *);
+    void (*remove)(list_t **);
     int capacity;
     int count;
     pthread_mutex_t *stack_lock;
