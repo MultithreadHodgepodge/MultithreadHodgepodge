@@ -40,7 +40,7 @@ typedef struct list{
 /**
  * CONNECT_PREV_NEXT() - Connect node with prev and next node 
  * @node: pointer to list node be added
- * @list: pointer to pointer to list node(Add @node before this list node)
+ * @list: pointer to list node(Add @node before this list node)
  */
 #define CONNECT_PREV_NEXT(node,list)\
     node->prev=list->prev; \
