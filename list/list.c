@@ -122,43 +122,43 @@ void list_remove_tail(list_t **list){
 * @node: Node to be removed
 */
 
-void list_remove_specific_node(list_t **list, list_t *node){
+void list_remove_specific_node(list_t *list, list_t *node){
     /* Check no node */
-    if(!(*list)){
+    if(!(list)){
         printf("Empty List nothing to remove\n");
         return;
     }
    
 
     
-    while((*list) && (*list)==node){
+    while((list) && (list)==node){
         printf("Node is removed\n");
-        if(*list==(*list)->next){
-            free(*list);
-            *list=NULL;
+        if(list==(list)->next){
+            free(list);
+            list=NULL;
             return;
         }
-        (*list)->prev->next=(*list)->next;
-        (*list)->next->prev=(*list)->prev;
-        list_t *temp=(*list);
-        *list = (*list)->next;
+        (list)->prev->next=(list)->next;
+        (list)->next->prev=(list)->prev;
+        list_t *temp=(list);
+        list = (list)->next;
         //list = &(*list)->next;
         free(temp);
         temp = NULL;
     }
     
-    list_t *head = *list;
+    list_t *head = list;
     do{
-        if((*list)==node){
+        if((list)==node){
             printf("Node is removed\n");
-            (*list)->prev->next=(*list)->next;
-            (*list)->next->prev=(*list)->prev;
+            (list)->prev->next=(list)->next;
+            (list)->next->prev=(list)->prev;
 
         }
 
-        *list = (*list)->next;
-    }while(*list != head);
-*list=head;
+        list = (list)->next;
+    }while(list != head);
+//list=head;
 }
 
 

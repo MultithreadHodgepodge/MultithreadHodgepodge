@@ -4,6 +4,7 @@ int main(){
     insert_hash(hash_table,127);
     insert_hash(hash_table,50);
     insert_hash(hash_table,50);
+    delete_hash(hash_table,50);
     insert_hash(hash_table,22);
     print_hash(hash_table,50);
 }

@@ -67,7 +67,7 @@ void list_add_head(list_t*, list_t*);
 void list_add_tail(list_t*, list_t*);
 void list_remove_head(list_t** );
 void list_remove_tail(list_t** );
-void list_remove_specific_node(list_t**, list_t*);
+void list_remove_specific_node(list_t*, list_t*);
 void free_list(list_t **list);
 void list_reverse(list_t **);
 #endif

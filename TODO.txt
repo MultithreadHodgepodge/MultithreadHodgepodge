@@ -2,6 +2,7 @@
     - Function
     - Test
     - Optimization
+    - Thread Safe
 2. All function naming
     - Make func name realted with MultithreadHodgepodge
     - More accurate func name

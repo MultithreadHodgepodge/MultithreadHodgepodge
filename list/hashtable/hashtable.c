@@ -1,4 +1,8 @@
 #include"hashtable.h"
+/**
+* @brief: create_hash_table()-Create Hashtable 
+* @size: Size of Hashtable(Entry number of Hashtable)
+*/
 hash_t *create_hash_table(int size){
     HASH_TABLE_SIZE=size>0?size:HASH_TABLE_SIZE;
     
@@ -10,8 +14,13 @@ hash_t *create_hash_table(int size){
     return hash_table;
 }
 
+/**
+* @brief: insert_hash()- Insert into hashtable
+* @hash_table: Pointer to hashtable
+* @value: Value to be added
+*/
 void insert_hash(hash_t *hash_table,int value){
-    int key=value%HASH_TABLE_SIZE;
+    int key=GET_HASH_KEY(value)
     if(hash_table[key].key==-1){
 
         //create_list(&hash_table[key].list);
@@ -30,11 +39,33 @@ void insert_hash(hash_t *hash_table,int value){
     }
 }
 
+/**
+* @brief: delete_hash()- Insert into hashtable
+* @hash_table: Pointer to hashtable
+* @value: Value to be deleted
+*/
+void delete_hash(hash_t *hash_table,int value){
+    int key=GET_HASH_KEY(value);
+    assert(hash_table[key].key!=-1);
+    list_t *head=&hash_table[key].list;
+    hash_t *hash_node=&hash_table[key];
+    do{
+        if(hash_node->key==key){
+            list_remove_specific_node(&hash_table[key].list,&hash_node->list);
+            free(hash_node);
+            break;
+        }
+        hash_node=list_entry(hash_node->list.next,hash_t,list);
+    }while(head!=&hash_node->list);
+}
+
+/**
+* @brief: print_hash()- Print given key in hashtable
+* @hash_table: Pointer to hashtable
+* @key: Key in hashtable
+*/
 void print_hash(hash_t *hash_table,int key){
-    if(key>HASH_TABLE_SIZE){
-        printf("Input Kry Exceeds Limitation!!!!!\n");
-        return;
-    }
+    assert(key<=HASH_TABLE_SIZE)
     list_t *head=&hash_table[key].list;
     hash_t *hash_node=&hash_table[key];
     do{
@@ -42,3 +73,4 @@ void print_hash(hash_t *hash_table,int key){
         hash_node=list_entry(hash_node->list.next,hash_t,list);
     }while(head!=&hash_node->list);
 }
+
