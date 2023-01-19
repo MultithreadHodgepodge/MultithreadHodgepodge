@@ -65,7 +65,7 @@ void delete_hash(hash_t *hash_table,int value){
 * @key: Key in hashtable
 */
 void print_hash(hash_t *hash_table,int key){
-    assert(key<=HASH_TABLE_SIZE)
+    assert(key<=HASH_TABLE_SIZE);
     list_t *head=&hash_table[key].list;
     hash_t *hash_node=&hash_table[key];
     do{

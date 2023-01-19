@@ -7,16 +7,12 @@
 * @node_value: Value of node added
 */
 void create_list(list_t **head) {
-    if (*head) {
-        printf("List Exist\n");
-    } else {
-        printf("List Creation\n");
-        *head=MALLOC_LIST()
-        if (!head) {
-            puts("List memory allocate fail\n");
-            return;
-        }  
-    }
+    assert(!(*head) && "List already wxisted");
+    
+    puts("List Creation\n");
+    *head=MALLOC_LIST()
+    assert(*head && "Allocate list head fail");
+    
     CONNECT_SELF((*head))
 
 }
@@ -41,7 +37,7 @@ void list_add_tail(list_t* list,  list_t *node){
 
     CONNECT_PREV_NEXT(node,list)
     (list)->prev=node;
-    printf("Node is added\n");
+    puts("Node is added\n");
 
 }
 
@@ -52,10 +48,8 @@ void list_add_tail(list_t* list,  list_t *node){
 * @list: A pointer to pointer which point to list 
 */
 void list_remove_head(list_t **list){
-    if(!(*list)){
-        printf("Empty List nothing to remove\n");
-        return;
-    }
+    assert(*list && "Empty list");
+
     list_t *temp=*list;
     printf("Node is removed\n");
     //If only one node, and you free like line 70 71. It won't take place because the address is still in *list but the memory is freed(Segmentation Fault).
@@ -82,10 +76,7 @@ void list_remove_head(list_t **list){
 void list_remove_tail(list_t **list){
 
     /* Check no node */
-    if(!(*list)){
-        printf("Empty List nothing to remove\n");
-        return;
-    }
+    assert(*list && "Empty list");
    
     /* Check if only one node*/
     if(*list==(*list)->next){
@@ -124,10 +115,7 @@ void list_remove_tail(list_t **list){
 
 void list_remove_specific_node(list_t *list, list_t *node){
     /* Check no node */
-    if(!(list)){
-        printf("Empty List nothing to remove\n");
-        return;
-    }
+    assert(list && "Empty list");
    
 
     
@@ -167,10 +155,7 @@ void list_remove_specific_node(list_t *list, list_t *node){
 * @list: A pointer to pointer which point to list  
 */
 void free_list(list_t **list){
-    if(!(*list)) {
-        printf("Nothing to free\n");
-        return;
-    }
+    assert(*list && "Empty list");
 
     list_t *tail= (*list)->prev;
     list_t *prev;
@@ -194,10 +179,7 @@ void free_list(list_t **list){
 * @list: A pointer to pointer which point to list  
 */
 void list_reverse(list_t **list){
-    if(!(*list)) {
-        printf("List doesn't exist");
-        return;
-    }
+    assert(*list && "Empty list");
     list_t *last=(*list)->prev;
     if(last==(*list)) return;
 
