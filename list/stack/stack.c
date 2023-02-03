@@ -84,7 +84,8 @@ void free_stack(stack_t *stack){
         printf("Stack is Empty!\n");
         return ;
     }
-    free_list(&stack->top);
+    if(stack->top)
+        free_list(&stack->top);
     stack->top = NULL;
     free(stack->stack_lock);
     stack->stack_lock = NULL;
