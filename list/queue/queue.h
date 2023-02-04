@@ -15,8 +15,7 @@ typedef struct queue {
     sem_t *qremain, *qitem;
     
 }queue_t;
-
-DECLARE_THREAD(queue)
+DECLARE_THREAD(queue,list_t*)
 void create_queue(queue_t **, int) ;
 void enqueue(threadpa_t *);
 void dequeue(queue_t **);
