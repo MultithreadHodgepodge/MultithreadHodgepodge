@@ -18,7 +18,7 @@ struct mystruct{
 - list: The kernel implementation of Multithread-Hodgepodge Architecture. This struture includes almost all implementation details of function and other structure utilize the implemetation in list.
     - stack: Implementation of thread-safe stack structure based on list_t.
     - queue: Implementation of thread-safe queue structure based on list_t.
-    - hashtable: Implementation of hashtable utilized list_t to maintain entry in hashtable. 
+    - hashtable: Implementation of thread-safe hashtable utilized list_t to maintain entry in hashtable. 
 - Tree:  Implementation of Tree including different types of tree. Leverage function pointer to implement different tree, tree is only interface!!!(Same tree different implementation)
     - binary_tree: only contain testing of binary tree and specific function
     - binary_search_tree: only contain testing of binary search tree and specific function

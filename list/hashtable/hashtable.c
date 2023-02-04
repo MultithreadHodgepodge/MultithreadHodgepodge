@@ -8,8 +8,12 @@ hash_t *create_hash_table(int size){
     
     hash_t *hash_table=(hash_t*)malloc(HASH_TABLE_SIZE*sizeof(hash_t));
     int i=0;
+
     for(i=0;i<HASH_TABLE_SIZE;i++){
         hash_table[i].key=-1;
+        hash_table[i].hash_lock=(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+        pthread_mutex_init(hash_table[i].hash_lock,NULL);
+
     }
     return hash_table;
 }
@@ -19,24 +23,24 @@ hash_t *create_hash_table(int size){
 * @hash_table: Pointer to hashtable
 * @value: Value to be added
 */
-void insert_hash(hash_t *hash_table,int value){
+void insert_hash(threadpa_t *param){
+    hash_t *hash_table=param->hash;
+    int value=param->node;
     int key=GET_HASH_KEY(value)
+    pthread_mutex_lock(hash_table[key].hash_lock);
     if(hash_table[key].key==-1){
-
-        //create_list(&hash_table[key].list);
         list_t *head = &hash_table[key].list;
         CONNECT_SELF(head)
         hash_table[key].key=value;
     }
     else{
 
-        hash_t* hash_node=(hash_t*) malloc(sizeof(hash_t));
-        
+        hash_t* hash_node=(hash_t*) malloc(sizeof(hash_t));    
         hash_node->key=value;
-        //hash_node->list=(list_t*)malloc(sizeof(list_t));
         list_add_tail(&hash_table[key].list,&hash_node->list);
 
     }
+    pthread_mutex_unlock(hash_table[key].hash_lock);
 }
 
 /**
@@ -44,8 +48,12 @@ void insert_hash(hash_t *hash_table,int value){
 * @hash_table: Pointer to hashtable
 * @value: Value to be deleted
 */
-void delete_hash(hash_t *hash_table,int value){
+void delete_hash(threadpa_t *param){
+    hash_t *hash_table=param->hash;
+    int value=param->node;
+    
     int key=GET_HASH_KEY(value);
+    pthread_mutex_lock(hash_table[key].hash_lock);
     assert(hash_table[key].key!=-1);
     list_t *head=&hash_table[key].list;
     hash_t *hash_node=&hash_table[key];
@@ -57,6 +65,7 @@ void delete_hash(hash_t *hash_table,int value){
         }
         hash_node=list_entry(hash_node->list.next,hash_t,list);
     }while(head!=&hash_node->list);
+    pthread_mutex_unlock(hash_table[key].hash_lock);
 }
 
 /**

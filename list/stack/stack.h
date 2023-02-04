@@ -1,6 +1,5 @@
 #include "../list.h"
 #include <pthread.h>
-
 #include<stdbool.h>
 #include "../../common/test_macro.h"
 typedef struct __stack{
@@ -14,7 +13,7 @@ typedef struct __stack{
     pthread_cond_t *stack_cond_empty;
 }stack_t;
 
-DECLARE_THREAD(stack)
+DECLARE_THREAD(stack,list_t*)
 
 void create_stack(stack_t **,int) ;
 void push(threadpa_t *);
