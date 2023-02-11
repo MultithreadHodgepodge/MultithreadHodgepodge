@@ -7,11 +7,11 @@
 * @node_value: Value of node added
 */
 void create_list(list_t **head) {
-    assert(!(*head) && "List already wxisted");
+    MUL_HODGEPODGE_ASSERT(!(*head) , "List already wxisted");
     
     puts("List Creation\n");
     *head=MALLOC_LIST()
-    assert(*head && "Allocate list head fail");
+    MUL_HODGEPODGE_ASSERT(*head , "Allocate list head fail");
     
     CONNECT_SELF((*head))
 
@@ -48,7 +48,7 @@ void list_add_tail(list_t* list,  list_t *node){
 * @list: A pointer to pointer which point to list 
 */
 void list_remove_head(list_t **list){
-    assert(*list && "Empty list");
+    MUL_HODGEPODGE_ASSERT(*list!=NULL , "Empty list");
 
     list_t *temp=*list;
     printf("Node is removed\n");
@@ -76,7 +76,7 @@ void list_remove_head(list_t **list){
 void list_remove_tail(list_t **list){
 
     /* Check no node */
-    assert(*list && "Empty list");
+    MUL_HODGEPODGE_ASSERT(*list , "Empty list");
    
     /* Check if only one node*/
     if(*list==(*list)->next){
@@ -115,7 +115,7 @@ void list_remove_tail(list_t **list){
 
 void list_remove_specific_node(list_t *list, list_t *node){
     /* Check no node */
-    assert(list && "Empty list");
+    MUL_HODGEPODGE_ASSERT(list!=NULL , "Empty list");
    
 
     
@@ -155,7 +155,7 @@ void list_remove_specific_node(list_t *list, list_t *node){
 * @list: A pointer to pointer which point to list  
 */
 void free_list(list_t **list){
-    assert(*list && "Empty list");
+    MUL_HODGEPODGE_ASSERT(*list , "Empty list");
 
     list_t *tail= (*list)->prev;
     list_t *prev;
