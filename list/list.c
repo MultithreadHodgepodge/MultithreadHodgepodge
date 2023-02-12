@@ -7,7 +7,7 @@
 * @node_value: Value of node added
 */
 void create_list(list_t **head) {
-    MUL_HODGEPODGE_ASSERT(!(*head) , "List already wxisted");
+    MUL_HODGEPODGE_ASSERT(!(*head) , "List already Existed");
     
     puts("List Creation\n");
     *head=MALLOC_LIST()

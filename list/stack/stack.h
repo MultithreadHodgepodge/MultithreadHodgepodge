@@ -2,7 +2,9 @@
 #include <pthread.h>
 #include<stdbool.h>
 #include "../../common/test_macro.h"
-typedef struct __stack{
+#include"../../common/threadpa_macro.h"
+#include "../../common/mul_hodgepodge_assert.h"
+typedef struct stack{
     list_t *top;
     void (*insert)(list_t *,list_t *);
     void (*remove)(list_t **);
@@ -11,13 +13,13 @@ typedef struct __stack{
     pthread_mutex_t *stack_lock;
     pthread_cond_t *stack_cond_cap;
     pthread_cond_t *stack_cond_empty;
-}stack_t;
+}mul_stack_t;
 
-DECLARE_THREAD(stack,list_t*)
+DECLARE_THREAD(mul_stack,list_t*)
 
-void create_stack(stack_t **,int) ;
+void create_stack(mul_stack_t **,int) ;
 void push(threadpa_t *);
-void pop(stack_t *);
-void free_stack(stack_t *);
-bool isEmpty(stack_t *);
+void pop(mul_stack_t *);
+void free_stack(mul_stack_t *);
+bool isEmpty(mul_stack_t *);
 

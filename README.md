@@ -1,8 +1,10 @@
 # Multithread-Hodgepodge
 
-Multithread-Hodgepodge is an open-source project which implements thread-safe data structures in CS.
-Multithread-Hodgepodge is written in C language. It utilizes object-oriented concept to make the code structured.
-Multithread-Hodgepodge is expected to be library of both kernel space/user space application
+Multithread-Hodgepodge is an open-source project which implements thread-safe data structures in CS. \
+Multithread-Hodgepodge is written in C language. It utilizes object-oriented concept to make the code structured. \
+Multithread-Hodgepodge is expected to be library of both kernel space/user space application \
+Currently support Linux and IOS platform, other platform TBD.
+
 
 ## How to use
 Add the data structure be an element of your own structure.

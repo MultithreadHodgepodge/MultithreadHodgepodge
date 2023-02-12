@@ -4,7 +4,7 @@
 * @stack: A pointer to pointer to stack 
 * @capacity: Capacity of stack
 */
-void create_stack(stack_t **stack,int capacity){
+void create_stack(mul_stack_t **stack,int capacity){
     if((*stack)){
         printf("------Stack Already Exists------\n");
         return;
@@ -12,7 +12,7 @@ void create_stack(stack_t **stack,int capacity){
 
     printf("Stack Creation\n");
 
-    *stack=(stack_t *)malloc(sizeof(stack_t));
+    *stack=(mul_stack_t *)malloc(sizeof(mul_stack_t));
     (*stack)->top=NULL;
     (*stack)->insert=list_add_tail;
     (*stack)->remove=list_remove_tail;
@@ -34,7 +34,7 @@ void create_stack(stack_t **stack,int capacity){
 * @stack_param: Parameter to thread
 */
 void push(threadpa_t *stack_param){
-    stack_t *stack= stack_param->stack;
+    mul_stack_t *stack= stack_param->mul_stack;
 
 
     if(!stack){
@@ -58,7 +58,7 @@ void push(threadpa_t *stack_param){
 * @brief: pop()-Remove node from stack
 * @stack: A pointer to pointer to stack 
 */
-void pop(stack_t *stack){
+void pop(mul_stack_t *stack){
     if(!stack){
         printf("------Stack not exists------\n");
     }
@@ -78,12 +78,8 @@ void pop(stack_t *stack){
 * @brief: free_stack()-Free stack
 * @stack: A pointer to stack 
 */
-void free_stack(stack_t *stack){
-    if(!stack) 
-    {
-        printf("Stack is Empty!\n");
-        return ;
-    }
+void free_stack(mul_stack_t *stack){
+    MUL_HODGEPODGE_ASSERT(!stack , "Stack is Empty");
     if(stack->top)
         free_list(&stack->top);
     stack->top = NULL;

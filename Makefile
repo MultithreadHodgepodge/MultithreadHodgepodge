@@ -12,7 +12,7 @@ OBJECTS_RWLOCK = test_rwlock.o
 ## GCC argument
 CC = gcc
 .PHONY: clean
-CFLAGS= -pthread -g -O0 -o
+CFLAGS= -pthread -g -O0 -o 
 CONFIG_BPF_SYSCALL=y
 ## Source DIR
 LIST_DIR=list/
@@ -29,12 +29,12 @@ RWLOCK_DIR = rwlock/
 OBJ_DIR=build/
 
 ## Source .c file
-TEST_LIST_FILE= $(LIST_DIR)test_list.c
+TEST_LIST_FILE= $(shell find $(LIST_DIR) -maxdepth 1 -name 'test_list.c')
 LIST_SOURCE:= $(shell find $(LIST_DIR) -maxdepth 1 -name '*.c')
 STACK_SOURCE:= $(shell find $(STACK_DIR) -name '*.c')
 QUEUE_SOURCE:= $(shell find $(QUEUE_DIR) -name '*.c') 
 HASH_SOURCE:= $(shell find $(HASH_DIR) -name '*.c') 
-COMMON_SOURCE:=$(filter-out $(TEST_LIST_FILE),$(LIST_SOURCE))
+COMMON_SOURCE:= $(filter-out $(TEST_LIST_FILE),$(LIST_SOURCE))
 TREE_SOURCE:=$(shell find $(TREE_DIR) -maxdepth 1 -name '*.c')
 THPOOL_SOURCE := $(shell find $(THPOOL_DIR) -name '*.c')
 RWLOCK_SOURCE := $(shell find $(RWLOCK_DIR) -name '*.c')
