@@ -10,6 +10,7 @@
 #ifndef LOCK_LIST_H__
 #define LOCK_LIST_H__
 
+
 typedef struct list{
     struct list* next;
     struct list* prev;
@@ -44,10 +45,10 @@ typedef struct list{
  * @list: pointer to list node(Add @node before this list node)
  */
 #define CONNECT_PREV_NEXT(node,list)\
-    node->prev=list->prev; \
-    list->prev->next=node; \
-    list->prev=node; \
-    node->next=list; \
+    node->prev=(list)->prev; \
+    (list)->prev->next=node; \
+    (list)->prev=node; \
+    node->next=(list); \
     
 /**
  * CONNECT_SELF() - Point node prev and next to node
@@ -63,12 +64,24 @@ typedef struct list{
 #define MALLOC_LIST() \
     (list_t*)malloc(sizeof(list_t));\
 
-void create_list(list_t **);
-void list_add_head(list_t*, list_t*);
-void list_add_tail(list_t*, list_t*);
-void list_remove_head(list_t** );
-void list_remove_tail(list_t** );
-void list_remove_specific_node(list_t*, list_t*);
-void free_list(list_t **list);
-void list_reverse(list_t **);
+
+#if defined(MUL_HOD_UT) 
+    extern void create_list(list_t **);
+    extern void list_add_head(list_t **, list_t *);
+    extern void list_add_tail(list_t*, list_t*);
+    extern void list_remove_head(list_t** );
+    extern void list_remove_tail(list_t** );
+    extern void list_remove_specific_node(list_t*, list_t*);
+    extern void free_list(list_t **list);
+    extern void list_reverse(list_t **);
+#else 
+    void create_list(list_t **);
+    void list_add_head(list_t **, list_t *);
+    void list_add_tail(list_t*, list_t*);
+    void list_remove_head(list_t** );
+    void list_remove_tail(list_t** );
+    void list_remove_specific_node(list_t*, list_t*);
+    void free_list(list_t **list);
+    void list_reverse(list_t **);
+#endif
 #endif

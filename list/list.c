@@ -8,11 +8,9 @@
 */
 void create_list(list_t **head) {
     MUL_HODGEPODGE_ASSERT(!(*head) , "List already Existed");
-    
     puts("List Creation\n");
     *head=MALLOC_LIST()
     MUL_HODGEPODGE_ASSERT(*head , "Allocate list head fail");
-    
     CONNECT_SELF((*head))
 
 }
@@ -22,9 +20,9 @@ void create_list(list_t **head) {
 * @list: A pointer to pointer which point to list 
 * @node: Node to be added
 */
-void list_add_head(list_t* list, list_t *node){
-    CONNECT_PREV_NEXT(node,list)
-    list=node;
+void list_add_head(list_t** list, list_t *node){
+    CONNECT_PREV_NEXT(node,*list)
+    *list=node;
     printf("Node is added\n");
 }
 
@@ -52,8 +50,7 @@ void list_remove_head(list_t **list){
 
     list_t *temp=*list;
     printf("Node is removed\n");
-    //If only one node, and you free like line 70 71. It won't take place because the address is still in *list but the memory is freed(Segmentation Fault).
-    //當只有一個node如果還是像第70 71行這樣雖然空間被釋放了但位址只有temp被清成NULL(*list的還存著原本的外面還是找得到位置不會是NULL)，多個node可以因為我們還需存下個node的位址，所以當一個node我們直接free(*list)再清成NULL就好
+    //If only one node, and you free directly. It won't take place because the address is still in *list but the memory is freed(Segmentation Fault).
     if(*list==(*list)->next){
         free(*list);
         *list=NULL;

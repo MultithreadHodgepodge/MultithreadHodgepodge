@@ -5,14 +5,12 @@
 * @capacity: Capacity of stack
 */
 void create_stack(mul_stack_t **stack,int capacity){
-    if((*stack)){
-        printf("------Stack Already Exists------\n");
-        return;
-    }
-
+    
+    MUL_HODGEPODGE_ASSERT(!(*stack) , "Stack is Existed");
     printf("Stack Creation\n");
 
     *stack=(mul_stack_t *)malloc(sizeof(mul_stack_t));
+    MUL_HODGEPODGE_ASSERT((*stack) , "Stack Memory allocated fail");
     (*stack)->top=NULL;
     (*stack)->insert=list_add_tail;
     (*stack)->remove=list_remove_tail;

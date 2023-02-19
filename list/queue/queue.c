@@ -5,13 +5,12 @@
 * @queue: return a queue instance
 * @qun: queue quntity
 */
-void create_queue(queue_t **queue, int qun) 
+void create_queue(mul_queue_t **queue, int qun) 
 {
-    (*queue) = (queue_t*)malloc(sizeof(queue_t));
-    if (!*queue) {
-        puts("Memory allocate fail");
-        return ;
-    }
+    MUL_HODGEPODGE_ASSERT(!(*queue) , "Stack is Existed");
+    (*queue) = (mul_queue_t*)malloc(sizeof(mul_queue_t));
+    
+    MUL_HODGEPODGE_ASSERT((*queue) , "Stack Memory allocated fail");
     (*queue)->list = NULL;
     (*queue)->counter = 0;
     (*queue)->capacity = qun;
@@ -37,7 +36,7 @@ void enqueue(threadpa_t *para)
         puts("parameter is empty\n");
         return ;
     }
-    queue_t *q = para->queue;
+    mul_queue_t *q = para->mul_queue;
     if (!q) {
         puts("queue is not exist\n");
         return ;
@@ -55,13 +54,13 @@ void enqueue(threadpa_t *para)
 * @brief: dequeue()-remove first node from the queue
 * @queue: pointer to pointer to queue
 */
-void dequeue(queue_t **queue)
+void dequeue(mul_queue_t **queue)
 {
     if (!*queue){
         puts("queue is not exist");
         return ;
     }
-    queue_t *q = (*queue);
+    mul_queue_t *q = (*queue);
     sem_wait(q->qitem);
     pthread_mutex_lock(q->queue_lock);
     (*queue)->dequeue(&(*queue)->list);
@@ -75,12 +74,9 @@ void dequeue(queue_t **queue)
 * @brief: free_queue()-free queue
 * @queue: pointer to pointer to queue
 */
-void free_queue(queue_t **queue) 
+void free_queue(mul_queue_t **queue) 
 {
-    if (!*queue) {
-        puts("queue is empty\n");
-        return ;
-    }
+    MUL_HODGEPODGE_ASSERT(!(*queue) , "Queue is Empty");
     (*queue)->freeQueue(&(*queue)->list);
     free((*queue)->qremain);
     (*queue)->qremain = NULL;
