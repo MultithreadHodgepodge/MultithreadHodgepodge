@@ -4,6 +4,7 @@
 #include "../../common/test_macro.h"
 #include"../../common/threadpa_macro.h"
 #include "../../common/mul_hodgepodge_assert.h"
+
 typedef struct stack{
     list_t *top;
     void (*insert)(list_t *,list_t *);
@@ -16,8 +17,7 @@ typedef struct stack{
 }mul_stack_t;
 
 DECLARE_THREAD(mul_stack,list_t*)
-
-void create_stack(mul_stack_t **,int) ;
+mul_stack_t* create_stack(mul_stack_t *,int) ;
 void push(threadpa_t *);
 void pop(mul_stack_t *);
 void free_stack(mul_stack_t *);

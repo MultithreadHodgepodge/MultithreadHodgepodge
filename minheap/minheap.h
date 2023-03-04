@@ -5,7 +5,6 @@
 #include <pthread.h>
 #endif
 
-
 struct minheap {
 	int *minheap;
 	int capacity;
@@ -16,7 +15,6 @@ struct minheap {
 };
 
 typedef struct minheap minHeap_t;
-
 minHeap_t *createMinHeap(int );
 int minHeapPop(minHeap_t *);
 int  minHeapPush(minHeap_t *, int );

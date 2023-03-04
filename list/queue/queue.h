@@ -15,7 +15,7 @@ typedef struct queue {
 }mul_queue_t;
 
 DECLARE_THREAD(mul_queue,list_t*)
-void create_queue(mul_queue_t **, int) ;
+mul_queue_t* create_queue(mul_queue_t *, int) ;
 void enqueue(threadpa_t *);
 void dequeue(mul_queue_t **);
-void free_queue(mul_queue_t **);
+void free_queue(mul_queue_t *);

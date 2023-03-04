@@ -6,13 +6,13 @@
 * @list: A pointer to pointer which point to list 
 * @node_value: Value of node added
 */
-void create_list(list_t **head) {
-    MUL_HODGEPODGE_ASSERT(!(*head) , "List already Existed");
+list_t* create_list(list_t *head) {
+    MUL_HODGEPODGE_ASSERT(!head , "List already Existed");
     puts("List Creation\n");
-    *head=MALLOC_LIST()
-    MUL_HODGEPODGE_ASSERT(*head , "Allocate list head fail");
-    CONNECT_SELF((*head))
-
+    head=MALLOC_LIST()
+    MUL_HODGEPODGE_ASSERT(head , "Allocate list head fail");
+    CONNECT_SELF((head))
+    return head;
 }
 
 /**
@@ -32,7 +32,6 @@ void list_add_head(list_t** list, list_t *node){
 * @node: Node to be added
 */
 void list_add_tail(list_t* list,  list_t *node){
-
     CONNECT_PREV_NEXT(node,list)
     (list)->prev=node;
     puts("Node is added\n");
@@ -47,7 +46,6 @@ void list_add_tail(list_t* list,  list_t *node){
 */
 void list_remove_head(list_t **list){
     MUL_HODGEPODGE_ASSERT(*list!=NULL , "Empty list");
-
     list_t *temp=*list;
     printf("Node is removed\n");
     //If only one node, and you free directly. It won't take place because the address is still in *list but the memory is freed(Segmentation Fault).
@@ -56,7 +54,6 @@ void list_remove_head(list_t **list){
         *list=NULL;
         return;
     }
-    
     (*list)->prev->next=(*list)->next;
     (*list)->next->prev=(*list)->prev;
     (*list)=(*list)->next;
@@ -64,8 +61,8 @@ void list_remove_head(list_t **list){
     temp->next=NULL;
     free(temp); //WHY before temp=NULL? If set temp to NULL first,it won't point to the same location as *list
     temp=NULL;
-    
 }
+
 /**
 * @brief: list_remove_tail()-Remove the list from tail
 * @list: A pointer to pointer which point to list  
@@ -74,7 +71,6 @@ void list_remove_tail(list_t **list){
 
     /* Check no node */
     MUL_HODGEPODGE_ASSERT(*list , "Empty list");
-   
     /* Check if only one node*/
     if(*list==(*list)->next){
         printf("Node is removed\n");
@@ -82,7 +78,6 @@ void list_remove_tail(list_t **list){
         *list=NULL;
         return;
     }
-
     /* list head */
     list_t *temp = *list;
     /* A  B <->  C
@@ -100,8 +95,6 @@ void list_remove_tail(list_t **list){
      * 
      */
     temp->prev->next = temp;
-
-
 }
 
 /**
@@ -109,13 +102,9 @@ void list_remove_tail(list_t **list){
 * @list: A pointer to pointer which point to list  
 * @node: Node to be removed
 */
-
 void list_remove_specific_node(list_t *list, list_t *node){
     /* Check no node */
-    MUL_HODGEPODGE_ASSERT(list!=NULL , "Empty list");
-   
-
-    
+    MUL_HODGEPODGE_ASSERT(list!=NULL , "Empty list"); 
     while((list) && (list)==node){
         printf("Node is removed\n");
         if(list==(list)->next){
@@ -127,25 +116,19 @@ void list_remove_specific_node(list_t *list, list_t *node){
         (list)->next->prev=(list)->prev;
         list_t *temp=(list);
         list = (list)->next;
-        //list = &(*list)->next;
         free(temp);
         temp = NULL;
     }
-    
     list_t *head = list;
     do{
         if((list)==node){
             printf("Node is removed\n");
             (list)->prev->next=(list)->next;
             (list)->next->prev=(list)->prev;
-
         }
-
         list = (list)->next;
     }while(list != head);
-//list=head;
 }
-
 
 /**
 * @brief: free_list()-Free the list
@@ -153,7 +136,6 @@ void list_remove_specific_node(list_t *list, list_t *node){
 */
 void free_list(list_t **list){
     MUL_HODGEPODGE_ASSERT(*list , "Empty list");
-
     list_t *tail= (*list)->prev;
     list_t *prev;
     list_t *cur =  *list;

@@ -15,6 +15,7 @@ typedef struct list{
     struct list* next;
     struct list* prev;
 }list_t;
+
 /**
  * container_of() - Calculate address of object that contains address ptr
  * @ptr: pointer to member variable
@@ -66,7 +67,7 @@ typedef struct list{
 
 
 #if defined(MUL_HOD_UT) 
-    extern void create_list(list_t **);
+    extern list_t* create_list(list_t *);
     extern void list_add_head(list_t **, list_t *);
     extern void list_add_tail(list_t*, list_t*);
     extern void list_remove_head(list_t** );
@@ -75,7 +76,7 @@ typedef struct list{
     extern void free_list(list_t **list);
     extern void list_reverse(list_t **);
 #else 
-    void create_list(list_t **);
+    list_t* create_list(list_t *);
     void list_add_head(list_t **, list_t *);
     void list_add_tail(list_t*, list_t*);
     void list_remove_head(list_t** );

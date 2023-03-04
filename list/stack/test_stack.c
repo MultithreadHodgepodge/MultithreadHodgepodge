@@ -4,8 +4,7 @@ int main(){
     mul_stack_t *stack=NULL;
     pthread_t thread1 ,thread2,thread3;
     list_t *node1=(list_t*)malloc(sizeof(list_t)),*node2=(list_t*)malloc(sizeof(list_t)),*node3=(list_t*)malloc(sizeof(list_t));
-
-    create_stack(&stack,10);
+    stack=create_stack(stack,10);
     THREADPA_INIT(param1,mul_stack,stack,node1)
     THREADPA_INIT(param2,mul_stack,stack,node2)
     THREADPA_INIT(param3,mul_stack,stack,node3)
