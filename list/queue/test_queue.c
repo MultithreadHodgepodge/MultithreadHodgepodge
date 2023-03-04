@@ -3,13 +3,13 @@
 #include"../../common/threadpa_macro.h"
 int main() 
 {
-    queue_t *queue = NULL;
+    mul_queue_t *queue = NULL;
     pthread_t t1, t2, t3, t4, t5;
     create_queue(&queue, 10);
     list_t *node1=(list_t*)malloc(sizeof(list_t)),*node2=(list_t*)malloc(sizeof(list_t)),*node3=(list_t*)malloc(sizeof(list_t));
-    THREADPA_INIT(param1,queue,node1)
-    THREADPA_INIT(param2,queue,node2)
-    THREADPA_INIT(param3,queue,node3)
+    THREADPA_INIT(param1,mul_queue,queue,node1)
+    THREADPA_INIT(param2,mul_queue,queue,node2)
+    THREADPA_INIT(param3,mul_queue,queue,node3)
     pthread_create(&t1, NULL, enqueue, &param1);
     pthread_create(&t2, NULL, enqueue, &param2);
     pthread_create(&t3, NULL, enqueue, &param3);

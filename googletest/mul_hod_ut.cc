@@ -5,6 +5,10 @@ extern "C"
 {
     #include "../list/list.h"
 }
+
+/*
+Test list_h
+*/
 //create_list()
 TEST(createlisttestcase, createlist){
     cout<< "<<Test create_list>>: Start\n"; 

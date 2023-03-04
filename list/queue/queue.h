@@ -4,7 +4,6 @@
 #include "../../common/test_macro.h"
 #include "../../common/mul_hodgepodge_assert.h"
 typedef struct queue {
-
     list_t *list;
     int counter;
     int capacity;
@@ -13,8 +12,8 @@ typedef struct queue {
     void (*freeQueue)(list_t **);
     pthread_mutex_t *queue_lock;
     sem_t *qremain, *qitem;
-    
 }mul_queue_t;
+
 DECLARE_THREAD(mul_queue,list_t*)
 void create_queue(mul_queue_t **, int) ;
 void enqueue(threadpa_t *);
