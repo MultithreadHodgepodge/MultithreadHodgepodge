@@ -25,6 +25,7 @@ community include:
 * Focusing on what is best not just for us as individuals, but for the
   overall community
 * [ChungHsuan]: Before forwarding a pull request, please check the corresponding google test is set and passed not only build pass!
+* [ChungHsuan]: New feature added, please create a issue!
 
 Examples of unacceptable behavior include:
 

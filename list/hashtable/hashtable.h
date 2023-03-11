@@ -1,4 +1,6 @@
+#ifndef LIST_H__
 #include "../list.h"
+#endif
 #include <pthread.h>
 
 
@@ -9,6 +11,7 @@ static int HASH_TABLE_SIZE=69;
 typedef struct hashtable{
     int key;
     list_t list;
+    int count;
     pthread_mutex_t *hash_lock;
 }mul_hash_t;
 

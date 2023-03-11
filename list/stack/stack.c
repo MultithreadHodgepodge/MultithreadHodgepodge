@@ -30,10 +30,7 @@ mul_stack_t* create_stack(mul_stack_t *stack,int capacity){
 * @stack_param: Parameter to thread
 */
 void push(mul_stack_t *stack){
-
-    if(!stack){
-        printf("------Stack not exists------\n");
-    }
+    MUL_HODGEPODGE_ASSERT(stack , "Stack is Empty");
     pthread_mutex_lock(stack->stack_lock);
     while(stack->count==stack->capacity){
         printf("------Please Wait!! Stack is full !!------\n");
@@ -54,9 +51,7 @@ void push(mul_stack_t *stack){
 * @stack: A pointer to pointer to stack 
 */
 void pop(mul_stack_t *stack){
-    if(!stack){
-        printf("------Stack not exists------\n");
-    }
+    MUL_HODGEPODGE_ASSERT(stack , "Stack is Empty");
     pthread_mutex_lock(stack->stack_lock);
     while(stack->count==0){
         printf("------Please Wait!! Stack is Empty !!------\n");
@@ -72,19 +67,19 @@ void pop(mul_stack_t *stack){
 * @brief: free_stack()-Free stack
 * @stack: A pointer to stack 
 */
-void free_stack(mul_stack_t *stack){
-    MUL_HODGEPODGE_ASSERT(stack , "Stack is Empty");
-    if(stack->top)
-        free_list(&stack->top);
-    stack->top = NULL;
-    free(stack->stack_lock);
-    stack->stack_lock = NULL;
-    free(stack->stack_cond_cap);
-    stack->stack_cond_cap = NULL;
-    free(stack->stack_cond_empty);
-    stack->stack_cond_empty = NULL;
-    free(stack);
-    stack = NULL;
+void free_stack(mul_stack_t **stack){
+    MUL_HODGEPODGE_ASSERT(*stack , "Stack is Empty");
+    if((*stack)->top)
+        free_list(&((*stack)->top));
+    (*stack)->top = NULL;
+    free((*stack)->stack_lock);
+    (*stack)->stack_lock = NULL;
+    free((*stack)->stack_cond_cap);
+    (*stack)->stack_cond_cap = NULL;
+    free((*stack)->stack_cond_empty);
+    (*stack)->stack_cond_empty = NULL;
+    free(*stack);
+    *stack = NULL;
 }
 
 

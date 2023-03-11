@@ -6,19 +6,29 @@ CPFLAG:= -std=c++14
 OBJECT:= gtest.out
 OBJECTS_LIST:=list.o
 OBJECTS_STACK:=stack.o
+OBJECTS_QUEUE:=queue.o
+OBJECTS_HASH:=hashtable.o
 GTEST_FILE:=mul_hod_ut.cc
 GTEST_MAIN_FILE:=mul_hod_ut_main.cc
 LIST_FILE:= ../list/list.c
 STACK_FILE:= ../list/stack/stack.c
-all: build_list build_stack build_ut 
+QUEUE_FILE:= ../list/queue/queue.c
+HASH_FILE:= ../list/hashtable/hashtable.c
+all: build_list build_stack build_queue build_hash build_ut 
 build_ut: $(OBJECT)
-$(OBJECT):$(OBJECTS_LIST) $(OBJECTS_STACK) $(GTEST_FILE) $(GTEST_MAIN_FILE) 
+$(OBJECT):$(OBJECTS_LIST) $(OBJECTS_STACK) $(OBJECTS_QUEUE) $(OBJECTS_HASH) $(GTEST_FILE) $(GTEST_MAIN_FILE) 
 	$(CP) $(CPFLAG) -o $@ $^ -lgtest -lpthread
 build_list:$(OBJECTS_LIST)
 $(OBJECTS_LIST):$(LIST_FILE)
 	$(CC) $(CFLAG) $@ -c $^
 build_stack:$(OBJECTS_STACK) 
 $(OBJECTS_STACK): $(STACK_FILE) 
+	$(CC) $(CFLAG) $@ -c $^
+build_queue: $(OBJECTS_QUEUE)
+$(OBJECTS_QUEUE): $(QUEUE_FILE)
+	$(CC) $(CFLAG) $@ -c $^
+build_hash: $(OBJECTS_HASH)
+$(OBJECTS_HASH): $(HASH_FILE)
 	$(CC) $(CFLAG) $@ -c $^
 clean:
 	rm *.o

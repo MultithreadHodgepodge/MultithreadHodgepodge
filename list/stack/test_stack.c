@@ -7,14 +7,11 @@ int main(){
     pthread_t thread4 ,thread5,thread6;
     pthread_create(&thread4,NULL,&pop,stack);
     pthread_create(&thread5,NULL,&pop,stack);
-    pthread_create(&thread6,NULL,&pop,stack);
     pthread_create(&thread2,NULL,&push,stack);
     pthread_create(&thread3,NULL,&push,stack);
-    pthread_join(thread1,NULL);
     pthread_join(thread2,NULL);
     pthread_join(thread3,NULL);
     pthread_join(thread4,NULL);
     pthread_join(thread5,NULL);
-    pthread_join(thread6,NULL);
-    free_stack(stack);
+    free_stack(&stack);
 }

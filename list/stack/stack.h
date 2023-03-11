@@ -3,6 +3,7 @@
 #endif
 #include <pthread.h>
 #include<stdbool.h>
+#include<sys/time.h>
 #include "../../common/mul_hodgepodge_assert.h"
 
 typedef struct stack{
@@ -20,12 +21,10 @@ typedef struct stack{
     extern mul_stack_t* create_stack(mul_stack_t *,int) ;
     extern void push(mul_stack_t *);
     extern void pop(mul_stack_t *);
-    extern void free_stack(mul_stack_t *);
-    extern bool isEmpty(mul_stack_t *);
+    extern void free_stack(mul_stack_t **);
 #else
     mul_stack_t* create_stack(mul_stack_t *,int) ;
     void push(mul_stack_t *);
     void pop(mul_stack_t *);
-    void free_stack(mul_stack_t *);
-    bool isEmpty(mul_stack_t *);
+    void free_stack(mul_stack_t **);
 #endif

@@ -10,6 +10,7 @@ mul_hash_t *create_hash_table(int size){
     int i=0;
     for(i=0;i<HASH_TABLE_SIZE;i++){
         hash_table[i].key=-1;
+        hash_table[i].count=0;
         hash_table[i].hash_lock=(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
         pthread_mutex_init(hash_table[i].hash_lock,NULL);
     }
@@ -42,11 +43,13 @@ void insert_hash(mul_hash_data_t *hash_data){
         list_t *head = &hash_table[key].list;
         CONNECT_SELF(head)
         hash_table[key].key=value;
+        hash_table[key].count++;
     }
     else{
         mul_hash_t* hash_node=(mul_hash_t*) malloc(sizeof(mul_hash_t));    
         hash_node->key=value;
         list_add_tail(&hash_table[key].list,&hash_node->list);
+        hash_table[key].count++;
     }
     pthread_mutex_unlock(hash_table[key].hash_lock);
 }
@@ -67,6 +70,7 @@ void delete_hash(mul_hash_data_t *hash_data){
     do{
         if(hash_node->key==key){
             list_remove_specific_node(&hash_table[key].list,&hash_node->list);
+            hash_table[key].count--;
             free(hash_node);
             break;
         }

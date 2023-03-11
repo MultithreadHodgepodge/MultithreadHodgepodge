@@ -71,16 +71,17 @@ void dequeue(mul_queue_t **queue)
 * @brief: free_queue()-free queue
 * @queue: pointer to pointer to queue
 */
-void free_queue(mul_queue_t *queue) 
+void free_queue(mul_queue_t **queue) 
 {
-    MUL_HODGEPODGE_ASSERT(queue , "Queue is Empty");
-    queue->freeQueue(&queue->list);
-    free(queue->qremain);
-    queue->qremain = NULL;
-    free(queue->qitem);
-    queue->qitem = NULL;
-    free(queue->queue_lock);
-    queue->queue_lock = NULL;
-    free(queue);
-    queue = NULL;
+    MUL_HODGEPODGE_ASSERT(*queue , "Queue is Empty");
+    if((*queue)->list)
+        (*queue)->freeQueue(&((*queue)->list));
+    free((*queue)->qremain);
+    (*queue)->qremain = NULL;
+    free((*queue)->qitem);
+    (*queue)->qitem = NULL;
+    free((*queue)->queue_lock);
+    (*queue)->queue_lock = NULL;
+    free(*queue);
+    *queue = NULL;
 }
