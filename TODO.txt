@@ -7,4 +7,4 @@
     - Make func name realted with MultithreadHodgepodge
     - More accurate func name
 3. stack queue
-    - Stack: Optimize stack to only one parameter(list malloc in push) make it test friendly and user-friendly
+    - Optimization

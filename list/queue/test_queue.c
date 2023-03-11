@@ -16,6 +16,6 @@ int main()
     pthread_join(t3, NULL);
     pthread_join(t4, NULL);
     pthread_join(t5, NULL);
-    free_queue(queue);
+    free_queue(&queue);
     return 0;
 }

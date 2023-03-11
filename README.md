@@ -37,7 +37,7 @@ Created by:
 
 [**Chung Hsuan Chen**](https://github.com/ChungHsuanChen)
 
-[**Peter Kung**](https://github.com/Peter-Kung)
+[**Peter Kung**](https://github.com/Peter-Kung) \
 Any comment please contact us!!
 
 ## Contribution
