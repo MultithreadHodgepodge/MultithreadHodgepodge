@@ -29,8 +29,8 @@ mul_stack_t* create_stack(mul_stack_t *stack,int capacity){
 * @brief: push()-Push node to stack
 * @stack_param: Parameter to thread
 */
-void push(threadpa_t *stack_param){
-    mul_stack_t *stack= stack_param->mul_stack;
+void push(mul_stack_t *stack){
+
     if(!stack){
         printf("------Stack not exists------\n");
     }
@@ -40,7 +40,10 @@ void push(threadpa_t *stack_param){
         pthread_cond_wait(stack->stack_cond_cap,stack->stack_lock);
     }
     if(!(stack->top)) stack->top=create_list(stack->top);
-    else    stack->insert(stack->top, stack_param->node);
+    else {
+        list_t *node=(list_t*)malloc(sizeof(list_t));
+        stack->insert(stack->top, node);
+    }
     stack->count++;
     pthread_cond_signal(stack->stack_cond_empty);
     pthread_mutex_unlock(stack->stack_lock);

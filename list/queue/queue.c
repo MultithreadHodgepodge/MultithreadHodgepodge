@@ -29,24 +29,22 @@ mul_queue_t* create_queue(mul_queue_t *queue, int qun)
 * @brief: enqueue()-add a node into queue 
 * @para: Parameter send to thread 
 */
-void enqueue(threadpa_t *para)
+void enqueue(mul_queue_t *queue)
 {
-    if (!para) {
-        puts("parameter is empty\n");
-        return ;
-    }
-    mul_queue_t *q = para->mul_queue;
-    if (!q) {
+    if (!queue) {
         puts("queue is not exist\n");
         return ;
     }
-    sem_wait(q->qremain);
-    pthread_mutex_lock(q->queue_lock);
-    if(!(q->list)) q->list=create_list(q->list);
-    else    q->enqueue(q->list, para->node);
-    q->counter++;
-    pthread_mutex_unlock(q->queue_lock);
-    sem_post(q->qitem);
+    sem_wait(queue->qremain);
+    pthread_mutex_lock(queue->queue_lock);
+    if(!(queue->list)) queue->list=create_list(queue->list);
+    else{
+        list_t *node=(list_t*)malloc(sizeof(list_t));
+        queue->enqueue(queue->list, node);
+    }
+    queue->counter++;
+    pthread_mutex_unlock(queue->queue_lock);
+    sem_post(queue->qitem);
 }
 
 /**

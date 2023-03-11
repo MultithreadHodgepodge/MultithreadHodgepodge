@@ -1,7 +1,6 @@
 #include "../list.h"
 #include <pthread.h>
-#include "../../common/test_macro.h"
-#include"../../common/threadpa_macro.h"
+
 
 static int HASH_TABLE_SIZE=69;
 #define GET_HASH_KEY(value)\
@@ -13,8 +12,13 @@ typedef struct hashtable{
     pthread_mutex_t *hash_lock;
 }mul_hash_t;
 
-DECLARE_THREAD(mul_hash,int)
+typedef struct hashdata{
+    int value;
+    mul_hash_t *hashtable;
+}mul_hash_data_t;
+
 mul_hash_t *create_hash_table(int);
-void insert_hash(threadpa_t *);
-void delete_hash(threadpa_t *);
-void print_hash(mul_hash_t*,int);
+mul_hash_data_t *pack_hash_data(mul_hash_t *, int);
+void insert_hash(mul_hash_data_t *);
+void delete_hash(mul_hash_data_t *);
+void print_hash(mul_hash_t *,int);

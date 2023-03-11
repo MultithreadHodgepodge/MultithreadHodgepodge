@@ -1,7 +1,6 @@
 #include "../list.h"
 #include <pthread.h>
 #include <semaphore.h>
-#include "../../common/test_macro.h"
 #include "../../common/mul_hodgepodge_assert.h"
 typedef struct queue {
     list_t *list;
@@ -14,8 +13,7 @@ typedef struct queue {
     sem_t *qremain, *qitem;
 }mul_queue_t;
 
-DECLARE_THREAD(mul_queue,list_t*)
 mul_queue_t* create_queue(mul_queue_t *, int) ;
-void enqueue(threadpa_t *);
+void enqueue(mul_queue_t*);
 void dequeue(mul_queue_t **);
 void free_queue(mul_queue_t *);

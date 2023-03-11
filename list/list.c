@@ -11,7 +11,7 @@ list_t* create_list(list_t *head) {
     puts("List Creation\n");
     head=MALLOC_LIST()
     MUL_HODGEPODGE_ASSERT(head , "Allocate list head fail");
-    CONNECT_SELF((head))
+    CONNECT_SELF(head)
     return head;
 }
 

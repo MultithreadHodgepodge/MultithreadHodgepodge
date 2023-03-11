@@ -1,4 +1,5 @@
 #include"hashtable.h"
+
 /**
 * @brief: create_hash_table()-Create Hashtable 
 * @size: Size of Hashtable(Entry number of Hashtable)
@@ -11,9 +12,20 @@ mul_hash_t *create_hash_table(int size){
         hash_table[i].key=-1;
         hash_table[i].hash_lock=(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
         pthread_mutex_init(hash_table[i].hash_lock,NULL);
-
     }
     return hash_table;
+}
+
+/**
+* @brief: pack_hash_data()-Pack hashtable and value into hashdata
+* @hashtable: Pointer to hashtable
+* @value: Value in hashdata
+*/
+mul_hash_data_t *pack_hash_data(mul_hash_t *hashtable, int value){
+    mul_hash_data_t *hash_data=(mul_hash_data_t*)malloc(sizeof(mul_hash_data_t));
+    hash_data->hashtable=hashtable;
+    hash_data->value=value;
+    return hash_data;
 }
 
 /**
@@ -21,9 +33,9 @@ mul_hash_t *create_hash_table(int size){
 * @hash_table: Pointer to hashtable
 * @value: Value to be added
 */
-void insert_hash(threadpa_t *param){
-    mul_hash_t *hash_table=param->mul_hash;
-    int value=param->node;
+void insert_hash(mul_hash_data_t *hash_data){
+    mul_hash_t *hash_table=hash_data->hashtable;
+    int value=hash_data->value;
     int key=GET_HASH_KEY(value)
     pthread_mutex_lock(hash_table[key].hash_lock);
     if(hash_table[key].key==-1){
@@ -44,12 +56,12 @@ void insert_hash(threadpa_t *param){
 * @hash_table: Pointer to hashtable
 * @value: Value to be deleted
 */
-void delete_hash(threadpa_t *param){
-    mul_hash_t *hash_table=param->mul_hash;
-    int value=param->node;
+void delete_hash(mul_hash_data_t *hash_data){
+    mul_hash_t *hash_table=hash_data->hashtable;
+    int value=hash_data->value;
     int key=GET_HASH_KEY(value);
     pthread_mutex_lock(hash_table[key].hash_lock);
-    assert(hash_table[key].key!=-1);
+    MUL_HODGEPODGE_ASSERT(hash_table[key].key!=-1, "Key not existed in hashtable");
     list_t *head=&hash_table[key].list;
     mul_hash_t *hash_node=&hash_table[key];
     do{

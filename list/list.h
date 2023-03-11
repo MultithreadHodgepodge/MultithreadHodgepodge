@@ -7,8 +7,8 @@
 #include <stddef.h>
 #include "../common/compare.h"
 #include "../common/mul_hodgepodge_assert.h"
-#ifndef LOCK_LIST_H__
-#define LOCK_LIST_H__
+#ifndef LIST_H__
+#define LIST_H__
 
 
 typedef struct list{
