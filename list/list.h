@@ -5,15 +5,16 @@
 #include <assert.h>
 #include<limits.h>
 #include <stddef.h>
+#include "../common/common_struct.h"
 #include "../common/compare.h"
 #include "../common/mul_hodgepodge_assert.h"
 #ifndef LIST_H__
 #define LIST_H__
 
-
 typedef struct list{
     struct list* next;
     struct list* prev;
+    state st;
 }list_t;
 
 /**
@@ -71,7 +72,7 @@ typedef struct list{
     extern void list_add_head(list_t **, list_t *);
     extern void list_add_tail(list_t*, list_t*);
     extern void list_remove_head(list_t** );
-    extern void list_remove_tail(list_t** );
+    extern void list_remove_tail(list_t* );
     extern void list_remove_specific_node(list_t*, list_t*);
     extern void free_list(list_t **list);
     extern void list_reverse(list_t **);
@@ -80,7 +81,7 @@ typedef struct list{
     void list_add_head(list_t **, list_t *);
     void list_add_tail(list_t*, list_t*);
     void list_remove_head(list_t** );
-    void list_remove_tail(list_t** );
+    void list_remove_tail(list_t* );
     void list_remove_specific_node(list_t*, list_t*);
     void free_list(list_t **list);
     void list_reverse(list_t **);

@@ -12,7 +12,7 @@ int main(){
     
     pthread_create(&thread1,NULL,insert_hash,hash_data1);
     pthread_create(&thread2,NULL,insert_hash,hash_data2);
-    pthread_create(&thread3,NULL,insert_hash,hash_data3);
+    pthread_create(&thread3,NULL,delete_hash,hash_data3);
     pthread_create(&thread4,NULL,delete_hash,hash_data4);
     pthread_create(&thread5,NULL,insert_hash,hash_data5);
     

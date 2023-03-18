@@ -2,16 +2,17 @@
 
 
 /**
-* @brief: create_list()-Add node to head of list
-* @list: A pointer to pointer which point to list 
-* @node_value: Value of node added
+* @brief: create_list()-Create list node
+* @list: A pointer to list_t
 */
 list_t* create_list(list_t *head) {
-    MUL_HODGEPODGE_ASSERT(!head , "List already Existed");
-    puts("List Creation\n");
     head=MALLOC_LIST()
-    MUL_HODGEPODGE_ASSERT(head , "Allocate list head fail");
+    head->st.w=0;
     CONNECT_SELF(head)
+    head->st.bit.configured=1;
+    head->st.bit.is_malloc=1;
+    head->st.bit.is_free=0;
+    head->st.bit.is_multithread=0;
     return head;
 }
 
@@ -50,6 +51,8 @@ void list_remove_head(list_t **list){
     printf("Node is removed\n");
     //If only one node, and you free directly. It won't take place because the address is still in *list but the memory is freed(Segmentation Fault).
     if(*list==(*list)->next){
+        (*list)->st.w=0;
+        (*list)->st.bit.is_free=1;
         free(*list);
         *list=NULL;
         return;
@@ -59,6 +62,7 @@ void list_remove_head(list_t **list){
     (*list)=(*list)->next;
     temp->prev=NULL;
     temp->next=NULL;
+    temp->st.bit.is_free=1;
     free(temp); //WHY before temp=NULL? If set temp to NULL first,it won't point to the same location as *list
     temp=NULL;
 }
@@ -67,35 +71,39 @@ void list_remove_head(list_t **list){
 * @brief: list_remove_tail()-Remove the list from tail
 * @list: A pointer to pointer which point to list  
 */
-void list_remove_tail(list_t **list){
+void list_remove_tail(list_t *list){
 
     /* Check no node */
-    MUL_HODGEPODGE_ASSERT(*list , "Empty list");
+    MUL_HODGEPODGE_ASSERT(list , "Empty list");
+
     /* Check if only one node*/
-    if(*list==(*list)->next){
-        printf("Node is removed\n");
-        free(*list);
-        *list=NULL;
+    if(list==(list)->next){
+        list->st.bit.is_free=1;
+        if(list->st.w & STRUCT_IS_CREATED_BY_MALLOC)free(list);
+        list=NULL;
+        puts("Node is removed\n");
         return;
     }
     /* list head */
-    list_t *temp = *list;
+    list_t *temp = list;
     /* A  B <->  C
      * |         |
      * - - - - - -
      */
     temp->prev=temp->prev->prev; 
-    printf("Node is removed\n");
     /* A  non <- C
      * |         |
      * - - - - - -
      */
-    free(temp->prev->next);
+    temp->prev->next->st.bit.is_free=1;
+    if(temp->prev->next->st.w & STRUCT_IS_CREATED_BY_MALLOC)free(temp->prev->next);
     /* A <-> C
      * 
      */
     temp->prev->next = temp;
+    puts("Node is removed\n");
 }
+
 
 /**
 * @brief: list_remove_specific_node()-Remove specific node value in the list 
@@ -108,6 +116,8 @@ void list_remove_specific_node(list_t *list, list_t *node){
     while((list) && (list)==node){
         printf("Node is removed\n");
         if(list==(list)->next){
+            list->st.w=0;
+            list->st.bit.is_free=1;
             free(list);
             list=NULL;
             return;
@@ -116,6 +126,8 @@ void list_remove_specific_node(list_t *list, list_t *node){
         (list)->next->prev=(list)->prev;
         list_t *temp=(list);
         list = (list)->next;
+        temp->st.w=0;
+        temp->st.bit.is_free=1;
         free(temp);
         temp = NULL;
     }
@@ -142,9 +154,13 @@ void free_list(list_t **list){
     while(cur != tail) {
         prev = cur;
         cur = cur->next;
+        prev->st.w=0;
+        prev->st.bit.is_free=1;
         free(prev);
         prev = NULL;
     }
+    tail->st.w=0;
+    tail->st.bit.is_free=1;
     free(tail);
     tail = NULL;
     *list = NULL;
