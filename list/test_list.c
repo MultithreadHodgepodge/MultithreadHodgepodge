@@ -5,14 +5,13 @@
 int main()
 {
     
-    list_t* new_list=NULL;
-    list_remove_tail(&new_list);
+    list_t *new_list=NULL, *node1=NULL, *node2=NULL, *node3=NULL, *node4=NULL, *node5=NULL;
     new_list=create_list(new_list);
-    list_t *node1=MALLOC_LIST()
-    list_t *node2=MALLOC_LIST()
-    list_t *node3=MALLOC_LIST()
-    list_t *node4=MALLOC_LIST()
-    list_t *node5=MALLOC_LIST()
+    node1=create_list(node1);
+    node2=create_list(node2);
+    node3=create_list(node3);
+    node4=create_list(node4);
+    node5=create_list(node5);
     list_add_tail(new_list,node1);
     list_add_tail(new_list,node2);
     list_add_tail(new_list,node3);
@@ -24,10 +23,10 @@ int main()
     // list_remove_tail(&new_list);
     // list_remove_tail(&new_list);
     // list_remove_tail(&new_list);
-    // list_remove_tail(&new_list);
-    // list_remove_tail(&new_list);
+    list_remove_tail(new_list);
+    list_remove_tail(new_list);
     //list_add_tail(&new_list,(void *)8,bigger);
-    list_remove_specific_node(new_list,node3);
+    
     
     free_list(&new_list);
     

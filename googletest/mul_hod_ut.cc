@@ -15,21 +15,28 @@ Test list_h
 //create_list()
 TEST(createlistcase, createlist){
     cout<< "<<Test create_list>>: Start\n"; 
-    list_t* new_list=NULL;
+    list_t *new_list=NULL;
     new_list=create_list(new_list);
     EXPECT_NE(new_list,nullptr);
     EXPECT_EQ(new_list->prev,new_list);
     EXPECT_EQ(new_list->next,new_list);
+    EXPECT_EQ(new_list->st.bit.configured,1);
+    EXPECT_EQ(new_list->st.bit.is_malloc,1);
 }
 
 //list_add_head()
 TEST(listaddheadcase, listaddhead){
     cout<< "<<Test list_add_head>>: Start\n";
-    list_t* new_list=NULL;
+    list_t *new_list=NULL, *node1=NULL;
     new_list=create_list(new_list);
-    list_t *node1=MALLOC_LIST()
+    node1=create_list(node1);
+    list *temp=new_list;
     list_add_head(&new_list,node1);
     EXPECT_EQ(new_list,node1);
+    EXPECT_EQ(node1->prev,temp);
+    EXPECT_EQ(node1->next,temp);
+    EXPECT_EQ(temp->prev,node1);
+    EXPECT_EQ(temp->next,node1);
 }
 
 //list_add_tail()
@@ -65,7 +72,7 @@ TEST(listremovetailcase,listremovetail){
     list_add_tail(new_list,node1);
     list_add_tail(new_list,node2);
     list_t *temp=new_list->prev->prev;
-    list_remove_tail(&new_list);
+    list_remove_tail(new_list);
     EXPECT_EQ(new_list,temp->next);
 }
 
@@ -102,14 +109,19 @@ TEST(pushcase,push){
     cout<< "<<Test push>>: Start\n"; 
     mul_stack_t *stack=NULL;
     stack=create_stack(stack,10);
-    push(stack);
+    mul_stack_data_t *data1=pack_stack_data(stack,(void *)"I ");
+    mul_stack_data_t *data2=pack_stack_data(stack,(void *)"am ");
+    mul_stack_data_t *data3=pack_stack_data(stack,(void *)"BigChung ");
+    mul_stack_data_t *data4=pack_stack_data(stack,(void *)"from ");
+    mul_stack_data_t *data5=pack_stack_data(stack,(void *)"Kaohsiung ");
+    push(data1);
     EXPECT_NE(stack->top,nullptr);
     EXPECT_EQ(stack->count,1);
-    push(stack);
-    push(stack);
+    push(data2);
+    push(data3);
     EXPECT_EQ(stack->count,3);
-    push(stack);
-    push(stack);
+    push(data4);
+    push(data5);
     EXPECT_EQ(stack->count,5);
 }
 
@@ -118,15 +130,20 @@ TEST(popcase,pop){
     cout<< "<<Test pop>>: Start\n"; 
     mul_stack_t *stack=NULL;
     stack=create_stack(stack,10);
-    push(stack);
-    push(stack);
+    mul_stack_data_t *data1=pack_stack_data(stack,(void *)"I ");
+    mul_stack_data_t *data2=pack_stack_data(stack,(void *)"am ");
+    mul_stack_data_t *data3=pack_stack_data(stack,(void *)"BigChung ");
+    mul_stack_data_t *data4=pack_stack_data(stack,(void *)"from ");
+    mul_stack_data_t *data5=pack_stack_data(stack,(void *)"Kaohsiung ");
+    push(data1);
+    push(data2);
     pop(stack);
     EXPECT_EQ(stack->count,1);
-    push(stack);
+    push(data3);
     pop(stack);
     EXPECT_EQ(stack->count,1);
-    push(stack);
-    push(stack);
+    push(data4);
+    push(data5);
     pop(stack);
     EXPECT_EQ(stack->count,2);
 }
@@ -136,19 +153,21 @@ TEST(freecase,freestack){
     cout<< "<<Test free_stack>>: Start\n"; 
     mul_stack_t *stack=NULL;
     stack=create_stack(stack,10);
-    push(stack);
-    push(stack);
-    pop(stack);
-    push(stack);
-    pop(stack);
-    push(stack);
-    push(stack);
-    pop(stack);
+    mul_stack_data_t *data1=pack_stack_data(stack,(void *)"I ");
+    mul_stack_data_t *data2=pack_stack_data(stack,(void *)"am ");
+    mul_stack_data_t *data3=pack_stack_data(stack,(void *)"BigChung ");
+    mul_stack_data_t *data4=pack_stack_data(stack,(void *)"from ");
+    mul_stack_data_t *data5=pack_stack_data(stack,(void *)"Kaohsiung ");
+    push(data1);
+    push(data2);
+    push(data3);
+    push(data4);
+    push(data5);
     free_stack(&stack);
     EXPECT_EQ(stack,nullptr);
     stack=create_stack(stack,10);
-    push(stack);
-    push(stack);
+    push(data1);
+    push(data2);
     free_stack(&stack);
     EXPECT_EQ(stack,nullptr);
 }

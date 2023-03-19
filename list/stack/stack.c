@@ -115,8 +115,8 @@ void pop(mul_stack_t *stack){
 */
 void free_stack(mul_stack_t **stack){
     MUL_HODGEPODGE_ASSERT(*stack , "Stack is Empty");
-    if((*stack)->top)
-        free_list(&((*stack)->top));
+    if((*stack)->top->st.bit.configured)
+        free_list(&((*stack)->top)->list);
     (*stack)->top = NULL;
     free((*stack)->stack_lock);
     (*stack)->stack_lock = NULL;

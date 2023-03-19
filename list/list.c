@@ -36,7 +36,6 @@ void list_add_tail(list_t* list,  list_t *node){
     CONNECT_PREV_NEXT(node,list)
     (list)->prev=node;
     puts("Node is added\n");
-
 }
 
 
@@ -73,9 +72,9 @@ void list_remove_head(list_t **list){
 */
 void list_remove_tail(list_t *list){
 
+    MUL_HODGEPODGE_ASSERT(list , "List is NULL");
     /* Check no node */
-    MUL_HODGEPODGE_ASSERT(list , "Empty list");
-
+    MUL_HODGEPODGE_ASSERT(list->st.w & STRUCT_IS_ALLOCATED , "List isn't allocated");
     /* Check if only one node*/
     if(list==(list)->next){
         list->st.bit.is_free=1;
@@ -156,12 +155,12 @@ void free_list(list_t **list){
         cur = cur->next;
         prev->st.w=0;
         prev->st.bit.is_free=1;
-        free(prev);
+        if(prev->st.w & STRUCT_IS_CREATED_BY_MALLOC)free(prev);
         prev = NULL;
     }
     tail->st.w=0;
     tail->st.bit.is_free=1;
-    free(tail);
+    if(tail->st.w & STRUCT_IS_CREATED_BY_MALLOC)free(tail);
     tail = NULL;
     *list = NULL;
     puts("All clear");
