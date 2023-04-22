@@ -22,6 +22,8 @@ TEST(createlistcase, createlist){
     EXPECT_EQ(new_list->next,new_list);
     EXPECT_EQ(new_list->st.bit.configured,1);
     EXPECT_EQ(new_list->st.bit.is_malloc,1);
+    EXPECT_EQ(new_list->st.bit.is_free,0);
+    EXPECT_EQ(new_list->st.bit.is_multithread,0);
 }
 
 //list_add_head()
@@ -56,10 +58,17 @@ TEST(listremoveheadcase,listremovehead){
     list_t* new_list=NULL;
     new_list=create_list(new_list);
     list_t *node1=MALLOC_LIST()
+    list_t *node2=MALLOC_LIST()
+    list_t *node3=MALLOC_LIST()
     list_add_tail(new_list,node1);
+    list_add_tail(new_list,node2);
+    list_add_tail(new_list,node3);
     list_t *temp=new_list->next;
-    list_remove_head(&new_list);
-    EXPECT_EQ(new_list,temp);
+    list_t *new_head=list_remove_head(new_list);
+    EXPECT_EQ(new_head,temp);
+    temp=new_head->next;
+    new_head=list_remove_head(new_head);
+    EXPECT_EQ(new_head,temp);
 }
 
 //list_remove_tail()
@@ -85,8 +94,8 @@ TEST(freelistcase,freelist){
     list_t *node2=MALLOC_LIST()
     list_add_tail(new_list,node1);
     list_add_tail(new_list,node2);
-    free_list(&new_list);
-    EXPECT_EQ(new_list,nullptr);
+    free_list(new_list);
+    EXPECT_NE(new_list,node1);
 }
 
 /*
@@ -102,6 +111,10 @@ TEST(createstackcase,createstack){
     EXPECT_EQ(stack->insert, list_add_tail);
     EXPECT_EQ(stack->remove,list_remove_tail);
     EXPECT_EQ(stack->count,0);
+    EXPECT_EQ(stack->st.bit.configured,1);
+    EXPECT_EQ(stack->st.bit.is_malloc,1);
+    EXPECT_EQ(stack->st.bit.is_free,0);
+    EXPECT_EQ(stack->st.bit.is_multithread,1);
 }
 
 //push()
@@ -175,6 +188,7 @@ TEST(freecase,freestack){
 /*
 Test mul_queue_t
 */
+
 //create_queue()
 TEST(createqueuecase,createqueue){
     cout<< "<<Test create_queue>>: Start\n"; 
@@ -185,6 +199,10 @@ TEST(createqueuecase,createqueue){
     EXPECT_EQ(queue->capacity,10);
     EXPECT_EQ(queue->enqueue,list_add_tail);
     EXPECT_EQ(queue->dequeue,list_remove_head);
+    EXPECT_EQ(queue->st.bit.configured,1);
+    EXPECT_EQ(queue->st.bit.is_malloc,1);
+    EXPECT_EQ(queue->st.bit.is_free,0);
+    EXPECT_EQ(queue->st.bit.is_multithread,1);
 }
 
 //enqueue()
@@ -192,12 +210,15 @@ TEST(enqueuecase, enqueue){
     cout<< "<<Test enqueue>>: Start\n"; 
     mul_queue_t *queue=NULL;
     queue=create_queue(queue,10);
-    enqueue(queue);
-    EXPECT_NE(queue->list,nullptr);
+    mul_queue_data_t *data1=pack_queue_data(queue,(void *)"I ");
+    mul_queue_data_t *data2=pack_queue_data(queue,(void *)"am ");
+    mul_queue_data_t *data3=pack_queue_data(queue,(void *)"BigChung ");
+    enqueue(data1);
+    EXPECT_NE(queue->head,nullptr);
     EXPECT_EQ(queue->counter,1);
-    enqueue(queue);
+    enqueue(data2);
     EXPECT_EQ(queue->counter,2);
-    enqueue(queue);
+    enqueue(data3);
     EXPECT_EQ(queue->counter,3);
 }
 
@@ -206,8 +227,10 @@ TEST(dequeuecase, dequeue){
     cout<< "<<Test dequeue>>: Start\n"; 
     mul_queue_t *queue=NULL;
     queue=create_queue(queue,10);
-    enqueue(queue);
-    enqueue(queue);
+    mul_queue_data_t *data1=pack_queue_data(queue,(void *)"I ");
+    mul_queue_data_t *data2=pack_queue_data(queue,(void *)"am ");
+    enqueue(data1);
+    enqueue(data2);
     dequeue(&queue);
     EXPECT_EQ(queue->counter,1);
     dequeue(&queue);
@@ -219,14 +242,17 @@ TEST(freequeuecase,freequeue){
     cout<< "<<Test free_queue>>: Start\n"; 
     mul_queue_t *queue=NULL;
     queue=create_queue(queue,10);
-    enqueue(queue);
-    enqueue(queue);
+    mul_queue_data_t *data1=pack_queue_data(queue,(void *)"I ");
+    mul_queue_data_t *data2=pack_queue_data(queue,(void *)"am ");
+    enqueue(data1);
+    enqueue(data2);
     dequeue(&queue);
     dequeue(&queue);
     free_queue(&queue);
     EXPECT_EQ(queue,nullptr);
     queue=create_queue(queue,10);
-    enqueue(queue);
+    mul_queue_data_t *data3=pack_queue_data(queue,(void *)"BigChung ");
+    enqueue(data3);
     dequeue(&queue);
     free_queue(&queue);
     EXPECT_EQ(queue,nullptr);
