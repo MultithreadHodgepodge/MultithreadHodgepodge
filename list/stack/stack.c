@@ -7,7 +7,7 @@
 mul_stack_t* create_stack(mul_stack_t *stack,int capacity){
     MUL_HODGEPODGE_ASSERT(!stack , "Stack is Existed");
     printf("Stack Creation\n");
-    stack=(mul_stack_t *)malloc(sizeof(mul_stack_t));
+    stack=MALLOC_STACK()
     MUL_HODGEPODGE_ASSERT(stack , "Stack Memory allocated fail");
     stack->top=NULL;
     stack->insert=list_add_tail;
@@ -35,7 +35,7 @@ mul_stack_t* create_stack(mul_stack_t *stack,int capacity){
 * @value: Value to be packed in stack node
 */
 stack_node_t* create_stack_node(void *value){
-    stack_node_t *stack_node=(stack_node_t*)malloc(sizeof(stack_node_t));
+    stack_node_t *stack_node=MALLOC_STACK_NODE()
     list_t *temp=&stack_node->list;
     CONNECT_SELF(temp);
     stack_node->st.w=0;
@@ -49,13 +49,13 @@ stack_node_t* create_stack_node(void *value){
 }
 
 /**
-* @brief: pack_stack_data()-Pack stack and stack_node into stack_data
+* @brief: pack_stack_data()-Pack stack and value into stack_data
 * @stack: A pointer to stack 
-* @stack_node: Pointer to stack_node
+* @svalue: Pointer to value
 */
 mul_stack_data_t* pack_stack_data(mul_stack_t *stack, void *value){
     MUL_HODGEPODGE_ASSERT(stack->st.w & STRUCT_IS_ALLOCATED, "Stack not allocated");
-    mul_stack_data_t *stack_data=(mul_stack_data_t*) malloc(sizeof(mul_stack_data_t));
+    mul_stack_data_t *stack_data=MALLOC_STACK_DATA()
     stack_data->stack=stack;
     stack_data->value=value;
     return stack_data;
@@ -91,7 +91,7 @@ void push(mul_stack_data_t *stack_data){
 * @stack: A pointer to pointer to stack 
 */
 void pop(mul_stack_t *stack){
-    MUL_HODGEPODGE_ASSERT(stack , "Stack is Empty");
+    MUL_HODGEPODGE_ASSERT(stack->st.w & STRUCT_IS_ALLOCATED, "Stack not allocated");
     pthread_mutex_lock(stack->stack_lock);
     while(stack->count==0){
         printf("------Please Wait!! Stack is Empty !!------\n");
@@ -114,8 +114,8 @@ void pop(mul_stack_t *stack){
 * @stack: A pointer to stack 
 */
 void free_stack(mul_stack_t **stack){
-    MUL_HODGEPODGE_ASSERT(*stack , "Stack is Empty");
-    if((*stack)->top->st.bit.configured)
+    MUL_HODGEPODGE_ASSERT((*stack)->st.w & STRUCT_IS_ALLOCATED, "Stack not allocated");
+    if(((*stack)->top->st.w & STRUCT_IS_ALLOCATED)&&!(*stack)->top->st.w & STRUCT_IS_FREE)
         free_list(&((*stack)->top)->list);
     (*stack)->top = NULL;
     free((*stack)->stack_lock);

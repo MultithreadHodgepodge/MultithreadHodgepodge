@@ -1,3 +1,4 @@
+#define STRUCT_IS_FREE (1<<2)
 #define STRUCT_IS_CREATED_BY_MALLOC (1<<1)
 #define STRUCT_IS_ALLOCATED (1<<0)
 

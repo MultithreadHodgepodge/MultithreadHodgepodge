@@ -1,12 +1,5 @@
-1. HashTable
-    - Function
-    - Test
-    - Optimization
-    - Thread Safe
-2. All function naming
-    - Make func name realted with MultithreadHodgepodge
-    - More accurate func name
-3. stack queue
-    - Optimization
+1. Add Comment about how to use for every data struture on top of each header file
+2. Google test optimization from function UT to Module UT
+3. Make code cleaner and add new state.
 
 

@@ -12,6 +12,11 @@ mul_hash_t *create_hash_table(int size){
         hash_table[i].key=-1;
         hash_table[i].count=0;
         hash_table[i].hash_lock=(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+        hash_table[i].st.w=0;
+        hash_table[i].st.bit.configured=1;
+        hash_table[i].st.bit.is_malloc=1;
+        hash_table[i].st.bit.is_free=0;
+        hash_table[i].st.bit.is_multithread=1;
         pthread_mutex_init(hash_table[i].hash_lock,NULL);
     }
     return hash_table;
@@ -70,6 +75,7 @@ void delete_hash(mul_hash_data_t *hash_data){
     do{
         if(hash_node->key==key){
             list_remove_specific_node(&hash_table[key].list,&hash_node->list);
+            hash_node->st.bit.is_free=1;
             hash_table[key].count--;
             free(hash_node);
             break;

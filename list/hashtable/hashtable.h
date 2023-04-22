@@ -12,6 +12,7 @@ typedef struct hashtable{
     int key;
     list_t list;
     int count;
+    state st;
     pthread_mutex_t *hash_lock;
 }mul_hash_t;
 

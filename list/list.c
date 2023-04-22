@@ -43,27 +43,31 @@ void list_add_tail(list_t* list,  list_t *node){
 /**
 * @brief: list_remove_head()-Remove the list from head
 * @list: A pointer to pointer which point to list 
+* @retuen: New head
 */
-void list_remove_head(list_t **list){
-    MUL_HODGEPODGE_ASSERT(*list!=NULL , "Empty list");
-    list_t *temp=*list;
-    printf("Node is removed\n");
+list_t* list_remove_head(list_t *list){
+    MUL_HODGEPODGE_ASSERT(list, "Empty list");
+    list_t *temp=list;
     //If only one node, and you free directly. It won't take place because the address is still in *list but the memory is freed(Segmentation Fault).
-    if(*list==(*list)->next){
-        (*list)->st.w=0;
-        (*list)->st.bit.is_free=1;
-        free(*list);
-        *list=NULL;
-        return;
+    
+    if(list==list->next){
+        list->st.bit.is_free=1;
+        if(list->st.w & STRUCT_IS_CREATED_BY_MALLOC)free(list);
+        puts("Node is removed\n");
+        list=NULL;
+        return list;
     }
-    (*list)->prev->next=(*list)->next;
-    (*list)->next->prev=(*list)->prev;
-    (*list)=(*list)->next;
+    list->prev->next=list->next;
+    list->next->prev=list->prev;
+    list=list->next;
     temp->prev=NULL;
     temp->next=NULL;
     temp->st.bit.is_free=1;
-    free(temp); //WHY before temp=NULL? If set temp to NULL first,it won't point to the same location as *list
+    if(temp->st.w & STRUCT_IS_CREATED_BY_MALLOC)free(temp);
+    printf("Node is removed\n");
+    //perror("NN");
     temp=NULL;
+    return list;
 }
 
 /**
@@ -145,12 +149,12 @@ void list_remove_specific_node(list_t *list, list_t *node){
 * @brief: free_list()-Free the list
 * @list: A pointer to pointer which point to list  
 */
-void free_list(list_t **list){
-    MUL_HODGEPODGE_ASSERT(*list , "Empty list");
-    list_t *tail= (*list)->prev;
+void free_list(list_t *list){
+    MUL_HODGEPODGE_ASSERT(list , "Empty list");
+    list_t *tail= (list)->prev;
     list_t *prev;
-    list_t *cur =  *list;
-    while(cur != tail) {
+    list_t *cur =  list;
+    while(cur != tail && !(cur->st.w & STRUCT_IS_FREE)) {
         prev = cur;
         cur = cur->next;
         prev->st.w=0;
@@ -162,7 +166,7 @@ void free_list(list_t **list){
     tail->st.bit.is_free=1;
     if(tail->st.w & STRUCT_IS_CREATED_BY_MALLOC)free(tail);
     tail = NULL;
-    *list = NULL;
+    list = NULL;
     puts("All clear");
 }
 

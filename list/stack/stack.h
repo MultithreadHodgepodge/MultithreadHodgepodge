@@ -5,9 +5,8 @@
 #include<stdbool.h>
 #include<sys/time.h>
 #include "../../common/mul_hodgepodge_assert.h"
-
+#include "../../common/mul_hod_malloc.h"
 #ifndef STACK_NODE_H__
-
 typedef struct __stack_node{
     void *value;
     list_t list;
@@ -35,6 +34,7 @@ typedef struct __stack_data{
 
 #if defined(MUL_HOD_UT) 
     extern mul_stack_t* create_stack(mul_stack_t *,int) ;
+    extern stack_node_t* create_stack_node(void*);
     extern mul_stack_data_t* pack_stack_data(mul_stack_t *, void *value);
     extern void push(mul_stack_data_t *);
     extern void pop(mul_stack_t *);

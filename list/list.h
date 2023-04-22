@@ -8,6 +8,7 @@
 #include "../common/common_struct.h"
 #include "../common/compare.h"
 #include "../common/mul_hodgepodge_assert.h"
+#include "../common/mul_hod_malloc.h"
 #ifndef LIST_H__
 #define LIST_H__
 
@@ -60,30 +61,23 @@ typedef struct list{
     node->prev=node;\
     node->next=node;\
 
-/**
- * @brief: malloc space for list_t node
-*/
-#define MALLOC_LIST() \
-    (list_t*)malloc(sizeof(list_t));\
-
-
 #if defined(MUL_HOD_UT) 
     extern list_t* create_list(list_t *);
     extern void list_add_head(list_t **, list_t *);
     extern void list_add_tail(list_t*, list_t*);
-    extern void list_remove_head(list_t** );
+    extern list_t* list_remove_head(list_t* );
     extern void list_remove_tail(list_t* );
     extern void list_remove_specific_node(list_t*, list_t*);
-    extern void free_list(list_t **list);
+    extern void free_list(list_t *list);
     extern void list_reverse(list_t **);
 #else 
     list_t* create_list(list_t *);
     void list_add_head(list_t **, list_t *);
     void list_add_tail(list_t*, list_t*);
-    void list_remove_head(list_t** );
+    list_t* list_remove_head(list_t* );
     void list_remove_tail(list_t* );
     void list_remove_specific_node(list_t*, list_t*);
-    void free_list(list_t **list);
+    void free_list(list_t *list);
     void list_reverse(list_t **);
 #endif
 #endif
