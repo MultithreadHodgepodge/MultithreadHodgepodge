@@ -1,0 +1,33 @@
+!!!!!!!!!!!!!!!!! Test LIST SPEED !!!!!!!!!!!!!!!!
+=======Start test list_add_head========
+
+=======End test list_add_head duration is 0.070 ms========
+
+=======Start test list_remove_head========
+
+=======End test list_remove_head duration is 0.012 ms========
+
+=======Start test list_add_tail========
+
+=======End test list_add_tail duration is 0.066 ms========
+
+=======Start test list_remove_tail========
+
+=======End test list_remove_tail duration is 0.062 ms========
+!!!!!!!!!!!!!!!!! Test STACK SPEED!!!!!!!!!!!!!!!!
+=======Start test mulstack:push()========
+
+Stack Creation
+=======End test mulstack:push() duration is 0.254 ms========
+
+=======Start test mulstack:pop()========
+
+=======End test mulstack:pop() duration is 0.027 ms========
+!!!!!!!!!!!!!!!!! Test QUEUE SPEED!!!!!!!!!!!!!!!!
+=======Start test mulqueue:enqueue()========
+
+=======End test mulqueue:push() duration is 1.211 ms========
+
+=======Start test mulstack:pop()========
+
+=======End test mulqueue:dequeue() duration is 1.086 ms========

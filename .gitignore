@@ -1,0 +1,11 @@
+build
+.vscode
+*.o
+.*.c.swp
+out.txt
+.*.*.cmd
+*.ko
+*.mod
+*.mod.c
+Module.symvers
+modules.order

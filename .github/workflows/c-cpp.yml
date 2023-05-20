@@ -1,0 +1,49 @@
+name: C/C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  list:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2.4.0
+    - name: make list
+      run: make list
+    - name: test list
+      run: ./build/test_list.o
+    - name: make clean
+      run: make clean
+
+  stack:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2.4.0
+    - name: make stack
+      run: make stack
+    - name: test stack
+      run: ./build/test_stack.o
+    - name: make clean
+      run: make clean
+
+  queue:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2.4.0
+    - name: make queue
+      run: make queue
+    - name: test queue
+      run: ./build/test_queue.o
+    - name: make clean
+      run: make clean
+
+
+  hash:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2.4.0
+    - name: make hash
+      run: make hash
+    - name: test hash
+      run: ./build/test_hashtable.o
+    - name: make clean
+      run: make clean
