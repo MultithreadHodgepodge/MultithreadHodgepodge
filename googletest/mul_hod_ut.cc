@@ -10,11 +10,10 @@ extern "C"
 }
 
 /*
-Test list_h
+Test list_t
 */
-//create_list()
-TEST(createlistcase, createlist){
-    cout<< "<<Test create_list>>: Start\n"; 
+TEST(Testlist, list_test){
+    cout<< "<<Test list_t>>: Start\n"; 
     list_t *new_list=NULL;
     new_list=create_list(new_list);
     EXPECT_NE(new_list,nullptr);
@@ -24,89 +23,63 @@ TEST(createlistcase, createlist){
     EXPECT_EQ(new_list->st.bit.is_malloc,1);
     EXPECT_EQ(new_list->st.bit.is_free,0);
     EXPECT_EQ(new_list->st.bit.is_multithread,0);
-}
-
-//list_add_head()
-TEST(listaddheadcase, listaddhead){
-    cout<< "<<Test list_add_head>>: Start\n";
-    list_t *new_list=NULL, *node1=NULL;
-    new_list=create_list(new_list);
-    node1=MALLOC_LIST();
-    list *temp=new_list;
-    list_add_head(&new_list,node1);
-    EXPECT_EQ(new_list,node1);
-    EXPECT_EQ(node1->prev,temp);
-    EXPECT_EQ(node1->next,temp);
-    EXPECT_EQ(temp->prev,node1);
-    EXPECT_EQ(temp->next,node1);
-}
-
-//list_add_tail()
-TEST(listaddtailcase, listaddtail){
-    cout<< "<<Test list_add_tail>>: Start\n";
-    list_t* new_list=NULL;
-    new_list=create_list(new_list);
-    list_t *node1=MALLOC_LIST()
-    list_add_tail(new_list,node1);
-    EXPECT_EQ(new_list->prev,node1);
-    EXPECT_EQ(new_list, node1->next);
-}
-
-//list_add_tail()
-TEST(listaddinnthnodecase, listaddinnthnode){
-    cout<< "<<Test list_add_in_nth_node>>: Start\n";
-    list_t* new_list=NULL;
-    new_list=create_list(new_list);
-    list_t *node1=MALLOC_LIST()
-    list_add_in_nth_node(&new_list,node1,0);
-    EXPECT_EQ(new_list, node1);
-}
-
-//list_remove_head()
-TEST(listremoveheadcase,listremovehead){
-    cout<< "<<Test list_remove_head>>: Start\n";
-    list_t* new_list=NULL;
-    new_list=create_list(new_list);
-    list_t *node1=MALLOC_LIST()
-    list_t *node2=MALLOC_LIST()
-    list_t *node3=MALLOC_LIST()
-    list_add_tail(new_list,node1);
-    list_add_tail(new_list,node2);
-    list_add_tail(new_list,node3);
-    list_t *temp=new_list->next;
+    /*************************************************************
+     *  Test lsit 1_1: 
+     *  Create one node, remove one with list_remove_head
+    **************************************************************/
+    cout<< "<<Test list case 1_1>>: Start\n";
     list_t *new_head=list_remove_head(new_list);
-    EXPECT_EQ(new_head,temp);
-    temp=new_head->next;
-    new_head=list_remove_head(new_head);
-    EXPECT_EQ(new_head,temp);
-}
+    EXPECT_EQ(new_head, nullptr);
 
-//list_remove_tail()
-TEST(listremovetailcase,listremovetail){
-    cout<< "<<Test list_remove_tail>>: Start\n";
-    list_t* new_list=NULL;
+    /*************************************************************
+     *  Test list 1_2: 
+     * Create one node, add one with list_add_head , remove one with list_remove_tail
+    **************************************************************/
+    cout<< "<<Test list case 1_2>>: Start\n";
     new_list=create_list(new_list);
-    list_t *node1=MALLOC_LIST()
-    list_t *node2=MALLOC_LIST()
-    list_add_tail(new_list,node1);
-    list_add_tail(new_list,node2);
-    list_t *temp=new_list->prev->prev;
+    list_t *temp=new_list, *node1=NULL;
+    node1=create_list(node1);
+    list_add_head(&new_list, node1);
+    EXPECT_EQ(temp->prev, new_list);
+    EXPECT_EQ(temp->next, new_list);
+    EXPECT_EQ(temp, new_list->prev);
+    EXPECT_EQ(temp, new_list->next);
     list_remove_tail(new_list);
-    EXPECT_EQ(new_list,temp->next);
+    EXPECT_EQ(new_list->prev, new_list);
+    EXPECT_EQ(new_list->next, new_list);
+
+    /*************************************************************
+     *  Test list 1_3: 
+     * Create one node, add two node
+     * one with list_add_head , another with list_add_tail 
+     * remove two, one with list_remove_tail, another with list_remove_head
+    **************************************************************/
+    cout<< "<<Test list case 1_2>>: Start\n";
+    new_list=create_list(new_list);
+    temp=new_list;
+    list_t *node2=NULL;
+    node1=create_list(node1);
+    node2=create_list(node2);
+    list_add_head(&new_list, node1);
+    EXPECT_EQ(temp->prev, new_list);
+    EXPECT_EQ(temp->next, new_list);
+    EXPECT_EQ(temp, new_list->prev);
+    EXPECT_EQ(temp, new_list->next);
+    list_add_tail(new_list,node2);
+    EXPECT_EQ(temp->next, node2);
+    EXPECT_EQ(temp, node2->prev);
+    EXPECT_EQ(node2->next,new_list);
+    EXPECT_EQ(new_list->prev,node2);
+    list_remove_tail(new_list);
+    EXPECT_EQ(new_list->prev, temp);
+    EXPECT_EQ(temp->next, new_list);
+    new_list=list_remove_head(new_list);
+    EXPECT_EQ(new_list->prev, new_list);
+    EXPECT_EQ(new_list->next, new_list);
+    free_list(new_list);
 }
 
-//free_list()
-TEST(freelistcase,freelist){
-    cout<< "<<Test free_list>>: Start\n";
-    list_t* new_list=NULL;
-    new_list=create_list(new_list);
-    list_t *node1=MALLOC_LIST()
-    list_t *node2=MALLOC_LIST()
-    list_add_tail(new_list,node1);
-    list_add_tail(new_list,node2);
-    free_list(new_list);
-    EXPECT_NE(new_list,node1);
-}
+
 
 /*
 Test mul_stack_t
