@@ -6,6 +6,8 @@ list_t* create_list(list_t *head) {
     CONNECT_SELF(head)
     head->st.bit.configured=1;
     head->st.bit.is_malloc=1;
+    head->st.bit.is_free=0;
+    head->st.bit.is_multithread=0;
     return head;
 }
 

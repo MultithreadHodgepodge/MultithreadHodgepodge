@@ -1,5 +1,5 @@
 1. Add Comment about how to use for every data struture on top of each header file
-2. Google test optimization from function UT to Module UT and design complete testing scenario
+2. Google test optimization from function UT to Module UT and design complete testing scenario=> list has been done 
 3. Make code cleaner and add new state.
 4. Add state into tree
 5. Comment in minheap

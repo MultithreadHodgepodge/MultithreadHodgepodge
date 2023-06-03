@@ -3,7 +3,6 @@
 #define STRUCT_IS_CREATED_BY_MALLOC (1<<1)
 #define STRUCT_IS_ALLOCATED (1<<0)
 
-
 typedef struct state_b{
     /* 0:Not configured 1:Configured*/
     uint8_t configured        :1; 
