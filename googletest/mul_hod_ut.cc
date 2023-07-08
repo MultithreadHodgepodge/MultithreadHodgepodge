@@ -79,6 +79,20 @@ TEST(Testlist, list_test){
     free_list(new_list);
 }
 
+TEST(listremoventhnodecase, listremoventhnode_fun_test){
+    list_t *new_list=NULL, *node1=NULL, *node2=NULL, *node3=NULL;
+    new_list=create_list(new_list);
+    node1=create_list(node1);
+    node2=create_list(node2);
+    list_add_head(&new_list, node1);
+    list_add_head(&new_list, node2);
+    list_remove_nth_node(&new_list,0);
+    EXPECT_EQ(new_list,node1);
+    node3 = create_list(node3);
+    list_remove_nth_node(&new_list,1);
+    EXPECT_EQ(new_list,node1);
+    EXPECT_EQ(node1->next,node3);
+}
 
 
 /*
