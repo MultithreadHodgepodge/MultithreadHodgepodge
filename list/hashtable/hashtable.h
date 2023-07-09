@@ -26,29 +26,29 @@ typedef struct hashdata{
 * @size: Size of Hashtable(Entry number of Hashtable)
 * @return: mul_hash_t be created
 */
-mul_hash_t *create_hash_table(int);
+mul_hash_t *create_hash_table( int );
 /**
 * @brief: pack_hash_data()-Pack hashtable and value into hashdata
 * @hashtable: Pointer to hashtable
 * @value: Value in hashdata
 * @return: mul_hash_data_t be created
 */
-mul_hash_data_t *pack_hash_data(mul_hash_t *, int);
+mul_hash_data_t *pack_hash_data( mul_hash_t *, int );
 /**
 * @brief: insert_hash()- Insert into hashtable
 * @hash_table: Pointer to hashtable
 * @value: Value to be added
 */
-void insert_hash(mul_hash_data_t *);
+void insert_hash( mul_hash_data_t * );
 /**
 * @brief: delete_hash()- Insert into hashtable
 * @hash_table: Pointer to hashtable
 * @value: Value to be deleted
 */
-void delete_hash(mul_hash_data_t *);
+void delete_hash( mul_hash_data_t * );
 /**
 * @brief: print_hash()- Print given key in hashtable
 * @hash_table: Pointer to hashtable
 * @key: Key in hashtable
 */
-void print_hash(mul_hash_t *,int);
+void print_hash( mul_hash_t *,int );

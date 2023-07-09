@@ -8,43 +8,47 @@
 static int nodes=1000000;
 
 void speedtest_list(){
-    puts("=======Start test list_add_head========\n");
-    list_t *list=create_list(list);
-    float start=cpu();
-    while (nodes--)
+    puts( "=======Start test list_add_head========\n" );
+    list_t *list = create_list( list );
+    float start = cpu();
+    while ( nodes-- )
     {
-        list_t *node1=create_list(NULL);
-        list_add_head(&list,node1);
+        list_t *node1 = create_list( NULL );
+        list_add_head( &list, node1 );
     }
-    float dur=cpu()-start;
-    printf("=======End test list_add_head duration is %.3f ms========\n", dur);
-    puts("\n=======Start test list_remove_head========\n");
-    start=cpu();
-    while (list!=NULL)
+
+    float dur = cpu()-start;
+    printf( "=======End test list_add_head duration is %.3f ms========\n", dur );
+    puts( "\n=======Start test list_remove_head========\n" );
+    start = cpu();
+    while ( list != NULL )
     {
-        list=list_remove_head(list);
+        list = list_remove_head( list );
     }
-    dur=cpu()-start;
+    dur = cpu()-start;
     printf("=======End test list_remove_head duration is %.3f ms========\n", dur);
-    puts("\n=======Start test list_add_tail========\n");
-    nodes=1000000;
-    list=create_list(list);
-    start=cpu();
-    while (nodes--)
+
+    puts( "\n=======Start test list_add_tail========\n" );
+    nodes = 1000000;
+    list = create_list(list);
+    start = cpu();
+    while ( nodes-- )
     {
-        list_t *node1=create_list(NULL);
-        list_add_tail(list,node1);
+        list_t *node1 = create_list( NULL );
+        list_add_tail( list, node1 );
     }
-    dur=cpu()-start;
-    printf("=======End test list_add_tail duration is %.3f ms========\n", dur);
-    puts("\n=======Start test list_remove_tail========\n");
-    start=cpu();
-    while (list!=NULL&& list->st.w!=0)
+
+    dur = cpu()-start;
+    printf( "=======End test list_add_tail duration is %.3f ms========\n", dur );
+    puts( "\n=======Start test list_remove_tail========\n" );
+    start = cpu();
+    while ( list != NULL && list->st.w != 0 )
     {
-        list_remove_tail(list);
+        list_remove_tail( list );
     }
-    dur=cpu()-start;
-    printf("=======End test list_remove_tail duration is %.3f ms========\n", dur);
+
+    dur = cpu()-start;
+    printf( "=======End test list_remove_tail duration is %.3f ms========\n", dur );
 }
 
 void speedtest_stack(){

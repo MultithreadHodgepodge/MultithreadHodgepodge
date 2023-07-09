@@ -26,6 +26,7 @@ community include:
   overall community
 * [ChungHsuan]: Before forwarding a pull request, please check the corresponding google test is set and passed not only build pass!
 * [ChungHsuan]: New feature added, please create a issue!
+* [ChungHsuan]: Stricly follow the coding convention of MultithreadHosgePodge!
 
 Examples of unacceptable behavior include:
 

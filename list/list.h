@@ -48,81 +48,88 @@ typedef struct list{
  * @list: pointer to list node(Add @node before this list node)
  */
 #define CONNECT_PREV_NEXT(node,list)\
-    node->prev=(list)->prev; \
-    (list)->prev->next=node; \
-    (list)->prev=node; \
-    node->next=(list); \
+    node->prev = (list)->prev; \
+    (list)->prev->next = node; \
+    (list)->prev = node; \
+    node->next = (list); \
     
 /**
  * CONNECT_SELF() - Point node prev and next to node
  * @node: pointer to list node 
  */
 #define CONNECT_SELF(node) \
-    node->prev=node;\
-    node->next=node;\
+    node->prev = node;\
+    node->next = node;\
 
 #if defined(MUL_HOD_UT) 
-    extern list_t* create_list(list_t *);
-    extern void list_add_head(list_t **, list_t *);
-    extern void list_add_tail(list_t*, list_t*);
-    extern void list_add_in_nth_node(list_t** ,  list_t *, int );
-    extern list_t* list_remove_head(list_t* );
-    extern void list_remove_tail(list_t* );
-    extern void list_remove_specific_node(list_t*, list_t*);
-    extern void free_list(list_t *list);
-    extern void list_reverse(list_t **);
+    extern list_t* create_list( list_t * );
+    extern void list_add_head( list_t **, list_t * );
+    extern void list_add_tail( list_t*, list_t* );
+    extern void list_add_in_nth_node( list_t** ,  list_t *, int );
+    extern list_t* list_remove_head( list_t* );
+    extern void list_remove_tail( list_t* );
+    extern void list_remove_specific_node( list_t*, list_t*);
+    extern void list_remove_nth_node( list_t **, int );
+    extern void free_list( list_t *list );
+    extern void list_reverse( list_t ** );
 #else
 /**
 * @brief: create_list()-Create list node
 * @list: A pointer to list_t
 * @return: list_t be created
 */
-list_t* create_list(list_t *);
+list_t* create_list( list_t * );
 /**
 * @brief: list_add_head()-Add node to head of list
 * @list: A pointer to pointer to list head
 * @node: list_t node to be added
 */
-void list_add_head(list_t **, list_t *);
+void list_add_head( list_t **, list_t * );
 /**
 * @brief: list_add_tail()-Add node to tail of list
 * @list: A pointer to list_t head
 * @node: list_t node to be added
 */
-void list_add_tail(list_t*, list_t*);
+void list_add_tail( list_t*, list_t* );
 /**
 * @brief: list_add_in_nth_node()-Add node to nth node of list
 * @list: A pointer to pointer to list head
 * @node: list_t node to be added
 * @n : Index of node expect to be added
 */
-void list_add_in_nth_node(list_t** ,  list_t *, int );
+void list_add_in_nth_node( list_t**, list_t *, int );
 /**
 * @brief: list_remove_head()-Remove the list from head
 * @list: A pointer to pointer to list head
 * @retuen: New head of list
 */
-    list_t* list_remove_head(list_t* );
+    list_t* list_remove_head( list_t* );
 /**
 * @brief: list_remove_tail()-Remove the list from tail
 * @list: A pointer to pointer to list  head
 */
-    void list_remove_tail(list_t* );
+    void list_remove_tail( list_t* );
 /**
-* @brief: list_remove_specific_node()-Remove specific node in the list 
+* @brief: list_remove_specific_node()-Remove specific node from list 
 * @list: A pointer to list head
 * @node: list_t node to be removed
 */
-    void list_remove_specific_node(list_t*, list_t*);
+    void list_remove_specific_node( list_t*, list_t* );
+/**
+ * @brief:list_remove_nth_node(): Remove the nth node from list
+ * @list: Pointer to pointer to lost head
+ * @n: The nth node to be removed
+*/
+    void list_remove_nth_node( list_t **, int );
 /**
 * @brief: free_list()-Free the whole list
 * @list: A pointer to list head
 */
-    void free_list(list_t *list);
+    void free_list( list_t *list );
 /**
 * @brief: list_reverse()-Reverse the list
 * @list: A pointer to pointer to list head
 */
-    void list_reverse(list_t **);
-#endif
-#endif
+    void list_reverse( list_t ** );
+#endif //MUL_HOD_UT
+#endif //LIST_H__

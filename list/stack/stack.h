@@ -19,8 +19,8 @@ typedef struct __stack_node{
 
 typedef struct stack{
     stack_node_t *top;
-    void (*insert)(list_t *,list_t *);
-    void (*remove)(list_t *);
+    void (*insert)( list_t *, list_t * );
+    void (*remove)( list_t * );
     int capacity;
     int count;
     pthread_mutex_t *stack_lock;
@@ -35,12 +35,12 @@ typedef struct __stack_data{
 }mul_stack_data_t;
 
 #if defined(MUL_HOD_UT) 
-    extern mul_stack_t* create_stack(mul_stack_t *,int) ;
-    extern stack_node_t* create_stack_node(void*);
-    extern mul_stack_data_t* pack_stack_data(mul_stack_t *, void *value);
-    extern void push(mul_stack_data_t *);
-    extern void pop(mul_stack_t *);
-    extern void free_stack(mul_stack_t **);
+    extern mul_stack_t* create_stack( mul_stack_t * ,int ) ;
+    extern stack_node_t* create_stack_node( void* );
+    extern mul_stack_data_t* pack_stack_data( mul_stack_t *, void *value );
+    extern void push( mul_stack_data_t * );
+    extern void pop( mul_stack_t * );
+    extern void free_stack( mul_stack_t ** );
 #else
 /**
 * @brief: create_stack()-Create and initialize stack
@@ -48,33 +48,33 @@ typedef struct __stack_data{
 * @capacity: Capacity of stack
 * @return: mul_stack_t be created
 */
-mul_stack_t* create_stack(mul_stack_t *,int);
+mul_stack_t* create_stack( mul_stack_t *, int );
 /**
 * @brief: create_stack_node()-Create and initialize stack node
 * @value: Value to be packed in stack node
 * @retuen: stack_node_t be created
 */
-stack_node_t* create_stack_node(void*);
+stack_node_t* create_stack_node( void* );
 /**
 * @brief: pack_stack_data()-Pack stack and value into stack_data
 * @stack: A pointer to stack 
 * @value: Pointer to value
 * @return: mul_stack_data_t be created
 */
-mul_stack_data_t* pack_stack_data(mul_stack_t *, void *value);
+mul_stack_data_t* pack_stack_data( mul_stack_t *, void *value );
 /**
 * @brief: push()-Push node to stack
 * @stack_param: Parameter to thread
 */
-void push(mul_stack_data_t *);
+void push( mul_stack_data_t * );
 /**
 * @brief: pop()-Remove node from stack
 * @stack: A pointer to mul_stack_t 
 */
-void pop(mul_stack_t *);
+void pop( mul_stack_t * );
 /**
 * @brief: free_stack()-Free stack
 * @stack: A pointer to pointer to stack 
 */
-void free_stack(mul_stack_t **);
+void free_stack( mul_stack_t ** );
 #endif
