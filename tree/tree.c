@@ -4,13 +4,10 @@
 * create_tree()-Create empty tree
 * @tree: A pointer to pointer which point to tree 
 */
-void create_tree(tree_t **tree){
-    if (*tree) {
-        printf("Tree Exist\n");
-        return;
-    } 
-    printf("Tree Creation\n");
-    (*tree)=(tree_t *)malloc(sizeof(tree_t));
+void create_tree( tree_t **tree ){
+    MUL_HODGEPODGE_ASSERT( !(*tree) ,"Stack is Existed" );
+    puts("Tree Creation\n");
+    (*tree)=( tree_t * )malloc(sizeof(tree_t));
     (*tree)->parent=(*tree);//parent will be changed while inserting
 }
 

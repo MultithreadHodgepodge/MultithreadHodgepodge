@@ -2,7 +2,7 @@
 
 mul_stack_t* create_stack( mul_stack_t *stack,int capacity ){
     MUL_HODGEPODGE_ASSERT( !stack ,"Stack is Existed" );
-    stack=MALLOC_STACK()
+    stack=MALLOC_MUL_T(stack)
     MUL_HODGEPODGE_ASSERT(stack , "Stack Memory allocated fail");
 
     stack->top = NULL;
@@ -29,7 +29,7 @@ mul_stack_t* create_stack( mul_stack_t *stack,int capacity ){
 }
 
 stack_node_t* create_stack_node( void *value ){
-    stack_node_t *stack_node = MALLOC_STACK_NODE()
+    stack_node_t *stack_node = MALLOC_NODE_T(stack)
     list_t *temp = &stack_node->list;
     CONNECT_SELF( temp );
 
@@ -45,7 +45,7 @@ stack_node_t* create_stack_node( void *value ){
 
 mul_stack_data_t* pack_stack_data( mul_stack_t *stack, void *value ){
     MUL_HODGEPODGE_ASSERT( IsAllocate( stack->st.w ), "Stack not allocated" );
-    mul_stack_data_t *stack_data = MALLOC_STACK_DATA()
+    mul_stack_data_t *stack_data = MALLOC_MUL_T(stack_data)
     stack_data->stack = stack;
     stack_data->value = value;
     return stack_data;

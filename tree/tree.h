@@ -1,5 +1,7 @@
 #include<stdbool.h>
 #include<stdlib.h>
+
+#include "../../common/mul_hodgepodge_assert.h"
 typedef struct __tree tree_t;
 typedef struct __tree{
     void *value;

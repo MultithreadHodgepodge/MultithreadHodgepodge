@@ -3,7 +3,7 @@
 mul_queue_t* create_queue( mul_queue_t *queue, int qun ) 
 {
     MUL_HODGEPODGE_ASSERT( !queue, "Stack is Existed" );
-    queue = MALLOC_QUEUE()
+    queue = MALLOC_MUL_T(queue)
     MUL_HODGEPODGE_ASSERT( queue, "Stack Memory allocated fail" );
     queue->head = NULL;
     queue->counter = 0;
@@ -43,7 +43,7 @@ queue_node_t* create_queue_node( void *value ){
 
 mul_queue_data_t* pack_queue_data(mul_queue_t *queue, void *value){
     MUL_HODGEPODGE_ASSERT( IsAllocate( queue->st.w ), "Queue not allocated" );
-    mul_queue_data_t *queue_data = MALLOC_QUEUE_DATA()
+    mul_queue_data_t *queue_data = MALLOC_MUL_T(queue_data)
     queue_data->queue = queue;
     queue_data->value = value;
     return queue_data;
