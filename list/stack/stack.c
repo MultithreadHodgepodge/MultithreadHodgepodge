@@ -25,6 +25,7 @@ mul_stack_t* create_stack( mul_stack_t *stack,int capacity ){
     stack->st.bit.is_malloc = 1;
     stack->st.bit.is_free = 0;
     stack->st.bit.is_multithread = 1;
+    stack->st.bit.is_head = 1;
     return stack;
 }
 
@@ -46,8 +47,10 @@ stack_node_t* create_stack_node( void *value ){
 mul_stack_data_t* pack_stack_data( mul_stack_t *stack, void *value ){
     MUL_HODGEPODGE_ASSERT( IsAllocate( stack->st.w ), "Stack not allocated" );
     mul_stack_data_t *stack_data = MALLOC_MUL_T(stack_data)
-    stack_data->stack = stack;
-    stack_data->value = value;
+    stack_data = &(mul_stack_data_t){
+        .stack = stack,
+        .value = value
+    };
     return stack_data;
 }
 
@@ -61,7 +64,7 @@ void push( mul_stack_data_t *stack_data ){
         pthread_cond_wait( stack->stack_cond_cap, stack->stack_lock );
     }
     if(!( stack->top )) {
-            stack->top = create_stack_node( value );
+        stack->top = create_stack_node( value );
     }
     else {
         stack_node_t *temp_stack_node = create_stack_node( value );

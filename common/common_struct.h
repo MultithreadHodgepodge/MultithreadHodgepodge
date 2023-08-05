@@ -13,6 +13,7 @@ typedef struct state_b{
     /* If the struct be operated by multithread 0:No 1:Yes*/
     uint8_t is_multithread    :1;
     uint8_t is_added          :1;
+    uint8_t is_head           :1;
     int _reserved         :3;
 }BIT_T;
 

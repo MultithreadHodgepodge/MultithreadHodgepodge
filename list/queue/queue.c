@@ -24,11 +24,12 @@ mul_queue_t* create_queue( mul_queue_t *queue, int qun )
     queue->st.bit.is_malloc = 1;
     queue->st.bit.is_free = 0;
     queue->st.bit.is_multithread = 1;
+    queue->st.bit.is_head = 1;
     return queue;
 }
 
 queue_node_t* create_queue_node( void *value ){
-    queue_node_t *queue_node = MALLOC_QUEUE_NODE()
+    queue_node_t *queue_node = MALLOC_NODE_T(queue)
     list_t *temp = &queue_node->list;
     CONNECT_SELF( temp );
     queue_node->st.w = 0;
@@ -44,8 +45,10 @@ queue_node_t* create_queue_node( void *value ){
 mul_queue_data_t* pack_queue_data(mul_queue_t *queue, void *value){
     MUL_HODGEPODGE_ASSERT( IsAllocate( queue->st.w ), "Queue not allocated" );
     mul_queue_data_t *queue_data = MALLOC_MUL_T(queue_data)
-    queue_data->queue = queue;
-    queue_data->value = value;
+    queue_data = &(mul_queue_data_t){
+        .queue = queue,
+        .value = value
+    };
     return queue_data;
 }
 
