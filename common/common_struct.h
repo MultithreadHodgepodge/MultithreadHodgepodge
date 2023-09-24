@@ -3,6 +3,7 @@
 #define STRUCT_IS_CREATED_BY_MALLOC (1<<1)
 #define STRUCT_IS_ALLOCATED (1<<0)
 
+#ifndef STATE_H__
 typedef struct state_b{
     /* 0:Not configured 1:Configured*/
     uint8_t configured        :1; 
@@ -22,7 +23,7 @@ typedef union __state{
     BIT_T bit;
     uint8_t w;
 }state;
-
+#endif
 #define IsAllocate(st) (st&STRUCT_IS_ALLOCATED)
 #define IsCreateByMalloc(st) (st&STRUCT_IS_CREATED_BY_MALLOC)
 #define IsFree(st) (st&STRUCT_IS_FREE)

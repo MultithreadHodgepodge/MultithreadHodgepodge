@@ -4,11 +4,18 @@
 * create_tree()-Create empty tree
 * @tree: A pointer to pointer which point to tree 
 */
-void create_tree( tree_t **tree ){
-    MUL_HODGEPODGE_ASSERT( !(*tree) ,"Stack is Existed" );
+tree_t* create_tree( tree_t *tree ){
+    MUL_HODGEPODGE_ASSERT( !tree ,"Tree is Existed" );
     puts("Tree Creation\n");
-    (*tree)=( tree_t * )malloc(sizeof(tree_t));
-    (*tree)->parent=(*tree);//parent will be changed while inserting
+    tree = ( tree_t * ) malloc( sizeof(tree_t) );
+    tree->parent = tree;
+
+    tree->st.w = 0;
+    tree->st.bit.configured = 1;
+    tree->st.bit.is_malloc = 1;
+    tree->st.bit.is_free = 0;
+    tree->st.bit.is_multithread = 1;
+    return tree;
 }
 
 /**
@@ -16,8 +23,8 @@ void create_tree( tree_t **tree ){
 * @tree: A pointer to pointer which point to tree 
 * @insert: function pointer point to function
 */
-void set_tree_insert(tree_t **tree, void (*insert)(tree_t**, void*)){
-    (*tree)->insert=insert;
+void set_tree_insert( tree_t *tree, void (*insert)( tree_t*, void* ) ){
+    tree->insert = insert;
 }
 
 /**
@@ -25,8 +32,8 @@ void set_tree_insert(tree_t **tree, void (*insert)(tree_t**, void*)){
 * @tree: A pointer to pointer which point to tree 
 * @printtree: function pointer point to print function
 */
-void set_tree_print(tree_t **tree, void (*printtree)(tree_t*)){
-    (*tree)->printtree=printtree;
+void set_tree_print(tree_t *tree, void (*printtree)(tree_t*)){
+    tree->printtree=printtree;
 }
 
 /**
@@ -34,8 +41,8 @@ void set_tree_print(tree_t **tree, void (*printtree)(tree_t*)){
 * @tree: A pointer to pointer which point to tree 
 * @remove: function pointer point to remove function
 */
-void set_tree_remove(tree_t **tree, void (*remove)(tree_t**)){
-    (*tree)->remove=remove;
+void set_tree_remove(tree_t *tree, void (*remove)(tree_t**, void*)){
+    tree->remove=remove;
 }
 
 

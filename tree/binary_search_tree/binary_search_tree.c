@@ -1,22 +1,3 @@
-#if defined(MUL_HOD_UT)
-    extern void insert_binary_search_tree(tree_t *, void * );
-    extern void insert_bst_traversal( tree_t *, tree_t * );
-    extern tree_t* minValueNode( tree_t* );
-    extern tree_t* __remove_binary_search_tree( tree_t **, void * );
-    extern void remove_binary_search_tree_call( tree_t **, void * );
-    extern void find_node_in_bst( tree_t **, void * );
-    extern bool validate_bst_call( tree_t * );
-    extern bool validate_bst( tree_t *, int , int );
-#else
-    void insert_binary_search_tree(tree_t *, void * );
-    void insert_bst_traversal( tree_t *, tree_t * );
-    tree_t* minValueNode( tree_t* );
-    tree_t* __remove_binary_search_tree( tree_t **, void * );
-    void remove_binary_search_tree_call( tree_t **, void * );
-    void find_node_in_bst( tree_t **, void * );
-    bool validate_bst_call( tree_t * );
-    bool validate_bst( tree_t *, int , int );
-#endif //defined(MUL_HOD_UT)
 /**
 * insert_binary_search_tree()-binary search tree insert function
 * @tree: A pointer to pointer to tree 
@@ -31,7 +12,7 @@ void insert_binary_search_tree( tree_t *tree, void *value ){
     }
     tree_t *temp = NULL;
     temp = create_tree( temp );
-    *temp = (tree_t){
+    temp = &(tree_t){
         .value = value,
         .left = NULL,
         .right = NULL
@@ -47,12 +28,10 @@ void insert_binary_search_tree( tree_t *tree, void *value ){
 */
 void insert_bst_traversal( tree_t *tree, tree_t *node ){
     if( node->value < tree->value ){
-        if(tree->left == NULL) tree->left = node;
-        else insert_bst_traversal( tree->left, node );
+        tree->left == NULL ? tree->left = node : insert_bst_traversal( tree->left, node );
     }
     else{
-        if(tree->right == NULL) tree->right = node;
-        else insert_bst_traversal( tree->right, node );
+        tree->right == NULL ? tree->right = node : insert_bst_traversal( tree->right, node );
     }
 }
 
@@ -103,7 +82,7 @@ tree_t* __remove_binary_search_tree( tree_t **tree, void *value ){
     }
     return *tree;
 }
-
+#include "binary_search_tree.h"
 /**
 * remove_binary_search_tree_interface()-Delete node function interface(Outter usage)
 * @tree: A pointer to pointer to tree_t 
@@ -113,19 +92,19 @@ void remove_binary_search_tree_call( tree_t **tree, void *value ){
     tree_t *temp = __remove_binary_search_tree( tree, value );
 }
 /**
-* find_node_in_bst()-Find if specific value is in bst
+* find_bst()-Find if specific value is in bst
 * @tree: A pointer to pointer to tree_t 
 * @value: value to be found
 */
 void find_node_in_bst( tree_t **tree, void *value ){
     if( !(*tree) ) return;
     if( value < (*tree)->value ){
-        find_node_in_bst( &(*tree)->left, value );
+        find_bst( &(*tree)->left, value );
     }
     else if( value > (*tree)->value ){
-        find_node_in_bst( &(*tree)->right, value );
+        find_bst( &(*tree)->right, value );
     }
-    else printf( "Found %p!!!\n", value);
+    else puts( "Found %p!!!\n", value);
 }
 
 bool validate_bst_call( tree_t *tree ){
@@ -134,5 +113,5 @@ bool validate_bst_call( tree_t *tree ){
 bool validate_bst( tree_t *tree, int floor, int ceiling){
     if( !tree ) return true;
     if( *((int*)tree->value) < floor || *((int*)tree->value) > ceiling) return false;
-    return validate_bst( tree->left, floor, *((int*)tree->value)) || validate_bst( tree->right, *((int*)tree->value), ceiling);
+    return validate_bst( tree->left, floor, tree->value) || validate_bst( tree->right, tree->value, ceiling);
 }

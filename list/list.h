@@ -5,13 +5,13 @@
 #include <assert.h>
 #include<limits.h>
 #include <stddef.h>
+
+#ifndef LIST_H__
+#define LIST_H__
 #include "../common/common_struct.h"
 #include "../common/compare.h"
 #include "../common/mul_hodgepodge_assert.h"
 #include "../common/mul_hod_malloc.h"
-#ifndef LIST_H__
-#define LIST_H__
-
 typedef struct list{
     struct list* next;
     struct list* prev;
