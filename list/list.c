@@ -111,7 +111,7 @@ void list_remove_nth_node( list_t **list, int n ){
     int i;
     list_t *temp = *list;
     for( i=0; i<=n; i++ ){
-        MUL_HODGEPODGE_ASSERT(temp!=*list, "Input n exceeds list");
+        MUL_HODGEPODGE_ASSERT(temp!=*list ||  i==0, "Input n exceeds list");
         if( i == n ){
             (*list)->st.w = 0;
             (*list)->st.bit.is_free = 1;

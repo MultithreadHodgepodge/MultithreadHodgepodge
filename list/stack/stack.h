@@ -66,7 +66,7 @@ mul_stack_data_t* pack_stack_data( mul_stack_t *, void *value );
 * @brief: push()-Push node to stack
 * @stack_param: Parameter to thread
 */
-void push( mul_stack_data_t * );
+void* PUSH_INTF( void * );
 /**
 * @brief: pop()-Remove node from stack
 * @stack: A pointer to mul_stack_t 

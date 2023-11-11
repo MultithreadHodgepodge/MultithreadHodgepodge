@@ -45,19 +45,16 @@ stack_node_t* create_stack_node( void *value ){
 }
 
 mul_stack_data_t* pack_stack_data( mul_stack_t *stack, void *value ){
-    MUL_HODGEPODGE_ASSERT( IsAllocate( stack->st.w ), "Stack not allocated" );
+    MUL_HODGEPODGE_ASSERT( IsAllocate( stack->st.w ), "Stack not allocated(pack_stack_data)" );
     mul_stack_data_t *stack_data = MALLOC_MUL_T(stack_data)
-    stack_data = &(mul_stack_data_t){
-        .stack = stack,
-        .value = value
-    };
+    MUL_HODGEPODGE_ASSERT(stack_data , "Stack Data Memory allocated fail");
+    stack_data->stack = stack;
+    stack_data->value = value;
     return stack_data;
 }
 
-void push( mul_stack_data_t *stack_data ){
-    mul_stack_t *stack = stack_data->stack;
-    void *value = stack_data->value;
-    MUL_HODGEPODGE_ASSERT( IsAllocate( stack->st.w ), "Stack not allocated" );
+void push( mul_stack_t *stack, void* value ){
+    MUL_HODGEPODGE_ASSERT( IsAllocate( stack->st.w ), "Stack Not Allocated(push)" );
     pthread_mutex_lock( stack->stack_lock );
     while( stack->count == stack->capacity ){
         puts("------Please Wait!! Stack is full !!------\n");
@@ -73,6 +70,15 @@ void push( mul_stack_data_t *stack_data ){
     stack->count++;
     pthread_cond_signal( stack->stack_cond_empty );
     pthread_mutex_unlock( stack->stack_lock );
+}
+
+
+void* PUSH_INTF( void* stack_data_temp ){ 
+    mul_stack_data_t *stack_data = (mul_stack_data_t *)stack_data_temp;
+    mul_stack_t *stack = stack_data->stack;
+    MUL_HODGEPODGE_ASSERT( IsAllocate( stack_data->stack->st.w ), "Stack not allocated.." );
+    void *value = stack_data->value;
+    push( stack, value );
 }
 
 void pop( mul_stack_t *stack ){

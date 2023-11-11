@@ -45,10 +45,8 @@ queue_node_t* create_queue_node( void *value ){
 mul_queue_data_t* pack_queue_data(mul_queue_t *queue, void *value){
     MUL_HODGEPODGE_ASSERT( IsAllocate( queue->st.w ), "Queue not allocated" );
     mul_queue_data_t *queue_data = MALLOC_MUL_T(queue_data)
-    queue_data = &(mul_queue_data_t){
-        .queue = queue,
-        .value = value
-    };
+    queue_data->stack = queue;
+    queue_data->value = value;
     return queue_data;
 }
 
