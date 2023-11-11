@@ -12,9 +12,9 @@ int main()
     mul_queue_data_t *data3=pack_queue_data(queue,"BigChung ");
     //pthread_create(&thread4,NULL,&dequeue,&queue);
     //pthread_create(&thread5,NULL,&dequeue,&queue);
-    pthread_create(&thread1,NULL,&enqueue,data1);
-    pthread_create(&thread2,NULL,&enqueue,data2);
-    pthread_create(&thread3,NULL,&enqueue,data3);
+    pthread_create(&thread1,NULL,&ENQUEUE_INTF,data1);
+    pthread_create(&thread2,NULL,&ENQUEUE_INTF,data2);
+    pthread_create(&thread3,NULL,&ENQUEUE_INTF,data3);
     pthread_create(&thread4,NULL,&dequeue,&queue);
     pthread_create(&thread5,NULL,&dequeue,&queue);
     pthread_join(thread1,NULL);

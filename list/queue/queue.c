@@ -45,15 +45,13 @@ queue_node_t* create_queue_node( void *value ){
 mul_queue_data_t* pack_queue_data(mul_queue_t *queue, void *value){
     MUL_HODGEPODGE_ASSERT( IsAllocate( queue->st.w ), "Queue not allocated" );
     mul_queue_data_t *queue_data = MALLOC_MUL_T(queue_data)
-    queue_data->stack = queue;
+    queue_data->queue = queue;
     queue_data->value = value;
     return queue_data;
 }
 
-void enqueue( mul_queue_data_t *queue_data )
-{
-    mul_queue_t *queue = queue_data->queue;
-    void *value = queue_data->value;
+
+void enqueue( mul_queue_t *queue, void* value ){
     MUL_HODGEPODGE_ASSERT( IsAllocate( queue->st.w ), "Queue not allocated" );
     sem_wait( queue->qremain );
     pthread_mutex_lock( queue->queue_lock );
@@ -65,6 +63,14 @@ void enqueue( mul_queue_data_t *queue_data )
     queue->counter++;
     pthread_mutex_unlock( queue->queue_lock );
     sem_post( queue->qitem );
+}
+
+void* ENQUEUE_INTF( void *queue_data_temp ){
+    mul_queue_data_t *queue_data = (mul_queue_data_t *)queue_data_temp;
+    mul_queue_t *queue = queue_data->queue;
+    MUL_HODGEPODGE_ASSERT( IsAllocate( queue_data->queue->st.w ), "Stack not allocated.." );
+    void *value = queue_data->value;
+    enqueue( queue, value );
 }
 
 void dequeue( mul_queue_t **queue )
