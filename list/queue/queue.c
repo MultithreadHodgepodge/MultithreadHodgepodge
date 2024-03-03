@@ -52,7 +52,8 @@ mul_queue_data_t* pack_queue_data(mul_queue_t *queue, void *value){
 
 
 void enqueue( mul_queue_t *queue, void* value ){
-    MUL_HODGEPODGE_ASSERT( IsAllocate( queue->st.w ), "Queue not allocated" );
+    MUL_HODGEPODGE_ASSERT( IsAllocate( queue->st.w ), "Queue not allocated(enqueue)" );
+    MUL_HODGEPODGE_ASSERT( !IsFree( queue->st.w ), "Queue is already free(enqueue)" );
     sem_wait( queue->qremain );
     pthread_mutex_lock( queue->queue_lock );
     if( !(queue->head) ) queue->head = create_queue_node( value );

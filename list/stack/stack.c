@@ -55,6 +55,7 @@ mul_stack_data_t* pack_stack_data( mul_stack_t *stack, void *value ){
 
 void push( mul_stack_t *stack, void* value ){
     MUL_HODGEPODGE_ASSERT( IsAllocate( stack->st.w ), "Stack Not Allocated(push)" );
+    MUL_HODGEPODGE_ASSERT( !IsFree( stack->st.w ), "Stack is already free(push)" );
     pthread_mutex_lock( stack->stack_lock );
     while( stack->count == stack->capacity ){
         puts("------Please Wait!! Stack is full !!------\n");

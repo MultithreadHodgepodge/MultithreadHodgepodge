@@ -35,7 +35,7 @@ typedef struct __queue_data{
     extern mul_queue_t* create_queue( mul_queue_t *, int );
     extern queue_node_t* create_queue_node( void* );
     extern mul_queue_data_t* pack_queue_data( mul_queue_t *, void * );
-    extern void enqueue( mul_queue_data_t* );
+    extern void enqueue( mul_queue_t*, void* );
     extern void dequeue( mul_queue_t ** );
     extern void free_queue( mul_queue_t ** );
 #else
