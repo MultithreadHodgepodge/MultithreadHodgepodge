@@ -28,23 +28,22 @@ void list_add_tail( list_t* list,  list_t *node ){
 void list_add_in_nth_node( list_t** list, list_t *node, int n ){
     MUL_HODGEPODGE_ASSERT( *list, "Empty list" );
     list_t *temp = *list;
-    int counter = 0;
-    do{
-        if( counter != n ){
-            temp = temp->next;
-            if( temp==*list ) break;
-            counter++;
-            continue;
+    int i = 0;
+    while(i <= n || temp != (*list)){
+        if(i == n){
+            temp->prev->next = node;
+            node->prev = temp->prev;
+            temp->prev = node;
+            node->next = temp;
+            node->st.w |= STRUCT_IS_ADDED;
+            break;
         }
-        temp->prev->next = node;
-        node->prev = temp->prev;
-        temp->prev = node;
-        node->next = temp;
-        node->st.bit.is_added = 1;
-        counter++;
-    }while( temp == (*list) );
+        ++i;
+        temp = temp->next;
+    }
+    
     MUL_HODGEPODGE_ASSERT( IsAdd( node->st.w ), "Node isn't added successfully" );
-    MUL_HODGEPODGE_ASSERT( n<=counter, "Node isn't added successfully because of n to big" );
+    MUL_HODGEPODGE_ASSERT( n <= i, "Node isn't added successfully because of n to big" );
     if( n==0 ) *list=node;
 }
 
@@ -108,23 +107,21 @@ void list_remove_nth_node( list_t **list, int n ){
         *list = NULL;
         return;
     }
-    int i;
+    int i=0;
     list_t *temp = *list;
-    for( i=0; i<=n; i++ ){
-        MUL_HODGEPODGE_ASSERT(temp!=*list ||  i==0, "Input n exceeds list");
+    while(i <= n || temp != (*list)){
         if( i == n ){
-            (*list)->st.w = 0;
-            (*list)->st.bit.is_free = 1;
-            (*list)->next->prev = (*list)->prev;
-            (*list)->prev->next = (*list)->next;
-            if( i == 0 ){
-                *list = (*list)->next;
-            }
-            return; 
+            temp->st.w = 0;
+            temp->st.bit.is_free = 1;
+            temp->next->prev = temp->prev;
+            temp->prev->next = temp->next;
+            temp=temp->next;
+            break; 
         }
+        ++i;
         temp = temp->next;
     }
-    
+    if(i == 0) (*list) = temp;
 }
 
 
@@ -157,8 +154,6 @@ void list_remove_specific_node( list_t *list, list_t *node ){
     }while( list != head );
 }
 
-
-
 void free_list( list_t *list ){
     MUL_HODGEPODGE_ASSERT( list ,"Empty list" );
     while( list!=NULL ){
@@ -166,21 +161,4 @@ void free_list( list_t *list ){
         list->st.bit.is_free = 1;
         list = list_remove_head( list );
     }
-}
-
-void list_reverse( list_t **list ){
-    MUL_HODGEPODGE_ASSERT( *list ,"Empty list" );
-    list_t *last = (*list)->prev;
-    if( last==(*list) ) return;
-
-    do{
-        list_t *next = (*list)->next;
-        (*list)->next = (*list)->prev;
-        (*list)->prev = next;
-        if( next == last ){
-            next->prev = next->next;
-            next->next = (*list);
-        }
-        *list = (*list)->prev;
-    }while( *list != last );
 }

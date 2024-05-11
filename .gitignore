@@ -1,6 +1,7 @@
 build
 .vscode
 *.o
+*.out
 .*.c.swp
 out.txt
 .*.*.cmd

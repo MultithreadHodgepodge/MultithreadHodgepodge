@@ -1,6 +1,6 @@
 CC:=gcc
 CP=g++
-CFLAG := -DMUL_HOD_UT=1 -pthread -o
+CFLAG := -pthread -o
 CPFLAG:= -std=c++14 
 .PHONY: clean
 OBJECT:= gtest.out

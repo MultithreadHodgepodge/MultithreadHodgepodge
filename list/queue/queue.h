@@ -16,7 +16,7 @@ typedef struct __queue_node{
 
 typedef struct queue {
     queue_node_t *head;
-    int counter;
+    int count;
     int capacity;
     void (*enqueue)( list_t*, list_t * );
     list_t* (*dequeue)( list_t* );

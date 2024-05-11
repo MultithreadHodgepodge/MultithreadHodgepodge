@@ -6,7 +6,7 @@ mul_queue_t* create_queue( mul_queue_t *queue, int qun )
     queue = MALLOC_MUL_T(queue)
     MUL_HODGEPODGE_ASSERT( queue, "Stack Memory allocated fail" );
     queue->head = NULL;
-    queue->counter = 0;
+    queue->count = 0;
     queue->capacity = qun;
     queue->enqueue = list_add_tail;
     queue->dequeue = list_remove_head;
@@ -61,7 +61,7 @@ void enqueue( mul_queue_t *queue, void* value ){
         queue_node_t *temp_queue_node = create_queue_node( value );
         queue->enqueue( &queue->head->list, &temp_queue_node->list );
     }
-    queue->counter++;
+    queue->count++;
     pthread_mutex_unlock( queue->queue_lock );
     sem_post( queue->qitem );
 }
@@ -82,8 +82,8 @@ void dequeue( mul_queue_t **queue )
     pthread_mutex_lock( q->queue_lock );
     list_t *temp = &(q->head->list);
     temp = q->dequeue(temp);
-    q->counter--;
-    if( q->counter == 0 ){
+    q->count--;
+    if( q->count == 0 ){
         q->head->st.w = 0;
         q->head->st.bit.is_free = 1;
         if( IsCreateByMalloc( q->head->st.w ) ) free(q->head);
