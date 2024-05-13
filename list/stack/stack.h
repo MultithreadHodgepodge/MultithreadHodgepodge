@@ -19,8 +19,8 @@ typedef struct __stack_node{
 
 typedef struct stack{
     stack_node_t *top;
-    void (*insert)( list_t *, list_t * );
-    void (*remove)( list_t * );
+    void (*insert)( list_t **, list_t * );
+    list_t* (*remove)( list_t * );
     int capacity;
     int count;
     pthread_mutex_t *stack_lock;

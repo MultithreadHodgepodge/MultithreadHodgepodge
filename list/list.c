@@ -4,17 +4,15 @@ list_t* create_list( list_t *head ) {
     head = MALLOC_LIST()
     head->st.w = 0;
     CONNECT_SELF( head )
-    head->st.bit.configured = 1;
-    head->st.bit.is_malloc = 1;
-    head->st.bit.is_free= 0 ;
-    head->st.bit.is_multithread =0 ;
+    head->st.w |= STRUCT_IS_ALLOCATED;
+    head->st.w |= STRUCT_IS_CREATED_BY_MALLOC;
     return head;
 }
 
 void list_add_head( list_t** list, list_t *node ){
     MUL_HODGEPODGE_ASSERT( *list, "Empty list" );
     CONNECT_PREV_NEXT( node, *list )
-    node->st.bit.is_added = 1;
+    node->st.w |= STRUCT_IS_ADDED;
     *list = node;
 }
 
@@ -22,7 +20,7 @@ void list_add_tail( list_t* list,  list_t *node ){
     MUL_HODGEPODGE_ASSERT( list, "Empty list" );
     CONNECT_PREV_NEXT( node, list )
     list->prev = node;
-    node->st.bit.is_added = 1;
+    node->st.w |= STRUCT_IS_ADDED;
 }
 
 void list_add_in_nth_node( list_t** list, list_t *node, int n ){
@@ -50,8 +48,9 @@ void list_add_in_nth_node( list_t** list, list_t *node, int n ){
 list_t* list_remove_head( list_t *list ){
     MUL_HODGEPODGE_ASSERT( list, "Empty list" );
     list_t *temp = list;
+    list->st.w = 0;
+    list->st.w |= STRUCT_IS_FREE;
     if( list == list->next ){
-        list->st.bit.is_free = 1;
         if( IsCreateByMalloc( list->st.w ) )free(list);
         list = NULL;
         return list;
@@ -61,8 +60,6 @@ list_t* list_remove_head( list_t *list ){
     list = list->next;
     temp->prev = NULL;
     temp->next = NULL;
-    temp->st.w = 0;
-    temp->st.bit.is_free = 1;
     if( IsCreateByMalloc( temp->st.w ) )free(temp);
     temp = NULL;
     return list;
@@ -72,7 +69,7 @@ void list_remove_tail( list_t *list ){
     MUL_HODGEPODGE_ASSERT( list, "List is NULL" );
     MUL_HODGEPODGE_ASSERT( IsAllocate( list->st.w ), "List isn't allocated" );
     if( list == list->next ){
-        list->st.bit.is_free=1;
+        list->st.w |= STRUCT_IS_FREE;
         if(IsCreateByMalloc( list->st.w ))free(list);
         list=NULL;
         return;
@@ -88,13 +85,12 @@ void list_remove_tail( list_t *list ){
      * |         |
      * - - - - - -
      */
-    temp->prev->next->st.bit.is_free = 1;
+    temp->prev->next->st.w |= STRUCT_IS_FREE;
     if( IsCreateByMalloc( temp->prev->next->st.w ))free(temp->prev->next);
     /* A <-> C
      * 
      */
     temp->prev->next = temp;
-    //puts("Node is removed\n");
 }
 
 void list_remove_nth_node( list_t **list, int n ){
@@ -102,7 +98,7 @@ void list_remove_nth_node( list_t **list, int n ){
     MUL_HODGEPODGE_ASSERT(*list , "Empty list");
     if( n == 0 && *list == (*list)->next ){
         (*list)->st.w = 0;
-        (*list)->st.bit.is_free = 1;
+        (*list)->st.w |= STRUCT_IS_FREE;
         free(*list);
         *list = NULL;
         return;
@@ -112,7 +108,7 @@ void list_remove_nth_node( list_t **list, int n ){
     while(i <= n || temp != (*list)){
         if( i == n ){
             temp->st.w = 0;
-            temp->st.bit.is_free = 1;
+            temp->st.w |= STRUCT_IS_FREE;
             temp->next->prev = temp->prev;
             temp->prev->next = temp->next;
             temp=temp->next;
@@ -130,7 +126,7 @@ void list_remove_specific_node( list_t *list, list_t *node ){
     while( list && (list)==node){
         if( list == list->next ){
             list->st.w = 0;
-            list->st.bit.is_free = 1;
+            list->st.w |= STRUCT_IS_FREE;
             free(list);
             list = NULL;
             return;
@@ -140,7 +136,7 @@ void list_remove_specific_node( list_t *list, list_t *node ){
         list_t *temp = list;
         list = list->next;
         temp->st.w = 0;
-        temp->st.bit.is_free = 1;
+        temp->st.w |= STRUCT_IS_FREE;
         free(temp);
         temp = NULL;
     }
@@ -157,8 +153,6 @@ void list_remove_specific_node( list_t *list, list_t *node ){
 void free_list( list_t *list ){
     MUL_HODGEPODGE_ASSERT( list ,"Empty list" );
     while( list!=NULL ){
-        list->st.w = 0;
-        list->st.bit.is_free = 1;
         list = list_remove_head( list );
     }
 }

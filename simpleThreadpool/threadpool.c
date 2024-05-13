@@ -8,7 +8,6 @@
  */
 void readyqueue_init(RQ_t **rq,int rq_capacity, int threadQ)
 {
-	int front, end;
 	sem_t item, remain;
 	pthread_mutex_t mutex;
 	//void *ringbuffer;
@@ -26,7 +25,6 @@ void readyqueue_init(RQ_t **rq,int rq_capacity, int threadQ)
 		rq_capacity = 1<<c;
 	}
 
-	(*rq)->front = (*rq)->end = 0;
 	sem_init(&(*rq)->item, 0, 0);
 	sem_init(&(*rq)->remain, 0, rq_capacity);
 	pthread_mutex_init(&(*rq)->mutex, NULL);

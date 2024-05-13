@@ -24,7 +24,6 @@ typedef struct __task{
 typedef struct Readyqueue {	
 	int rq_capacity;
 	int threadQ;
-	int front, end;
 	sem_t item, remain;
 	pthread_mutex_t mutex;
 	void (**ringbuffer)();

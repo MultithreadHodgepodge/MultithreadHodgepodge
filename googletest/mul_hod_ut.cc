@@ -114,11 +114,12 @@ Test mul_stack_t
 TEST( TESTSTACK, stack_test ){
     cout<< "<<Test mul_stack_t>>: Start\n"; 
     mul_stack_t *stack = NULL;
+    stack_node_t *temp = NULL;
     stack = create_stack( stack, 500 );
     EXPECT_NE( stack, nullptr );
     EXPECT_EQ( stack->capacity, 500 );
-    EXPECT_EQ( stack->insert, list_add_tail );
-    EXPECT_EQ( stack->remove, list_remove_tail );
+    EXPECT_EQ( stack->insert, list_add_head );
+    EXPECT_EQ( stack->remove, list_remove_head );
     EXPECT_EQ( stack->count, 0 );
     EXPECT_EQ( stack->top, nullptr );
     EXPECT_EQ( stack->st.bit.configured, 1 );
@@ -134,11 +135,16 @@ TEST( TESTSTACK, stack_test ){
     push( stack, (void*)"I" );
     EXPECT_EQ( stack->count, 1 );
     EXPECT_NE( stack->top, nullptr );
+    temp = stack->top;
+    push( stack, (void*)"am " );
+    EXPECT_NE( stack->top, temp );
     pop(stack);
-    EXPECT_EQ( stack->count, 0 );
+    EXPECT_EQ( stack->count, 1 );
+    pop(stack);
+    EXPECT_EQ( stack->top, nullptr );
     /*************************************************************
      *  Test stack 1_2: 
-     *  Push: 500
+     *  Push: 500, POP one by one
     **************************************************************/
     cout<< "<<Test stack case 1_2>>: Start\n";
     int i=0;
@@ -147,6 +153,10 @@ TEST( TESTSTACK, stack_test ){
     }
     EXPECT_EQ( stack->count, 500 );
     EXPECT_NE( stack->top, nullptr );
+    temp = stack->top;
+    pop(stack);
+    EXPECT_NE( temp, stack->top );
+    EXPECT_EQ( stack->count, 499 );
 }
 
 /*

@@ -86,7 +86,7 @@ void speedtest_queue(){
     printf("=======End test mulqueue:push() duration is %.3f ms========\n", dur);
     puts("\n=======Start test mulstack:pop()========\n");
     start=cpu();
-    while(queue->counter){
+    while(queue->count){
         dequeue(&queue);
     }
     dur=cpu()-start;

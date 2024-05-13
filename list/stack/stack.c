@@ -6,8 +6,8 @@ mul_stack_t* create_stack( mul_stack_t *stack,int capacity ){
     MUL_HODGEPODGE_ASSERT(stack , "Stack Memory allocated fail");
 
     stack->top = NULL;
-    stack->insert = list_add_tail;
-    stack->remove = list_remove_tail;
+    stack->insert = list_add_head;
+    stack->remove = list_remove_head;
     stack->capacity = capacity;
     stack->count = 0;
 
@@ -35,7 +35,7 @@ stack_node_t* create_stack_node( void *value ){
     CONNECT_SELF( temp );
 
     stack_node->st.w = 0;
-    stack_node->st.bit.configured = 1;
+    stack_node->st.w |= STRUCT_IS_ALLOCATED;
     stack_node->st.bit.is_malloc = 1;
     stack_node->list.st.w = 0;
     stack_node->list.st.bit.configured = 1;
@@ -63,10 +63,15 @@ void push( mul_stack_t *stack, void* value ){
     }
     if(!( stack->top )) {
         stack->top = create_stack_node( value );
+        stack->top->st.w |= STRUCT_IS_ADDED;
     }
     else {
         stack_node_t *temp_stack_node = create_stack_node( value );
-        stack->insert( &stack->top->list, &temp_stack_node->list );
+        temp_stack_node->st.w |= STRUCT_IS_ADDED;
+        list_t *temp = &stack->top->list;
+        list_t *temp2 = &stack->top->list;
+        stack->insert( &temp, &temp_stack_node->list );
+        stack->top = temp_stack_node;
     }
     stack->count++;
     pthread_cond_signal( stack->stack_cond_empty );
@@ -89,13 +94,20 @@ void pop( mul_stack_t *stack ){
         puts("------Please Wait!! Stack is Empty !!------\n");
         pthread_cond_wait( stack->stack_cond_empty, stack->stack_lock );
     }
-    stack->remove( &stack->top->list );
+    MUL_HODGEPODGE_ASSERT( IsAdd( stack->top->st.w ), "Stack not added can't remove.." );
+
     stack->count--;
     if( stack->count == 0 ) {
         stack->top->st.w = 0;
         stack->top->st.bit.is_free = 1;
         if( IsCreateByMalloc( stack->top->st.w ) ) free(stack->top);
         stack->top = NULL;
+    }
+    else{
+        list_t* new_top_list = stack->remove( &stack->top->list );
+        stack_node_t *temp = stack->top;
+        stack->top = list_entry(new_top_list, stack_node_t, list);
+        free(temp);
     }
     pthread_cond_signal( stack->stack_cond_cap );
     pthread_mutex_unlock( stack->stack_lock );
