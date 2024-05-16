@@ -20,11 +20,9 @@ mul_queue_t* create_queue( mul_queue_t *queue, int qun )
     pthread_mutex_init( queue->queue_lock, NULL );
 
     queue->st.w = 0;
-    queue->st.bit.configured = 1;
-    queue->st.bit.is_malloc = 1;
-    queue->st.bit.is_free = 0;
-    queue->st.bit.is_multithread = 1;
-    queue->st.bit.is_head = 1;
+    queue->st.w |= STRUCT_IS_ALLOCATED;
+    queue->st.w |= STRUCT_IS_CREATED_BY_MALLOC;
+    queue->st.w |= STRUCT_IS_MULTITHREAD;
     return queue;
 }
 
@@ -33,11 +31,10 @@ queue_node_t* create_queue_node( void *value ){
     list_t *temp = &queue_node->list;
     CONNECT_SELF( temp );
     queue_node->st.w = 0;
-    queue_node->st.bit.configured = 1;
-    queue_node->st.bit.is_malloc = 1;
+    queue_node->st.w |= STRUCT_IS_ALLOCATED;
+    queue_node->st.w |= STRUCT_IS_CREATED_BY_MALLOC;
     queue_node->list.st.w = 0;
-    queue_node->list.st.bit.configured = 1;
-    queue_node->list.st.bit.is_malloc = 0;
+    queue_node->list.st.w |= STRUCT_IS_ALLOCATED;
     queue_node->value = value;
     return queue_node;
 }
@@ -56,9 +53,10 @@ void enqueue( mul_queue_t *queue, void* value ){
     MUL_HODGEPODGE_ASSERT( !IsFree( queue->st.w ), "Queue is already free(enqueue)" );
     sem_wait( queue->qremain );
     pthread_mutex_lock( queue->queue_lock );
-    if( !(queue->head) ) queue->head = create_queue_node( value );
+    queue_node_t *temp_queue_node = create_queue_node( value );
+    temp_queue_node->st.w |= STRUCT_IS_ADDED;
+    if( !(queue->head) ) queue->head = temp_queue_node;
     else{
-        queue_node_t *temp_queue_node = create_queue_node( value );
         queue->enqueue( &queue->head->list, &temp_queue_node->list );
     }
     queue->count++;
@@ -72,25 +70,30 @@ void* ENQUEUE_INTF( void *queue_data_temp ){
     MUL_HODGEPODGE_ASSERT( IsAllocate( queue_data->queue->st.w ), "Stack not allocated.." );
     void *value = queue_data->value;
     enqueue( queue, value );
+    return NULL;
 }
 
 void dequeue( mul_queue_t **queue )
 {
     mul_queue_t *q = *queue;
     MUL_HODGEPODGE_ASSERT( IsAllocate( q->st.w ), "Queue not allocated" );
+    MUL_HODGEPODGE_ASSERT( IsAdd( q->head->st.w ), "Queue not added" );
     sem_wait( q->qitem );
     pthread_mutex_lock( q->queue_lock );
-    list_t *temp = &(q->head->list);
-    temp = q->dequeue(temp);
     q->count--;
     if( q->count == 0 ){
+        free(q->head);
         q->head->st.w = 0;
-        q->head->st.bit.is_free = 1;
-        if( IsCreateByMalloc( q->head->st.w ) ) free(q->head);
+        q->head->st.w |= STRUCT_IS_FREE;
         q->head = NULL;
     }
     else{
-        q->head->list = *temp;
+        list_t *new_head_list  = q->dequeue(&q->head->list);
+        queue_node_t *temp = q->head;
+        q->head = list_entry(new_head_list, queue_node_t, list);
+        free(temp);
+        temp->st.w = 0;
+        temp->st.w |= STRUCT_IS_FREE;
     }
     pthread_mutex_unlock( q->queue_lock );
     sem_post( q->qremain );
@@ -105,16 +108,16 @@ void free_queue( mul_queue_t **queue )
         return;
     }
     if( IsAllocate( (*queue)->st.w) && !IsFree( (*queue)->st.w) ){
-        free_list( &((*queue)->head)->list );
+        while( (*queue)->head != NULL){
+            dequeue(queue);
+        }
+        free((*queue)->qremain);
+        (*queue)->qremain = NULL;
+        free((*queue)->qitem);
+        (*queue)->qitem = NULL;
+        free((*queue)->queue_lock);
+        (*queue)->queue_lock = NULL;
+        free(*queue);
+        *queue = NULL;
     }
-    (*queue)->head->st.bit.is_free = 1;
-    (*queue)->head = NULL;
-    free((*queue)->qremain);
-    (*queue)->qremain = NULL;
-    free((*queue)->qitem);
-    (*queue)->qitem = NULL;
-    free((*queue)->queue_lock);
-    (*queue)->queue_lock = NULL;
-    free(*queue);
-    *queue = NULL;
 }

@@ -52,6 +52,7 @@ TEST( TESTLIST, list_test ){
     list_remove_tail( new_list );
     EXPECT_EQ( new_list->prev, new_list );
     EXPECT_EQ( new_list->next, new_list );
+    free_list( new_list );
 
     /*************************************************************
      *  Test list 1_3: 
@@ -106,6 +107,7 @@ TEST( listremoventhnodecase, listremoventhnode_fun_test ){
     list_add_head( &new_list, node3 );
     EXPECT_EQ( new_list, node3 );
     EXPECT_EQ( node1->prev, node3 );
+    free_list(new_list);
 }
 
 /*
@@ -157,6 +159,7 @@ TEST( TESTSTACK, stack_test ){
     pop(stack);
     EXPECT_NE( temp, stack->top );
     EXPECT_EQ( stack->count, 499 );
+    free_stack(&stack);
 }
 
 /*
@@ -165,6 +168,7 @@ Test mul_queue_t
 TEST( TESTQUEUE, queue_test ){
     cout<< "<<Test mul_queue_t>>: Start\n"; 
     mul_queue_t *queue = NULL;
+    queue_node_t *temp = NULL;
     queue = create_queue( queue, 500 );
     EXPECT_NE( queue, nullptr );
     EXPECT_EQ( queue->capacity, 500 );
@@ -178,8 +182,8 @@ TEST( TESTQUEUE, queue_test ){
     EXPECT_EQ( queue->st.bit.is_multithread, 1 );
     /*************************************************************
      *  Test stack 1_1: 
-     *  Push: 1
-     *  Pop: 1
+     *  Enqueue: 1
+     *  Dequeue: 1
     **************************************************************/
     cout<< "<<Test queue case 1_1>>: Start\n";
     enqueue( queue, (void*)"I" );
@@ -189,13 +193,18 @@ TEST( TESTQUEUE, queue_test ){
     EXPECT_EQ( queue->count, 0 );
     /*************************************************************
      *  Test stack 1_2: 
-     *  Push: 500
+     *  Enqueue: 500
     **************************************************************/
     cout<< "<<Test queue case 1_2>>: Start\n";
     int i=0;
     while( i++ < 500){
        enqueue( queue, (void*)i );
     }
+    temp = queue->head;
     EXPECT_EQ( queue->count, 500 );
     EXPECT_NE( queue->head, nullptr );
+    dequeue(&queue);
+    EXPECT_NE( temp, queue->head);
+
+    free_queue(&queue);
 }

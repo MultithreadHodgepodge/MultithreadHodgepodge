@@ -1,7 +1,8 @@
-#define STRUCT_IS_ADDED (1<<4)
-#define STRUCT_IS_FREE (1<<2)
+#define STRUCT_IS_ADDED             (1<<4)
+#define STRUCT_IS_MULTITHREAD       (1<<3)
+#define STRUCT_IS_FREE              (1<<2)
 #define STRUCT_IS_CREATED_BY_MALLOC (1<<1)
-#define STRUCT_IS_ALLOCATED (1<<0)
+#define STRUCT_IS_ALLOCATED         (1<<0)
 
 #ifndef STATE_H__
 typedef struct state_b{

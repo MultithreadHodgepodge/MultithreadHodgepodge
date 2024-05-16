@@ -14,7 +14,7 @@ OBJECTS_SPEEDTEST = speedtest.o
 ## GCC argument
 CC = gcc
 .PHONY: clean
-CFLAGS= -pthread -g -O0 -o 
+CFLAGS= -pthread -g -O0 -fsanitize=address -o
 CONFIG_BPF_SYSCALL=y
 ## Source DIR
 LIST_DIR=list/

@@ -21,11 +21,9 @@ mul_stack_t* create_stack( mul_stack_t *stack,int capacity ){
     pthread_cond_init( stack->stack_cond_empty, &cattr );
 
     stack->st.w = 0;
-    stack->st.bit.configured = 1;
-    stack->st.bit.is_malloc = 1;
-    stack->st.bit.is_free = 0;
-    stack->st.bit.is_multithread = 1;
-    stack->st.bit.is_head = 1;
+    stack->st.w |= STRUCT_IS_ALLOCATED;
+    stack->st.w |= STRUCT_IS_CREATED_BY_MALLOC;
+    stack->st.w |= STRUCT_IS_MULTITHREAD;
     return stack;
 }
 
@@ -33,13 +31,11 @@ stack_node_t* create_stack_node( void *value ){
     stack_node_t *stack_node = MALLOC_NODE_T(stack)
     list_t *temp = &stack_node->list;
     CONNECT_SELF( temp );
-
     stack_node->st.w = 0;
     stack_node->st.w |= STRUCT_IS_ALLOCATED;
-    stack_node->st.bit.is_malloc = 1;
+    stack_node->st.w |= STRUCT_IS_CREATED_BY_MALLOC;
     stack_node->list.st.w = 0;
-    stack_node->list.st.bit.configured = 1;
-    stack_node->list.st.bit.is_malloc = 0;
+    stack_node->list.st.w |= STRUCT_IS_ALLOCATED;
     stack_node->value = value;
     return stack_node;
 }
@@ -69,7 +65,6 @@ void push( mul_stack_t *stack, void* value ){
         stack_node_t *temp_stack_node = create_stack_node( value );
         temp_stack_node->st.w |= STRUCT_IS_ADDED;
         list_t *temp = &stack->top->list;
-        list_t *temp2 = &stack->top->list;
         stack->insert( &temp, &temp_stack_node->list );
         stack->top = temp_stack_node;
     }
@@ -95,12 +90,11 @@ void pop( mul_stack_t *stack ){
         pthread_cond_wait( stack->stack_cond_empty, stack->stack_lock );
     }
     MUL_HODGEPODGE_ASSERT( IsAdd( stack->top->st.w ), "Stack not added can't remove.." );
-
     stack->count--;
     if( stack->count == 0 ) {
         stack->top->st.w = 0;
-        stack->top->st.bit.is_free = 1;
-        if( IsCreateByMalloc( stack->top->st.w ) ) free(stack->top);
+        stack->top->st.w |= STRUCT_IS_FREE;
+        free(stack->top);
         stack->top = NULL;
     }
     else{
@@ -120,18 +114,16 @@ void free_stack( mul_stack_t **stack ){
         *stack = NULL;
         return;
     }
-    if( IsAllocate( (*stack)->st.w ) && !IsFree( (*stack)->st.w ) )
-        free_list( &((*stack)->top)->list );
-    (*stack)->top->st.bit.is_free = 1;
-    (*stack)->top = NULL;
-    free( (*stack)->stack_lock );
-    (*stack)->stack_lock = NULL;
-    free( (*stack)->stack_cond_cap );
-    (*stack)->stack_cond_cap = NULL;
-    free( (*stack)->stack_cond_empty );
-    (*stack)->stack_cond_empty = NULL;
-    free(*stack);
-    *stack = NULL;
+    if( IsAllocate( (*stack)->st.w ) && !IsFree( (*stack)->st.w ) ){
+        while( (*stack)->top != NULL){
+            pop((*stack));
+        }
+        free((*stack)->stack_cond_cap);
+        free((*stack)->stack_cond_empty);
+        free((*stack)->stack_lock);
+        free(*stack);
+        *stack = NULL;
+    }
 }
 
 
