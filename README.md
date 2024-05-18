@@ -8,6 +8,7 @@ Currently support Linux and IOS platform, other platform TBD.
 
 ## How to use
 Add the data structure be an element of your own structure.
+The usecase example can also see test_xxx.c in each folder.
 For example if you want to use list_t:
 
 Put list_t as an element in your own struct. And you can utilize list_t to maintain your own data struture without additional effort.
@@ -37,7 +38,7 @@ struct mystruct{
 ## Contributors
 Created by:
 
-- [**Chung Hsuan Chen**](https://github.com/ChungHsuanChen)
+- [**Chunghsuan Chen**](https://github.com/ChungHsuanChen)
 - [**Peter Kung**](https://github.com/Peter-Kung)
 Any comment please contact us or leave your recommendation in discussion!!
 

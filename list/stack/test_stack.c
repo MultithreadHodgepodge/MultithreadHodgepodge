@@ -11,12 +11,12 @@ int main(){
     pthread_create(&thread1,NULL,&PUSH_INTF,(void*)data1);
     pthread_create(&thread2,NULL,&PUSH_INTF,(void*)data2);
     pthread_create(&thread3,NULL,&PUSH_INTF,(void*)data3);
-    //pthread_create(&thread4,NULL,&pop,stack);
-    //pthread_create(&thread5,NULL,&pop,stack);
+    pthread_create(&thread4,NULL,pop,stack);
+    pthread_create(&thread5,NULL,pop,stack);
     pthread_join(thread1,NULL);
     pthread_join(thread2,NULL);
     pthread_join(thread3,NULL);
-    //pthread_join(thread4,NULL);
-    //pthread_join(thread5,NULL);
-    //free_stack(&stack);
+    pthread_join(thread4,NULL);
+    pthread_join(thread5,NULL);
+    free_stack(&stack);
 }

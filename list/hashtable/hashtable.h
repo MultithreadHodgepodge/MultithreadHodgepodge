@@ -12,6 +12,7 @@ typedef struct hashtable{
     int key;
     list_t list;
     int count;
+    int (*hash_func)(int);
     state st;
     pthread_mutex_t *hash_lock;
 }mul_hash_t;
@@ -27,6 +28,12 @@ typedef struct hashdata{
 * @return: mul_hash_t be created
 */
 mul_hash_t *create_hash_table( int );
+/**
+* @brief: set_hash_func()-Create Hashtable 
+* @hash_func: Hash functoin that are going to be used
+* @return: mul_hash_t be created
+*/
+void set_hash_func( mul_hash_t *, int (*)(int) );
 /**
 * @brief: pack_hash_data()-Pack hashtable and value into hashdata
 * @hashtable: Pointer to hashtable

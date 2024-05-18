@@ -51,8 +51,6 @@ list_t* list_remove_head( list_t *list ){
     
     if( list == list->next ){
         if( IsCreateByMalloc( list->st.w ) )free(list);
-        list->st.w = 0;
-        list->st.w |= STRUCT_IS_FREE;
         list = NULL;
         return list;
     }
@@ -62,8 +60,6 @@ list_t* list_remove_head( list_t *list ){
     temp->prev = NULL;
     temp->next = NULL;
     if( IsCreateByMalloc( temp->st.w ) )free(temp);
-    temp->st.w = 0;
-    temp->st.w |= STRUCT_IS_FREE;
     temp = NULL;
     return list;
 }
@@ -73,8 +69,6 @@ void list_remove_tail( list_t *list ){
     MUL_HODGEPODGE_ASSERT( IsAllocate( list->st.w ), "List isn't allocated" );
     if( list == list->next ){
         if(IsCreateByMalloc( list->st.w ))free(list);
-        list->st.w = 0;
-        list->st.w |= STRUCT_IS_FREE;
         list=NULL;
         return;
     }
@@ -90,8 +84,6 @@ void list_remove_tail( list_t *list ){
      * - - - - - -
      */
     if( IsCreateByMalloc( temp->prev->next->st.w ))free(temp->prev->next);
-    temp->prev->next->st.w = 0;
-    temp->prev->next->st.w |= STRUCT_IS_FREE;
     /* A <-> C
      * 
      */
@@ -117,8 +109,6 @@ void list_remove_nth_node( list_t **list, int n ){
             list_t *to_be_free = temp;
             temp=temp->next;
             if(IsCreateByMalloc( to_be_free->st.w ))free(to_be_free);
-            to_be_free->st.w = 0;
-            to_be_free->st.w |= STRUCT_IS_FREE;
             break; 
         }
         ++i;
@@ -132,8 +122,7 @@ void list_remove_specific_node( list_t *list, list_t *node ){
     MUL_HODGEPODGE_ASSERT( list ,"Empty list" ); 
     while( list && (list)==node){
         if( list == list->next ){
-            list->st.w = 0;
-            list->st.w |= STRUCT_IS_FREE;
+            printf("%d ",list->st.w);
             if(IsCreateByMalloc( list->st.w ))free(list);
             list = NULL;
             return;
@@ -142,9 +131,7 @@ void list_remove_specific_node( list_t *list, list_t *node ){
         list->next->prev = list->prev;
         list_t *temp = list;
         list = list->next;
-        temp->st.w = 0;
-        temp->st.w |= STRUCT_IS_FREE;
-        free(temp);
+        if(IsCreateByMalloc( temp->st.w ))free(temp);
         temp = NULL;
     }
     list_t *head = list;

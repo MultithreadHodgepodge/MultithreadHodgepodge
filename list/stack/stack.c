@@ -80,6 +80,7 @@ void* PUSH_INTF( void* stack_data_temp ){
     MUL_HODGEPODGE_ASSERT( IsAllocate( stack_data->stack->st.w ), "Stack not allocated.." );
     void *value = stack_data->value;
     push( stack, value );
+    return NULL;
 }
 
 void pop( mul_stack_t *stack ){
@@ -92,8 +93,6 @@ void pop( mul_stack_t *stack ){
     MUL_HODGEPODGE_ASSERT( IsAdd( stack->top->st.w ), "Stack not added can't remove.." );
     stack->count--;
     if( stack->count == 0 ) {
-        stack->top->st.w = 0;
-        stack->top->st.w |= STRUCT_IS_FREE;
         free(stack->top);
         stack->top = NULL;
     }

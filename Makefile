@@ -46,6 +46,7 @@ BINARY_TREE_SOURCE:=$(shell find $(BINARY_TREE_DIR) -name '*.c')
 BINARY_SEARCH_TREE_SOURCE:=$(shell find $(BINARY_SEARCH_TREE_DIR) -name '*.c')
 SPEEDTEST_SOURCE := $(shell find $(SPEEDTEST_DIR) -name '*.c')
 ## Main Makefile
+all: list stack queue hash minheap binarytree bst thpool rwlock
 list: clean $(OBJ_DIR)$(OBJECTS_LIST) 
 $(OBJ_DIR)$(OBJECTS_LIST): $(LIST_SOURCE)
 	mkdir -p $(@D)
