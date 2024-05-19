@@ -100,7 +100,7 @@ void list_remove_nth_node( list_t **list, int n ){
         *list = NULL;
         return;
     }
-    int i=0;
+    int i = 0;
     list_t *temp = *list;
     while(i <= n || temp != (*list)){
         if( i == n ){
@@ -118,30 +118,29 @@ void list_remove_nth_node( list_t **list, int n ){
 }
 
 
-void list_remove_specific_node( list_t *list, list_t *node ){
-    MUL_HODGEPODGE_ASSERT( list ,"Empty list" ); 
-    while( list && (list)==node){
-        if( list == list->next ){
-            printf("%d ",list->st.w);
-            if(IsCreateByMalloc( list->st.w ))free(list);
-            list = NULL;
-            return;
-        }
+list_t* list_remove_specific_node( list_t *list, list_t *node ){
+    MUL_HODGEPODGE_ASSERT( list ,"Empty list" );
+    list_t *head = list;
+    while( list && (list) != node){
+        list = list->next;
+    }
+    list_t *to_be_delete = list;
+    if(to_be_delete == head){
+        /* First node in list */
+        return list_remove_head(list);
+    }
+    else if(to_be_delete->next == head){
+        /* Last node in list */
+        list_remove_tail(head);
+    }
+    else{
         list->prev->next = list->next;
         list->next->prev = list->prev;
         list_t *temp = list;
-        list = list->next;
         if(IsCreateByMalloc( temp->st.w ))free(temp);
         temp = NULL;
     }
-    list_t *head = list;
-    do{
-        if( list == node ){
-            list->prev->next = list->next;
-            list->next->prev = list->prev;
-        }
-        list = list->next;
-    }while( list != head );
+    return head;
 }
 
 void free_list( list_t *list ){

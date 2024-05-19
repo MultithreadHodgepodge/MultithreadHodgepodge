@@ -68,7 +68,7 @@ typedef struct list{
     extern void list_add_in_nth_node( list_t** ,  list_t *, int );
     extern list_t* list_remove_head( list_t* );
     extern void list_remove_tail( list_t* );
-    extern void list_remove_specific_node( list_t*, list_t*);
+    extern list_t* list_remove_specific_node( list_t*, list_t*);
     extern void list_remove_nth_node( list_t **, int );
     extern void free_list( list_t *list );
     extern void list_reverse( list_t ** );
@@ -114,7 +114,7 @@ void list_add_in_nth_node( list_t**, list_t *, int );
 * @list: A pointer to list head
 * @node: list_t node to be removed
 */
-    void list_remove_specific_node( list_t*, list_t* );
+    list_t* list_remove_specific_node( list_t*, list_t* );
 /**
  * @brief:list_remove_nth_node(): Remove the nth node from list
  * @list: Pointer to pointer to lost head

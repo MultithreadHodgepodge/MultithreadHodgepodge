@@ -110,6 +110,22 @@ TEST( listremoventhnodecase, listremoventhnode_fun_test ){
     free_list(new_list);
 }
 
+TEST( listremovespecnodecase, listremovespecnode_fun_test ){
+    list_t *new_list = NULL, *node1 = NULL, *node2 = NULL, *node3 = NULL;
+    new_list = create_list( new_list );
+    list_t *temp = new_list;
+    node1 = create_list( node1 );
+    node2 = create_list( node2 );
+    list_add_head( &new_list, node1 );
+    list_add_head( &new_list, node2 );
+    EXPECT_EQ( new_list, node2 );
+    new_list = list_remove_specific_node( new_list, node1 );
+    EXPECT_EQ( temp->next, node2 );
+    EXPECT_EQ( temp, node2->prev );
+    new_list = list_remove_specific_node( new_list, new_list ); 
+    EXPECT_EQ( new_list, temp );
+    free_list(new_list);
+}
 /*
 Test mul_stack_t
 */
@@ -207,4 +223,55 @@ TEST( TESTQUEUE, queue_test ){
     EXPECT_NE( temp, queue->head);
 
     free_queue(&queue);
+}
+
+/*
+Test mul_hash_t
+*/
+TEST( TESTHASH, hash_test){
+    cout<< "<<Test mul_hash_t>>: Start\n"; 
+    mul_hash_t *hashtable = NULL;
+    hashtable = create_hash_table( 77 );
+    EXPECT_NE( hashtable, nullptr );
+    EXPECT_EQ( hashtable->st.bit.configured, 1 );
+    EXPECT_EQ( hashtable->st.bit.is_malloc, 1 );
+    EXPECT_EQ( hashtable->st.bit.is_free, 0 );
+    EXPECT_EQ( hashtable->st.bit.is_multithread, 1 );
+    int i;
+    cout<<HASH_TABLE_SIZE;
+    for( i=0; i < HASH_TABLE_SIZE; i++ ){
+        EXPECT_EQ( hashtable->hash_entry[i].key, i );
+        EXPECT_EQ( hashtable->hash_entry[i].count, 0 );
+        EXPECT_EQ( hashtable->hash_entry[i].node, nullptr );
+    }
+    /*************************************************************
+     *  Test hash 1_1: 
+     *  Insert: 127
+     *  Dequeue: 127
+    **************************************************************/
+    cout<< "<<Test hash case 1_1>>: Start\n";
+    insert_hash(hashtable, 127);
+    EXPECT_EQ( hashtable->hash_entry[50].count, 1 );
+    EXPECT_NE( hashtable->hash_entry[50].node, nullptr );
+    EXPECT_EQ( hashtable->hash_entry[50].node->value, 127 );
+    delete_hash(hashtable, 127);
+    EXPECT_EQ( hashtable->hash_entry[50].count, 0 );
+    EXPECT_EQ( hashtable->hash_entry[50].node, nullptr );
+    /*************************************************************
+     *  Test hash 1_2: 
+     *  Insert: 127, 50, 204
+     *  Dequeue: 127
+    **************************************************************/
+    cout<< "<<Test hash case 1_2>>: Start\n";
+    insert_hash(hashtable, 127);
+    EXPECT_EQ( hashtable->hash_entry[50].count, 1 );
+    EXPECT_NE( hashtable->hash_entry[50].node, nullptr );
+    EXPECT_EQ( hashtable->hash_entry[50].node->value, 127 );
+    insert_hash(hashtable, 50);
+    EXPECT_EQ( hashtable->hash_entry[50].count, 2 );
+    insert_hash(hashtable, 204);
+    EXPECT_EQ( hashtable->hash_entry[50].count, 3 );
+    delete_hash(hashtable, 127);
+    EXPECT_EQ( hashtable->hash_entry[50].count, 2 );
+    EXPECT_EQ( hashtable->hash_entry[50].node->value, 50 );
 }

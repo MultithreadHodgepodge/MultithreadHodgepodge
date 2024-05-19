@@ -3,18 +3,22 @@
 #endif
 #include <pthread.h>
 
+typedef struct hash_node{
+    int value;
+    list_t list;
+}hash_node_t;
 
-static int HASH_TABLE_SIZE=69;
-#define GET_HASH_KEY(value)\
-    value%HASH_TABLE_SIZE;
+typedef struct hash_entry{
+    int key;
+    int count;
+    hash_node_t *node;
+    pthread_mutex_t *hash_lock;
+}hash_entry_t;
 
 typedef struct hashtable{
-    int key;
-    list_t list;
-    int count;
+    hash_entry_t *hash_entry;
     int (*hash_func)(int);
     state st;
-    pthread_mutex_t *hash_lock;
 }mul_hash_t;
 
 typedef struct hashdata{
@@ -42,17 +46,25 @@ void set_hash_func( mul_hash_t *, int (*)(int) );
 */
 mul_hash_data_t *pack_hash_data( mul_hash_t *, int );
 /**
+* @brief: Interface for pthread calling insert_hash
+*/
+void INSERT_HASH_INTF(mul_hash_data_t *);
+/**
 * @brief: insert_hash()- Insert into hashtable
 * @hash_table: Pointer to hashtable
 * @value: Value to be added
 */
-void insert_hash( mul_hash_data_t * );
+void insert_hash( mul_hash_t * , int );
+/**
+* @brief: Interface for pthread calling delete_hash
+*/
+void DELETE_HASH_INTF(mul_hash_data_t *);
 /**
 * @brief: delete_hash()- Insert into hashtable
 * @hash_table: Pointer to hashtable
 * @value: Value to be deleted
 */
-void delete_hash( mul_hash_data_t * );
+void delete_hash( mul_hash_t * , int);
 /**
 * @brief: print_hash()- Print given key in hashtable
 * @hash_table: Pointer to hashtable

@@ -131,6 +131,7 @@ void find_node_in_bst( tree_t **tree, void *value ){
 bool validate_bst_call( tree_t *tree ){
     return validate_bst( tree, INT_MIN, INT_MAX );
 }
+
 bool validate_bst( tree_t *tree, int floor, int ceiling){
     if( !tree ) return true;
     if( *((int*)tree->value) < floor || *((int*)tree->value) > ceiling) return false;

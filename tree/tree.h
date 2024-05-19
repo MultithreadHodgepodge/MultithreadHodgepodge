@@ -1,7 +1,8 @@
 #include<stdbool.h>
 #include<stdlib.h>
 #include<stdio.h>
-#include <stdint.h>
+#include<stdint.h>
+#include<limits.h>
 #ifndef LIST_H__
 #include "../common/common_struct.h"
 #endif
