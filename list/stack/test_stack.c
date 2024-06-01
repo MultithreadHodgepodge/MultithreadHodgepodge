@@ -19,4 +19,7 @@ int main(){
     pthread_join(thread4,NULL);
     pthread_join(thread5,NULL);
     free_stack(&stack);
+    free(data1);
+    free(data2);
+    free(data3);
 }

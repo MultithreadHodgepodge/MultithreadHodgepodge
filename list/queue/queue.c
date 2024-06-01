@@ -73,27 +73,23 @@ void* ENQUEUE_INTF( void *queue_data_temp ){
     return NULL;
 }
 
-void dequeue( mul_queue_t **queue )
+void dequeue( mul_queue_t *queue )
 {
-    mul_queue_t *q = *queue;
+    mul_queue_t *q = queue;
     MUL_HODGEPODGE_ASSERT( IsAllocate( q->st.w ), "Queue not allocated" );
-    MUL_HODGEPODGE_ASSERT( IsAdd( q->head->st.w ), "Queue not added" );
     sem_wait( q->qitem );
     pthread_mutex_lock( q->queue_lock );
     q->count--;
     if( q->count == 0 ){
         free(q->head);
-        q->head->st.w = 0;
-        q->head->st.w |= STRUCT_IS_FREE;
         q->head = NULL;
+        free(q->head);
     }
     else{
-        list_t *new_head_list  = q->dequeue(&q->head->list);
+        list_t *new_head_list  = q->dequeue(&(q->head->list));
         queue_node_t *temp = q->head;
         q->head = list_entry(new_head_list, queue_node_t, list);
         free(temp);
-        temp->st.w = 0;
-        temp->st.w |= STRUCT_IS_FREE;
     }
     pthread_mutex_unlock( q->queue_lock );
     sem_post( q->qremain );
@@ -109,7 +105,7 @@ void free_queue( mul_queue_t **queue )
     }
     if( IsAllocate( (*queue)->st.w) && !IsFree( (*queue)->st.w) ){
         while( (*queue)->head != NULL){
-            dequeue(queue);
+            dequeue(*queue);
         }
         free((*queue)->qremain);
         (*queue)->qremain = NULL;

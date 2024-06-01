@@ -9,14 +9,14 @@ list_t* create_list( list_t *head ) {
     return head;
 }
 
-void list_add_head( list_t** list, list_t *node ){
+void list_add_head( list_t** list, list_t* node ){
     MUL_HODGEPODGE_ASSERT( *list, "Empty list" );
     CONNECT_PREV_NEXT( node, *list )
     node->st.w |= STRUCT_IS_ADDED;
     *list = node;
 }
 
-void list_add_tail( list_t* list,  list_t *node ){
+void list_add_tail( list_t* list,  list_t* node ){
     MUL_HODGEPODGE_ASSERT( list, "Empty list" );
     CONNECT_PREV_NEXT( node, list )
     list->prev = node;
@@ -66,7 +66,6 @@ list_t* list_remove_head( list_t *list ){
 
 void list_remove_tail( list_t *list ){
     MUL_HODGEPODGE_ASSERT( list, "List is NULL" );
-    MUL_HODGEPODGE_ASSERT( IsAllocate( list->st.w ), "List isn't allocated" );
     if( list == list->next ){
         if(IsCreateByMalloc( list->st.w ))free(list);
         list=NULL;

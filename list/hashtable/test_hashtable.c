@@ -29,4 +29,10 @@ int main(){
     pthread_join(thread4,NULL);
     pthread_join(thread5,NULL);
     print_hash(hash,50);
+    free_hash(&hash);
+    free(hash_data1);
+    free(hash_data2);
+    free(hash_data3);
+    free(hash_data4);
+    free(hash_data5);
 }

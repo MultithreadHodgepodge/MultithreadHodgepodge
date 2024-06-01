@@ -66,9 +66,9 @@ mul_queue_data_t* pack_queue_data( mul_queue_t *, void *value );
 void* ENQUEUE_INTF( void* );
 /**
 * @brief: dequeue()-Remove first node from the queue
-* @queue: pointer to pointer to mul_queue_t
+* @queue: pointer to mul_queue_t
 */
-void dequeue( mul_queue_t ** );
+void dequeue( mul_queue_t * );
 /**
 * @brief: free_queue()-free queue
 * @queue: pointer to pointer to mul_queue_t

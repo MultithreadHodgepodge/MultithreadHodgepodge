@@ -31,7 +31,13 @@ typedef struct hashdata{
 * @size: Size of Hashtable(Entry number of Hashtable)
 * @return: mul_hash_t be created
 */
-mul_hash_t *create_hash_table( int );
+mul_hash_t* create_hash_table( int );
+/**
+* @brief: create_hash_node()-Create Hash node 
+* @value: Value in hash_node_t
+* @return: hash_node_t be created
+*/
+hash_node_t* create_hash_node( int );
 /**
 * @brief: set_hash_func()-Create Hashtable 
 * @hash_func: Hash functoin that are going to be used
@@ -44,7 +50,7 @@ void set_hash_func( mul_hash_t *, int (*)(int) );
 * @value: Value in hashdata
 * @return: mul_hash_data_t be created
 */
-mul_hash_data_t *pack_hash_data( mul_hash_t *, int );
+mul_hash_data_t* pack_hash_data( mul_hash_t *, int );
 /**
 * @brief: Interface for pthread calling insert_hash
 */
@@ -71,3 +77,8 @@ void delete_hash( mul_hash_t * , int);
 * @key: Key in hashtable
 */
 void print_hash( mul_hash_t *,int );
+/**
+* @brief: free_hash()- Free hashtable
+* @hash_table: Pointer to pointer to hashtable
+*/
+void free_hash( mul_hash_t ** );
